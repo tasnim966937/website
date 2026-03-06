@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mir — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'mir-teal': '#1E8289',
+            'mir-dark': '#2C3E50',
+            'mir-peach': '#FFDAB9',
+            'mir-gold': '#DAA520',
+            'mir-cream': '#F5F5F0',
+          },
+          fontFamily: {
+            display: ['Montserrat', 'sans-serif'],
+            body: ['Lora', 'serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --mir-teal: #1E8289;
+      --mir-dark: #2C3E50;
+      --mir-peach: #FFDAB9;
+      --mir-gold: #DAA520;
+      --mir-cream: #F5F5F0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--mir-cream); overflow-x: hidden; }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px;
+    }
+
+    /* Staggered reveal animation */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeSlideLeft {
+      from { opacity: 0; transform: translateX(60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes lineGrow {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+    @keyframes dotPulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      animation: fadeSlideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .reveal-left {
+      opacity: 0;
+      animation: fadeSlideLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .reveal-scale {
+      opacity: 0;
+      animation: scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.25s; }
+    .delay-3 { animation-delay: 0.4s; }
+    .delay-4 { animation-delay: 0.55s; }
+    .delay-5 { animation-delay: 0.7s; }
+    .delay-6 { animation-delay: 0.85s; }
+    .delay-7 { animation-delay: 1.0s; }
+    .delay-8 { animation-delay: 1.15s; }
+
+    /* Scroll-triggered reveals */
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .scroll-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Link hover underline */
+    .nav-link {
+      position: relative;
+      transition: opacity 0.3s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background: var(--mir-teal);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-link:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    .nav-link:focus-visible {
+      outline: 2px solid var(--mir-teal);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    /* Project card hover */
+    .project-card {
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+    }
+    .project-card:active {
+      transform: translateY(-2px);
+    }
+    .project-card:focus-visible {
+      outline: 2px solid var(--mir-teal);
+      outline-offset: 4px;
+      border-radius: 8px;
+    }
+    .project-card .card-img {
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .project-card:hover .card-img {
+      transform: scale(1.04);
+    }
+    .project-card .card-arrow {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    .project-card:hover .card-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* CTA Button */
+    .cta-btn {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--mir-dark);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 0;
+    }
+    .cta-btn:hover::before {
+      transform: scaleX(1);
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+    }
+    .cta-btn:active {
+      transform: translateY(0);
+    }
+    .cta-btn:focus-visible {
+      outline: 2px solid var(--mir-gold);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+    .cta-btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Decorative teal dot */
+    .mir-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--mir-teal);
+      margin-left: 2px;
+      vertical-align: super;
+      animation: dotPulse 3s ease-in-out infinite;
+    }
+
+    /* Horizontal divider line */
+    .divider-line {
+      height: 1px;
+      background: var(--mir-dark);
+      opacity: 0.12;
+      transform-origin: left;
+      animation: lineGrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Teal accent bar */
+    .accent-bar {
+      width: 48px;
+      height: 3px;
+      background: var(--mir-teal);
+      border-radius: 2px;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--mir-cream); }
+    ::-webkit-scrollbar-thumb { background: var(--mir-teal); border-radius: 3px; }
+
+    /* Selection */
+    ::selection {
+      background: rgba(30, 130, 137, 0.2);
+      color: var(--mir-dark);
+    }
+  </style>
+</head>
+<body class="font-body text-mir-dark">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-mir-cream/80 border-b border-mir-dark/5">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 flex items-center justify-between h-16 sm:h-20">
+      <!-- Logo -->
+      <a href="#" class="reveal delay-1 flex items-center gap-1 group" aria-label="Mir - Home">
+        <span class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-mir-dark" style="letter-spacing: -0.03em;">
+          M<span class="relative">i<span class="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-mir-teal group-hover:scale-125 transition-transform" style="transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);"></span></span>r
+        </span>
+      </a>
+      <!-- Nav links -->
+      <div class="hidden sm:flex items-center gap-8 font-display text-sm font-medium tracking-wide uppercase">
+        <a href="#work" class="nav-link reveal delay-2 text-mir-dark/70 hover:text-mir-dark">Work</a>
+        <a href="#about" class="nav-link reveal delay-3 text-mir-dark/70 hover:text-mir-dark">About</a>
+        <a href="#contact" class="nav-link reveal delay-4 text-mir-dark/70 hover:text-mir-dark">Contact</a>
+      </div>
+      <!-- Mobile menu button -->
+      <button class="sm:hidden reveal delay-2 p-2 text-mir-dark/70 hover:text-mir-dark focus-visible:outline-2 focus-visible:outline-mir-teal focus-visible:outline-offset-2" aria-label="Menu" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="hidden sm:hidden bg-mir-cream/95 backdrop-blur-md border-t border-mir-dark/5 px-6 pb-6 pt-2">
+      <div class="flex flex-col gap-4 font-display text-sm font-medium tracking-wide uppercase">
+        <a href="#work" class="text-mir-dark/70 hover:text-mir-dark py-2">Work</a>
+        <a href="#about" class="text-mir-dark/70 hover:text-mir-dark py-2">About</a>
+        <a href="#contact" class="text-mir-dark/70 hover:text-mir-dark py-2">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center pt-20 sm:pt-0 relative overflow-hidden">
+    <!-- Background decoration -->
+    <div class="absolute top-20 right-0 w-[500px] h-[500px] rounded-full bg-mir-teal/5 blur-3xl"></div>
+    <div class="absolute bottom-20 left-10 w-[300px] h-[300px] rounded-full bg-mir-peach/20 blur-3xl"></div>
+
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 w-full">
+      <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <!-- Left content -->
+        <div class="lg:col-span-7 space-y-8 sm:space-y-10">
+          <div class="reveal delay-2">
+            <div class="accent-bar mb-6"></div>
+            <p class="font-display text-sm sm:text-base font-medium tracking-widest uppercase text-mir-teal">
+              Designer & Developer
+            </p>
+          </div>
+
+          <h1 class="reveal delay-3 font-display font-bold text-mir-dark leading-none" style="font-size: clamp(3rem, 8vw, 6.5rem); letter-spacing: -0.04em;">
+            Crafting<br>
+            <span class="text-mir-teal">digital</span><br>
+            experiences<span class="mir-dot"></span>
+          </h1>
+
+          <p class="reveal delay-4 font-body text-lg sm:text-xl text-mir-dark/60 max-w-lg" style="line-height: 1.7;">
+            I'm <strong class="text-mir-dark font-semibold">Mir Md Tasnim Alam</strong> — a creative
+            who builds thoughtful, impactful digital products with meticulous attention to craft.
+          </p>
+
+          <div class="reveal delay-5 flex flex-wrap items-center gap-4 sm:gap-6 pt-2">
+            <a href="#work" class="cta-btn inline-flex items-center gap-3 bg-mir-teal text-white font-display text-sm font-semibold tracking-wide uppercase px-8 py-4 rounded-sm">
+              <span>View Work</span>
+            </a>
+            <a href="#contact" class="nav-link font-display text-sm font-semibold tracking-wide uppercase text-mir-dark/70 hover:text-mir-dark px-2 py-4">
+              Get in Touch
+            </a>
+          </div>
+        </div>
+
+        <!-- Right visual -->
+        <div class="lg:col-span-5 reveal-left delay-5 relative">
+          <div class="relative">
+            <div class="aspect-[4/5] rounded-sm overflow-hidden relative" style="box-shadow: 0 25px 60px -12px rgba(30,130,137,0.15), 0 12px 30px -8px rgba(44,62,80,0.1);">
+              <img src="https://placehold.co/640x800/2C3E50/F5F5F0?text=Mir" alt="Mir portrait" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-mir-dark/40 via-transparent to-transparent"></div>
+              <div class="absolute inset-0 bg-mir-teal/10 mix-blend-multiply"></div>
+            </div>
+            <!-- Floating accent card -->
+            <div class="absolute -bottom-6 -left-6 bg-white px-6 py-4 rounded-sm" style="box-shadow: 0 8px 30px -4px rgba(44,62,80,0.12);">
+              <p class="font-display text-xs font-semibold tracking-widest uppercase text-mir-teal">Based in</p>
+              <p class="font-display text-lg font-bold text-mir-dark" style="letter-spacing: -0.02em;">Bangladesh</p>
+            </div>
+            <!-- Decorative corner -->
+            <div class="absolute -top-4 -right-4 w-20 h-20 border-t-2 border-r-2 border-mir-gold/40 rounded-tr-sm"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Horizontal Ticker / Marquee -->
+  <section class="py-6 border-y border-mir-dark/8 overflow-hidden bg-white/40">
+    <div class="flex gap-12 animate-marquee whitespace-nowrap font-display text-sm font-medium tracking-widest uppercase text-mir-dark/25">
+      <span>UI/UX Design</span><span class="text-mir-teal/40">&#9672;</span>
+      <span>Web Development</span><span class="text-mir-teal/40">&#9672;</span>
+      <span>Brand Identity</span><span class="text-mir-teal/40">&#9672;</span>
+      <span>Creative Direction</span><span class="text-mir-teal/40">&#9672;</span>
+      <span>Product Strategy</span><span class="text-mir-teal/40">&#9672;</span>
+      <span>UI/UX Design</span><span class="text-mir-teal/40">&#9672;</span>
+      <span>Web Development</span><span class="text-mir-teal/40">&#9672;</span>
+      <span>Brand Identity</span><span class="text-mir-teal/40">&#9672;</span>
+      <span>Creative Direction</span><span class="text-mir-teal/40">&#9672;</span>
+      <span>Product Strategy</span><span class="text-mir-teal/40">&#9672;</span>
+    </div>
+    <style>
+      @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+      .animate-marquee { animation: marquee 20s linear infinite; }
+    </style>
+  </section>
+
+  <!-- Selected Work -->
+  <section id="work" class="py-24 sm:py-32 lg:py-40">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
+      <!-- Section header -->
+      <div class="scroll-reveal flex items-end justify-between mb-16 sm:mb-20">
+        <div>
+          <p class="font-display text-xs sm:text-sm font-semibold tracking-widest uppercase text-mir-teal mb-3">Portfolio</p>
+          <h2 class="font-display font-bold text-mir-dark" style="font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.03em;">Selected Work</h2>
+        </div>
+        <div class="hidden sm:block accent-bar"></div>
+      </div>
+
+      <!-- Project Grid -->
+      <div class="grid md:grid-cols-2 gap-8 lg:gap-10">
+        <!-- Project 1 -->
+        <a href="#" class="project-card scroll-reveal group block" tabindex="0">
+          <div class="aspect-[16/11] rounded-sm overflow-hidden mb-5 relative" style="box-shadow: 0 12px 40px -8px rgba(30,130,137,0.1);">
+            <img src="https://placehold.co/800x550/1E8289/F5F5F0?text=Project+01" alt="Project 01" class="card-img w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-mir-dark/50 via-transparent to-transparent"></div>
+            <div class="absolute inset-0 bg-mir-teal/8 mix-blend-multiply"></div>
+          </div>
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="font-display text-xl sm:text-2xl font-bold text-mir-dark mb-1" style="letter-spacing: -0.02em;">Brand Reimagined</h3>
+              <p class="font-body text-mir-dark/50 text-sm sm:text-base">Brand Identity / Web Design</p>
+            </div>
+            <span class="card-arrow text-mir-teal mt-1">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Project 2 -->
+        <a href="#" class="project-card scroll-reveal group block mt-0 md:mt-16" tabindex="0">
+          <div class="aspect-[16/11] rounded-sm overflow-hidden mb-5 relative" style="box-shadow: 0 12px 40px -8px rgba(30,130,137,0.1);">
+            <img src="https://placehold.co/800x550/2C3E50/FFDAB9?text=Project+02" alt="Project 02" class="card-img w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-mir-dark/50 via-transparent to-transparent"></div>
+            <div class="absolute inset-0 bg-mir-peach/10 mix-blend-multiply"></div>
+          </div>
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="font-display text-xl sm:text-2xl font-bold text-mir-dark mb-1" style="letter-spacing: -0.02em;">Digital Platform</h3>
+              <p class="font-body text-mir-dark/50 text-sm sm:text-base">UI/UX Design / Development</p>
+            </div>
+            <span class="card-arrow text-mir-teal mt-1">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Project 3 -->
+        <a href="#" class="project-card scroll-reveal group block" tabindex="0">
+          <div class="aspect-[16/11] rounded-sm overflow-hidden mb-5 relative" style="box-shadow: 0 12px 40px -8px rgba(30,130,137,0.1);">
+            <img src="https://placehold.co/800x550/DAA520/2C3E50?text=Project+03" alt="Project 03" class="card-img w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-mir-dark/50 via-transparent to-transparent"></div>
+            <div class="absolute inset-0 bg-mir-gold/10 mix-blend-multiply"></div>
+          </div>
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="font-display text-xl sm:text-2xl font-bold text-mir-dark mb-1" style="letter-spacing: -0.02em;">Creative Campaign</h3>
+              <p class="font-body text-mir-dark/50 text-sm sm:text-base">Creative Direction / Strategy</p>
+            </div>
+            <span class="card-arrow text-mir-teal mt-1">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Project 4 -->
+        <a href="#" class="project-card scroll-reveal group block mt-0 md:mt-16" tabindex="0">
+          <div class="aspect-[16/11] rounded-sm overflow-hidden mb-5 relative" style="box-shadow: 0 12px 40px -8px rgba(30,130,137,0.1);">
+            <img src="https://placehold.co/800x550/F5F5F0/1E8289?text=Project+04" alt="Project 04" class="card-img w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-mir-dark/30 via-transparent to-transparent"></div>
+            <div class="absolute inset-0 bg-mir-teal/5 mix-blend-multiply"></div>
+          </div>
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="font-display text-xl sm:text-2xl font-bold text-mir-dark mb-1" style="letter-spacing: -0.02em;">Product Ecosystem</h3>
+              <p class="font-body text-mir-dark/50 text-sm sm:text-base">Product Design / Systems</p>
+            </div>
+            <span class="card-arrow text-mir-teal mt-1">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-24 sm:py-32 lg:py-40 bg-white/50 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-mir-peach/10 blur-3xl -translate-y-1/2"></div>
+
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 relative">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+        <!-- Left -->
+        <div class="lg:col-span-5 scroll-reveal">
+          <p class="font-display text-xs sm:text-sm font-semibold tracking-widest uppercase text-mir-teal mb-3">About</p>
+          <h2 class="font-display font-bold text-mir-dark mb-8" style="font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.03em;">
+            A little<br>about me<span class="mir-dot"></span>
+          </h2>
+          <div class="accent-bar"></div>
+        </div>
+
+        <!-- Right -->
+        <div class="lg:col-span-7 space-y-6 scroll-reveal">
+          <p class="font-body text-lg sm:text-xl text-mir-dark/70" style="line-height: 1.8;">
+            I believe design is more than aesthetics — it's about solving real problems with
+            clarity and intention. Every pixel, every interaction, every word should earn its place.
+          </p>
+          <p class="font-body text-lg sm:text-xl text-mir-dark/70" style="line-height: 1.8;">
+            With a passion for clean code and compelling visuals, I create digital experiences
+            that feel effortless to use while making a lasting impression. My approach blends
+            strategic thinking with creative execution.
+          </p>
+
+          <!-- Skills -->
+          <div class="pt-8 grid grid-cols-2 sm:grid-cols-3 gap-6">
+            <div class="scroll-reveal">
+              <p class="font-display text-3xl sm:text-4xl font-bold text-mir-teal" style="letter-spacing: -0.03em;">5+</p>
+              <p class="font-display text-xs font-medium tracking-widest uppercase text-mir-dark/40 mt-1">Years Experience</p>
+            </div>
+            <div class="scroll-reveal">
+              <p class="font-display text-3xl sm:text-4xl font-bold text-mir-teal" style="letter-spacing: -0.03em;">30+</p>
+              <p class="font-display text-xs font-medium tracking-widest uppercase text-mir-dark/40 mt-1">Projects Completed</p>
+            </div>
+            <div class="scroll-reveal">
+              <p class="font-display text-3xl sm:text-4xl font-bold text-mir-teal" style="letter-spacing: -0.03em;">15+</p>
+              <p class="font-display text-xs font-medium tracking-widest uppercase text-mir-dark/40 mt-1">Happy Clients</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-24 sm:py-32 lg:py-40 relative overflow-hidden">
+    <div class="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-mir-teal/5 blur-3xl translate-y-1/2"></div>
+
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 relative">
+      <div class="max-w-3xl mx-auto text-center scroll-reveal">
+        <p class="font-display text-xs sm:text-sm font-semibold tracking-widest uppercase text-mir-teal mb-4">Get in Touch</p>
+        <h2 class="font-display font-bold text-mir-dark mb-6" style="font-size: clamp(2.2rem, 6vw, 4.5rem); letter-spacing: -0.04em;">
+          Let's create<br>something great<span class="mir-dot"></span>
+        </h2>
+        <p class="font-body text-lg sm:text-xl text-mir-dark/50 mb-10 max-w-xl mx-auto" style="line-height: 1.7;">
+          Have a project in mind or just want to say hello? I'd love to hear from you.
+        </p>
+        <a href="mailto:hello@mir.com" class="cta-btn inline-flex items-center gap-3 bg-mir-teal text-white font-display text-sm font-semibold tracking-wide uppercase px-10 py-5 rounded-sm">
+          <span class="flex items-center gap-3">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l8 5 8-5M2 4v12h16V4H2z"/></svg>
+            Say Hello
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-mir-dark/8 bg-mir-dark">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-20">
+      <div class="grid sm:grid-cols-3 gap-10 sm:gap-8 items-start mb-14">
+        <!-- Logo + tagline -->
+        <div>
+          <a href="#" class="flex items-center gap-1 mb-4" aria-label="Mir - Home">
+            <span class="font-display text-2xl font-bold tracking-tight text-mir-cream" style="letter-spacing: -0.03em;">
+              M<span class="relative">i<span class="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-mir-teal"></span></span>r
+            </span>
+          </a>
+          <p class="font-body text-sm text-mir-cream/40" style="line-height: 1.7;">Crafting digital experiences<br>with intention and craft.</p>
+        </div>
+
+        <!-- Navigation -->
+        <div>
+          <p class="font-display text-xs font-semibold tracking-widest uppercase text-mir-cream/30 mb-4">Navigation</p>
+          <div class="flex flex-col gap-3">
+            <a href="#work" class="font-display text-sm font-medium text-mir-cream/60 hover:text-mir-cream transition-opacity" style="transition: color 0.3s ease;">Work</a>
+            <a href="#about" class="font-display text-sm font-medium text-mir-cream/60 hover:text-mir-cream transition-opacity" style="transition: color 0.3s ease;">About</a>
+            <a href="#contact" class="font-display text-sm font-medium text-mir-cream/60 hover:text-mir-cream transition-opacity" style="transition: color 0.3s ease;">Contact</a>
+          </div>
+        </div>
+
+        <!-- Connect -->
+        <div>
+          <p class="font-display text-xs font-semibold tracking-widest uppercase text-mir-cream/30 mb-4">Connect</p>
+          <div class="flex flex-col gap-3">
+            <a href="#" class="font-display text-sm font-medium text-mir-cream/60 hover:text-mir-cream" style="transition: color 0.3s ease;">LinkedIn</a>
+            <a href="#" class="font-display text-sm font-medium text-mir-cream/60 hover:text-mir-cream" style="transition: color 0.3s ease;">GitHub</a>
+            <a href="#" class="font-display text-sm font-medium text-mir-cream/60 hover:text-mir-cream" style="transition: color 0.3s ease;">Dribbble</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-mir-cream/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="font-display text-xs text-mir-cream/25 tracking-wide">&copy; 2026 Mir. All rights reserved.</p>
+        <p class="font-display text-xs text-mir-cream/25 tracking-wide">Designed with intention.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll reveal script -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+    document.getElementById('mobileMenu')?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobileMenu').classList.add('hidden');
+      });
+    });
+  </script>
+
+</body>
+</html>
