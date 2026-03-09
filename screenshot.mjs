@@ -17,7 +17,7 @@ const next = nums.length ? Math.max(...nums) + 1 : 1;
 const filename = label ? `screenshot-${next}-${label}.png` : `screenshot-${next}.png`;
 
 (async () => {
-  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--enable-webgl', '--use-gl=angle'] });
   const page = await browser.newPage();
   await page.setViewport({ width: 1440, height: 900 });
   await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
@@ -34,10 +34,10 @@ const filename = label ? `screenshot-${next}-${label}.png` : `screenshot-${next}
       await new Promise(r => setTimeout(r, delay));
     }
     window.scrollTo(0, 0);
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 1000));
   });
 
-  await new Promise(r => setTimeout(r, 1000));
+  await new Promise(r => setTimeout(r, 2000));
   const filePath = path.join(screenshotDir, filename);
   await page.screenshot({ path: filePath, fullPage: true });
   console.log(`Screenshot saved: ${filePath}`);

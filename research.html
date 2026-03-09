@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research & Publications - Mir Md Tasnim Alam</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'mir-teal': '#1E8289',
+            'mir-gold': '#DAA520',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --cosmic-black: #000000;
+      --cosmic-dark: #080808;
+      --cosmic-surface: #161616;
+      --accent-teal: #1E8289;
+      --accent-gold: #DAA520;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { overflow-x: clip; }
+
+    body {
+      background: var(--cosmic-black);
+      color: rgba(255,255,255,0.5);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .mir-i { position: relative; display: inline-block; }
+    .mir-dot {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 36% 33%, #5ce0e4, #22b0b4 55%, #17696e);
+      pointer-events: none;
+      z-index: 2;
+      left: 58%;
+      transform: translateX(-50%);
+      width: 0.40em;
+      height: 0.40em;
+      top: -0.08em;
+      box-shadow: 0 0 0.12em rgba(30,130,137,0.9), 0 0 0.35em rgba(30,130,137,0.4);
+    }
+
+    .moving-border-btn {
+      position: relative;
+      display: inline-flex;
+      padding: 2px;
+      overflow: hidden;
+      border-radius: 9999px;
+      background: rgba(30,130,137,0.15);
+      text-decoration: none;
+    }
+    .moving-border-btn .border-track {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      overflow: hidden;
+    }
+    .moving-border-btn .border-track svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    .moving-border-btn .glow-orb-btn {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      opacity: 1;
+      background: radial-gradient(#fff 0%, var(--accent-teal) 30%, rgba(30,130,137,0.5) 55%, transparent 70%);
+      transform: translate(-50%, -50%);
+      will-change: transform;
+      pointer-events: none;
+      filter: blur(2px);
+    }
+    .moving-border-btn .btn-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      background: rgba(10,10,10,0.95);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.6rem 1.4rem;
+      transition: background 0.3s;
+    }
+    .moving-border-btn:hover .btn-inner { background: rgba(30,30,30,0.95); }
+    .moving-border-btn:focus-visible { outline: 2px solid var(--accent-teal); outline-offset: 3px; }
+
+    /* Stat cards */
+    .stat-card {
+      position: relative;
+      text-align: center;
+      padding: 36px 24px;
+      background: rgba(255,255,255,0.015);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: border-color 0.5s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    .stat-card:hover { border-color: rgba(255,255,255,0.08); transform: translateY(-4px); }
+    .stat-card:hover::before { opacity: 1; }
+    .stat-card:nth-child(1)::before { background: radial-gradient(ellipse at 50% 30%, rgba(30,130,137,0.1) 0%, transparent 70%); }
+    .stat-card:nth-child(2)::before { background: radial-gradient(ellipse at 50% 30%, rgba(218,165,32,0.08) 0%, transparent 70%); }
+    .stat-card:nth-child(3)::before { background: radial-gradient(ellipse at 50% 30%, rgba(30,130,137,0.1) 0%, transparent 70%); }
+    .stat-card:nth-child(4)::before { background: radial-gradient(ellipse at 50% 30%, rgba(218,165,32,0.08) 0%, transparent 70%); }
+
+    .stat-num {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 48px;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-num-teal { color: var(--accent-teal); text-shadow: 0 0 30px rgba(30,130,137,0.3); }
+    .stat-num-gold { color: var(--accent-gold); text-shadow: 0 0 30px rgba(218,165,32,0.2); }
+    .stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* Publication cards */
+    .pub-card {
+      position: relative;
+      display: block;
+      padding: 32px 32px 36px;
+      background: rgba(255,255,255,0.015);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      transition: border-color 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s ease;
+    }
+    .pub-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+    }
+    .pub-card:hover::before { opacity: 1; }
+    .pub-card:hover {
+      border-color: rgba(255,255,255,0.08);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 60px -15px rgba(0,0,0,0.5);
+    }
+
+    .pub-card:nth-child(odd)::before { background: radial-gradient(ellipse at 20% 30%, rgba(30,130,137,0.07) 0%, transparent 65%); }
+    .pub-card:nth-child(even)::before { background: radial-gradient(ellipse at 80% 30%, rgba(218,165,32,0.05) 0%, transparent 65%); }
+
+    .pub-num {
+      position: absolute;
+      top: 20px; right: 24px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 36px;
+      line-height: 1;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.04);
+      color: transparent;
+      pointer-events: none;
+      transition: -webkit-text-stroke-color 0.4s ease;
+    }
+    .pub-card:hover .pub-num { -webkit-text-stroke-color: rgba(255,255,255,0.08); }
+
+    .pub-year {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+    }
+    .pub-year-teal { color: var(--accent-teal); background: rgba(30,130,137,0.1); border: 1px solid rgba(30,130,137,0.15); }
+    .pub-year-gold { color: var(--accent-gold); background: rgba(218,165,32,0.08); border: 1px solid rgba(218,165,32,0.12); }
+
+    .pub-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.5;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+      transition: color 0.3s ease;
+    }
+
+    .pub-authors {
+      font-size: 12px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 10px;
+    }
+
+    .pub-journal {
+      font-size: 12px;
+      font-style: italic;
+      color: rgba(255,255,255,0.35);
+      font-family: 'Lora', serif;
+    }
+
+    .pub-cite {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 14px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .pub-card:hover .pub-cite { opacity: 1; transform: translateY(0); }
+    .pub-cite-teal { color: var(--accent-teal); background: rgba(30,130,137,0.1); border: 1px solid rgba(30,130,137,0.12); }
+    .pub-cite-gold { color: var(--accent-gold); background: rgba(218,165,32,0.08); border: 1px solid rgba(218,165,32,0.1); }
+
+    .pub-line {
+      position: absolute;
+      bottom: 0; left: 32px; right: 32px;
+      height: 1px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .pub-card:hover .pub-line { opacity: 1; }
+    .pub-card:nth-child(odd) .pub-line { background: linear-gradient(90deg, transparent, rgba(30,130,137,0.2), transparent); }
+    .pub-card:nth-child(even) .pub-line { background: linear-gradient(90deg, transparent, rgba(218,165,32,0.15), transparent); }
+
+    .pub-arrow {
+      position: absolute;
+      bottom: 28px; right: 28px;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .pub-card:hover .pub-arrow { opacity: 1; transform: translateX(0); }
+
+    /* Scroll reveal */
+    .scroll-reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    }
+    .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+    .scroll-reveal-delay-1 { transition-delay: 0.1s; }
+    .scroll-reveal-delay-2 { transition-delay: 0.2s; }
+    .scroll-reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(45deg, var(--accent-teal), var(--accent-gold)); border-radius: 4px; }
+    ::-webkit-scrollbar-track { background: var(--cosmic-black); }
+
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Filter pills */
+    .filter-pill {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.35);
+      cursor: pointer;
+      background: transparent;
+      transition: border-color 0.3s, color 0.3s, background 0.3s;
+    }
+    .filter-pill:hover,
+    .filter-pill.active {
+      border-color: rgba(30,130,137,0.4);
+      color: rgba(255,255,255,0.85);
+      background: rgba(30,130,137,0.08);
+    }
+
+    /* Hero mesh gradient */
+    .hero-mesh {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .hero-mesh::before {
+      content: '';
+      position: absolute;
+      width: 800px; height: 800px;
+      top: -30%; left: -10%;
+      background: radial-gradient(circle, rgba(30,130,137,0.06) 0%, transparent 60%);
+      animation: meshFloat 20s ease-in-out infinite;
+    }
+    .hero-mesh::after {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      bottom: -20%; right: -5%;
+      background: radial-gradient(circle, rgba(218,165,32,0.04) 0%, transparent 60%);
+      animation: meshFloat 25s ease-in-out infinite reverse;
+    }
+    @keyframes meshFloat {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(40px, -30px); }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <!-- Nav -->
+  <nav class="fixed top-0 left-0 right-0 z-50 px-[5vw] py-5" style="background: rgba(0,0,0,0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.03);">
+    <div class="max-w-[1200px] mx-auto flex items-center justify-between">
+      <a href="index.html" style="text-decoration: none;">
+        <span class="text-white font-extrabold text-3xl" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.03em; text-shadow: 0 0 20px rgba(30,130,137,0.3);">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</span>
+      </a>
+      <div class="hidden sm:flex items-center gap-8 text-sm" style="color: rgba(255,255,255,0.4); font-weight: 400;">
+        <a href="index.html" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Home</a>
+        <a href="index.html#about" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">About</a>
+        <a href="index.html#services" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Services</a>
+        <a href="blog.html" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Blog</a>
+      </div>
+      <a href="mailto:info@tasnimalam.com,tasnimpksf@gmail.com" class="hidden sm:inline-flex moving-border-btn">
+        <div class="border-track">
+          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="100%">
+            <rect fill="none" width="100%" height="100%" rx="50%" ry="50%" class="border-path"/>
+          </svg>
+          <div class="glow-orb-btn"></div>
+        </div>
+        <span class="btn-inner">Get in Touch</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="relative pt-44 pb-24 px-[7vw]" style="z-index: 1;">
+    <div class="hero-mesh"></div>
+    <div class="max-w-[900px] mx-auto text-center relative z-10">
+      <p class="scroll-reveal text-xs font-medium tracking-[0.25em] uppercase mb-5" style="color: var(--accent-teal); font-family: 'Montserrat', sans-serif;">Peer-Reviewed Research</p>
+      <h1 class="scroll-reveal scroll-reveal-delay-1 text-white leading-[1.05] mb-6" style="font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -0.03em;">Publications & <span style="background: linear-gradient(135deg, var(--accent-teal), var(--accent-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Research</span></h1>
+      <p class="scroll-reveal scroll-reveal-delay-2 max-w-xl mx-auto mb-10" style="color: rgba(255,255,255,0.35); font-weight: 300; font-size: 16px; line-height: 1.75;">Exploring the intersection of remote sensing, deep learning, and environmental science through data-driven research published in top-tier journals.</p>
+      <a href="https://scholar.google.com/citations?user=XVkHcF8AAAAJ&hl=en" target="_blank" class="scroll-reveal scroll-reveal-delay-3 inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold" style="background: rgba(30,130,137,0.1); border: 1px solid rgba(30,130,137,0.25); color: var(--accent-teal); transition: background 0.3s, transform 0.3s;" onmouseover="this.style.background='rgba(30,130,137,0.2)';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(30,130,137,0.1)';this.style.transform='translateY(0)'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg>
+        View Google Scholar
+      </a>
+    </div>
+  </header>
+
+  <!-- Stats -->
+  <section class="relative px-[7vw] pb-24" style="z-index: 1;">
+    <div class="max-w-[900px] mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="stat-card scroll-reveal">
+        <p class="stat-num stat-num-teal" data-target="15">0</p>
+        <p class="stat-label">Publications</p>
+      </div>
+      <div class="stat-card scroll-reveal scroll-reveal-delay-1">
+        <p class="stat-num stat-num-gold" data-target="148">0</p>
+        <p class="stat-label">Total Citations</p>
+      </div>
+      <div class="stat-card scroll-reveal scroll-reveal-delay-2">
+        <p class="stat-num stat-num-teal" data-target="10">0</p>
+        <p class="stat-label">Journals</p>
+      </div>
+      <div class="stat-card scroll-reveal scroll-reveal-delay-3">
+        <p class="stat-num stat-num-gold" data-target="5">0</p>
+        <p class="stat-label">Years Active</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <div class="mx-[7vw]" style="position: relative; z-index: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04) 20%, rgba(255,255,255,0.04) 80%, transparent);"></div>
+
+  <!-- Filters + Publications -->
+  <section class="relative px-[7vw] pt-20 pb-28" style="z-index: 1;">
+    <div class="max-w-[1200px] mx-auto">
+
+      <!-- Filter pills -->
+      <div class="flex flex-wrap items-center gap-3 mb-14 scroll-reveal" id="pub-filters">
+        <button class="filter-pill active" data-filter="all">All</button>
+        <button class="filter-pill" data-filter="remote-sensing">Remote Sensing</button>
+        <button class="filter-pill" data-filter="groundwater">Groundwater</button>
+        <button class="filter-pill" data-filter="deep-learning">Deep Learning</button>
+        <button class="filter-pill" data-filter="environment">Environment</button>
+      </div>
+
+      <!-- Publication grid -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5" id="pub-grid">
+
+        <!-- 01 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:4DMP91E08xMC" target="_blank" class="pub-card scroll-reveal" data-category="remote-sensing deep-learning">
+          <span class="pub-num">01</span>
+          <span class="pub-year pub-year-teal">2026</span>
+          <h3 class="pub-title">Improving the Transferability of SAR-Derived Vegetation Indices for Crop Monitoring</h3>
+          <p class="pub-authors">HP Osei, AS Milas, MMT Alam</p>
+          <p class="pub-journal">Environmental Challenges, 101411</p>
+          <span class="pub-cite pub-cite-teal"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> New</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 02 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:eQOLeE2rZwMC" target="_blank" class="pub-card scroll-reveal" data-category="remote-sensing deep-learning">
+          <span class="pub-num">02</span>
+          <span class="pub-year pub-year-gold">2025</span>
+          <h3 class="pub-title">Optimizing Empirical and Hybrid Modeling for Advanced Canopy Chlorophyll and Nitrogen Retrieval Using EnMAP Data</h3>
+          <p class="pub-authors">MMT Alam, AS Milas, J Verrelst, Q Tian, AS Kripal, HP Osei, MA Rahman</p>
+          <p class="pub-journal">Environmental Challenges 18, 101114</p>
+          <span class="pub-cite pub-cite-gold"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> 13 citations</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 03 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:M3ejUd6NZC8C" target="_blank" class="pub-card scroll-reveal" data-category="remote-sensing deep-learning">
+          <span class="pub-num">03</span>
+          <span class="pub-year pub-year-teal">2025</span>
+          <h3 class="pub-title">Dimensionality Optimized Machine Learning Retrieval of Canopy Chlorophyll, Nitrogen, and Phosphorus from Google Satellite Embeddings</h3>
+          <p class="pub-authors">MMT Alam, AS Milas</p>
+          <p class="pub-journal">Smart Agricultural Technology 12, 101601</p>
+          <span class="pub-cite pub-cite-teal"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> New</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 04 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:YOwf2qJgpHMC" target="_blank" class="pub-card scroll-reveal" data-category="groundwater environment">
+          <span class="pub-num">04</span>
+          <span class="pub-year pub-year-gold">2025</span>
+          <h3 class="pub-title">Interpreting Hydrogeochemical Interactions and Controlling Processes in Groundwater Using Advanced Statistical Techniques in Dhaka, Bangladesh</h3>
+          <p class="pub-authors">M Tajwar, M Rahman, M Hasan, N Sakib, SS Shreya, MMT Alam, MY Gazi, ...</p>
+          <p class="pub-journal">Cleaner Water 3, 100084</p>
+          <span class="pub-cite pub-cite-gold"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> 12 citations</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 05 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:WF5omc3nYNoC" target="_blank" class="pub-card scroll-reveal" data-category="groundwater environment">
+          <span class="pub-num">05</span>
+          <span class="pub-year pub-year-teal">2025</span>
+          <h3 class="pub-title">Statistical and Probabilistic Modeling of Groundwater Contamination: A Data-Driven Uncertainty and Risk Assessment in Barind Tract, Rajshahi, Bangladesh</h3>
+          <p class="pub-authors">MMT Alam, MO Sarker, M Rahman, N Sakib, M Tajwar, MY Gazi, ...</p>
+          <p class="pub-journal">Journal of Trace Elements and Minerals 12, 100223</p>
+          <span class="pub-cite pub-cite-teal"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> 11 citations</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 06 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:ufrVoPGSRksC" target="_blank" class="pub-card scroll-reveal" data-category="environment">
+          <span class="pub-num">06</span>
+          <span class="pub-year pub-year-gold">2025</span>
+          <h3 class="pub-title">Quantification and Characterization of Microplastics in an Intertidal Gastropod the Common Periwinkle Littorina littorea</h3>
+          <p class="pub-authors">M Rahman, ME Hoque, Z Hasan, MMT Alam, M Jakaria, K Das, ...</p>
+          <p class="pub-journal">Water Biology and Security, 100401</p>
+          <span class="pub-cite pub-cite-gold"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> 5 citations</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 07 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:_kc_bZDykSQC" target="_blank" class="pub-card scroll-reveal" data-category="environment">
+          <span class="pub-num">07</span>
+          <span class="pub-year pub-year-teal">2025</span>
+          <h3 class="pub-title">Geomorphic Index Alterations and Socioeconomic Implications: A Case Study of a Coastal River System in Bangladesh</h3>
+          <p class="pub-authors">S Goswami, MM Billah, MS Hossen, MH Ovi, SC Saha, MMT Alam, ...</p>
+          <p class="pub-journal">Progress in Disaster Science, 100450</p>
+          <span class="pub-cite pub-cite-teal"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> 3 citations</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 08 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:4TOpqqG69KYC" target="_blank" class="pub-card scroll-reveal" data-category="remote-sensing environment">
+          <span class="pub-num">08</span>
+          <span class="pub-year pub-year-gold">2025</span>
+          <h3 class="pub-title">A Multi-Criteria Based Optimal Niche Analysis of Seasonal Productivity in the Bay of Bengal Using MODIS Data</h3>
+          <p class="pub-authors">MA Hasan, MMT Alam, MZA Razzak, AN Mayeesha</p>
+          <p class="pub-journal">Remote Sensing Applications: Society and Environment, 101743</p>
+          <span class="pub-cite pub-cite-gold"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> New</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 09 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:qjMakFHDy7sC" target="_blank" class="pub-card scroll-reveal" data-category="remote-sensing deep-learning">
+          <span class="pub-num">09</span>
+          <span class="pub-year pub-year-teal">2024</span>
+          <h3 class="pub-title">Retrieval of Crop Canopy Chlorophyll: Machine Learning vs. Radiative Transfer Model</h3>
+          <p class="pub-authors">MMT Alam, A Simic Milas, M Gašparović, HP Osei</p>
+          <p class="pub-journal">Remote Sensing 16 (12), 2058</p>
+          <span class="pub-cite pub-cite-teal"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> 21 citations</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 10 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:zYLM7Y9cAGgC" target="_blank" class="pub-card scroll-reveal" data-category="groundwater environment">
+          <span class="pub-num">10</span>
+          <span class="pub-year pub-year-gold">2024</span>
+          <h3 class="pub-title">Pollution Evaluation and Health Risks Assessment of Naturally Occurring Toxic Metals in Shallow Groundwater of Southwestern Tidal Delta of Bangladesh</h3>
+          <p class="pub-authors">M Tajwar, M Rahman, SS Shreya, N Sakib, MY Gazi, M Hasan, M Islam, ...</p>
+          <p class="pub-journal">Journal of Trace Elements and Minerals 10, 100197</p>
+          <span class="pub-cite pub-cite-gold"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> 14 citations</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 11 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:W7OEmFMy1HYC" target="_blank" class="pub-card scroll-reveal" data-category="groundwater environment">
+          <span class="pub-num">11</span>
+          <span class="pub-year pub-year-teal">2024</span>
+          <h3 class="pub-title">Spatiotemporal Distribution and Human Health Risks of Potential Toxic Elements in the Groundwater of the Lower Tista Floodplain, Rangpur, Bangladesh</h3>
+          <p class="pub-authors">MMT Alam, M Rahman, N Sakib, M Tajwar, MY Gazi, SS Shreya, A Zahid</p>
+          <p class="pub-journal">Discover Water 4 (1), 127</p>
+          <span class="pub-cite pub-cite-teal"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> 11 citations</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 12 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:u-x6o8ySG0sC" target="_blank" class="pub-card scroll-reveal" data-category="remote-sensing environment">
+          <span class="pub-num">12</span>
+          <span class="pub-year pub-year-gold">2024</span>
+          <h3 class="pub-title">Interlinkage of Sea Surface Temperature and Chlorophyll-a Concentration in Bay of Bengal Using Satellite Data</h3>
+          <p class="pub-authors">MA Hasan, MMT Alam, AN Mayeesha, MZA Razzak</p>
+          <p class="pub-journal">2024 Ocean Sciences Meeting</p>
+          <span class="pub-cite pub-cite-gold"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> 1 citation</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 13 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:IjCSPb-OGe4C" target="_blank" class="pub-card scroll-reveal" data-category="remote-sensing deep-learning">
+          <span class="pub-num">13</span>
+          <span class="pub-year pub-year-teal">2024</span>
+          <h3 class="pub-title">Retrieval of Canopy Chlorophyll Content and Canopy Nitrogen Content from EnMAP Using Empirical Machine Learning and Hybrid Radiative Transfer Model</h3>
+          <p class="pub-authors">MMT Alam</p>
+          <p class="pub-journal">Bowling Green State University (Thesis)</p>
+          <span class="pub-cite pub-cite-teal"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> 4 citations</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 14 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:UeHWp8X0CEIC" target="_blank" class="pub-card scroll-reveal" data-category="remote-sensing deep-learning">
+          <span class="pub-num">14</span>
+          <span class="pub-year pub-year-gold">2023</span>
+          <h3 class="pub-title">Machine Learning-Based Estimation of Canopy Chlorophyll Content in Crops from Multiple Satellite Images with Various Spatial Resolutions</h3>
+          <p class="pub-authors">MMT Alam, A Simic Milas</p>
+          <p class="pub-journal">Geological Society of America Abstracts with Programs 55 (6)</p>
+          <span class="pub-cite pub-cite-gold"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> 4 citations</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+        <!-- 15 -->
+        <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=XVkHcF8AAAAJ&citation_for_view=XVkHcF8AAAAJ:u5HHmVD_uO8C" target="_blank" class="pub-card scroll-reveal" data-category="groundwater environment">
+          <span class="pub-num">15</span>
+          <span class="pub-year pub-year-teal">2022</span>
+          <h3 class="pub-title">Assessment of Shoreline Changes and the Groundwater Quality Along the Coast of Kuakata, Patuakhali, Bangladesh</h3>
+          <p class="pub-authors">S Goswami, SA Rahman, MMT Alam, M Rahman, MR Rafiq, MH Jaman, ...</p>
+          <p class="pub-journal">Journal of Ecological Engineering 23 (7), 323-332</p>
+          <span class="pub-cite pub-cite-teal"><svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M11 7.05V4a9 9 0 00-7.07 8.18A3.5 3.5 0 107.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0111 7.05zm10 0V4a9 9 0 00-7.07 8.18A3.5 3.5 0 1017.5 16c0-.68-.2-1.32-.5-1.86A6 6 0 0121 7.05z"/></svg> 14 citations</span>
+          <div class="pub-arrow"><svg width="12" height="12" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1v8"/></svg></div>
+          <div class="pub-line"></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="relative px-[7vw] py-12" style="z-index: 1; border-top: 1px solid rgba(255,255,255,0.03); background: var(--cosmic-black);">
+    <div class="max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <span class="text-white font-bold text-lg" style="font-family: 'Montserrat', sans-serif;">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</span>
+        <span style="color: rgba(255,255,255,0.1); font-size: 12px; margin: 0 8px;">|</span>
+        <span style="color: rgba(255,255,255,0.2); font-size: 12px; font-family: 'Montserrat', sans-serif; font-weight: 500; letter-spacing: 0.03em;">&copy; 2026 Mir Md Tasnim Alam. All rights reserved.</span>
+      </div>
+      <div class="flex items-center gap-6" style="font-size: 12px; color: rgba(255,255,255,0.2);">
+        <a href="index.html" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Home</a>
+        <a href="index.html#about" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">About</a>
+        <a href="index.html#services" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Services</a>
+        <a href="blog.html" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Blog</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Star field
+    (function() {
+      var canvas = document.getElementById('starfield');
+      var ctx = canvas.getContext('2d');
+      var stars = [];
+      var STAR_COUNT = 200;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight * 3;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      for (var i = 0; i < STAR_COUNT; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.2 + 0.3,
+          alpha: Math.random() * 0.5 + 0.2,
+          twinkleSpeed: Math.random() * 0.02 + 0.005,
+          twinkleOffset: Math.random() * Math.PI * 2
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var t = Date.now() * 0.001;
+        stars.forEach(function(s) {
+          var a = s.alpha + Math.sin(t * s.twinkleSpeed * 60 + s.twinkleOffset) * 0.2;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255,255,255,' + Math.max(0.05, Math.min(0.7, a)) + ')';
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // Scroll reveal
+    var revealObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.scroll-reveal').forEach(function(el) { revealObs.observe(el); });
+
+    // Counter animation
+    var counterObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          var el = e.target;
+          var target = parseInt(el.dataset.target);
+          var start = performance.now();
+          var duration = 1800;
+          function step(now) {
+            var progress = Math.min((now - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(eased * target) + (target > 20 ? '+' : '+');
+            if (progress < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+          counterObs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.stat-num[data-target]').forEach(function(el) { counterObs.observe(el); });
+
+    // Filter pills
+    var pills = document.querySelectorAll('#pub-filters .filter-pill');
+    var cards = document.querySelectorAll('#pub-grid .pub-card');
+    pills.forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        pills.forEach(function(p) { p.classList.remove('active'); });
+        pill.classList.add('active');
+        var filter = pill.dataset.filter;
+        cards.forEach(function(card) {
+          if (filter === 'all' || (card.dataset.category && card.dataset.category.indexOf(filter) !== -1)) {
+            card.style.display = '';
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(function() { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 50);
+          } else {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(10px)';
+            setTimeout(function() { card.style.display = 'none'; }, 350);
+          }
+        });
+      });
+    });
+
+    // Glow button animation
+    document.querySelectorAll('.moving-border-btn').forEach(function(btn) {
+      var pathEl = btn.querySelector('.border-path');
+      var orb = btn.querySelector('.glow-orb-btn');
+      if (!pathEl || !orb) return;
+      var DURATION = 2200;
+      function tick(time) {
+        requestAnimationFrame(tick);
+        var length = pathEl.getTotalLength();
+        if (!length) return;
+        var dist = (time * (length / DURATION)) % length;
+        var pt = pathEl.getPointAtLength(dist);
+        orb.style.transform = 'translateX(' + pt.x + 'px) translateY(' + pt.y + 'px) translateX(-50%) translateY(-50%)';
+      }
+      requestAnimationFrame(tick);
+    });
+  </script>
+
+</body>
+</html>
