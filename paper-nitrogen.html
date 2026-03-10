@@ -69,7 +69,7 @@
     .abstract-text strong{color:rgba(255,255,255,.7);font-weight:600}
 
     .gallery-section{padding:2rem 0 3rem}
-    .gallery-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:minmax(200px,auto);gap:14px}
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:340px;gap:14px}
     @media(max-width:768px){.gallery-grid{grid-template-columns:1fr;grid-auto-rows:auto}}
 
     .fig-card{
@@ -100,12 +100,7 @@
     .fig-card:hover .expand-icon{opacity:1;transform:scale(1)}
     .expand-icon svg{width:14px;height:14px;stroke:#fff;stroke-width:1.5;fill:none}
 
-    .fig-card:nth-child(1){grid-column:span 7;grid-row:span 2}
-    .fig-card:nth-child(2){grid-column:span 5;grid-row:span 2}
-    .fig-card:nth-child(3){grid-column:span 6;grid-row:span 2}
-    .fig-card:nth-child(4){grid-column:span 6;grid-row:span 2}
-    .fig-card:nth-child(5){grid-column:span 12;grid-row:span 2}
-    @media(max-width:768px){.fig-card:nth-child(n){grid-column:span 1;grid-row:span 1}}
+    @media(max-width:768px){.gallery-grid{grid-template-columns:1fr;grid-auto-rows:auto}}
 
     .findings-section{padding:2rem 0 4rem}
     .findings-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -230,14 +225,14 @@
       </p>
     </section>
 
-    <section class="gallery-section">
-      <h2 class="section-title">Key <span>Visualizations</span></h2>
-      <div class="gallery-grid" id="gallery-grid"></div>
-    </section>
-
     <section class="findings-section">
       <h2 class="section-title">Key <span>Findings</span></h2>
       <div class="findings-grid" id="findings-grid"></div>
+    </section>
+
+    <section class="gallery-section">
+      <h2 class="section-title">Key <span>Visualizations</span></h2>
+      <div class="gallery-grid" id="gallery-grid"></div>
     </section>
   </div>
 
