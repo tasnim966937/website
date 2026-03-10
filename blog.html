@@ -401,20 +401,25 @@
 
     var pills = document.querySelectorAll('.category-pill[data-filter]');
     var cards = document.querySelectorAll('#blog-grid .blog-card');
+    function applyFilter(filter) {
+      pills.forEach(function(p) {
+        p.classList.toggle('active', p.dataset.filter === filter);
+      });
+      cards.forEach(function(card) {
+        if (filter === 'all' || card.dataset.category.indexOf(filter) !== -1) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
     pills.forEach(function(pill) {
       pill.addEventListener('click', function() {
-        pills.forEach(function(p) { p.classList.remove('active'); });
-        pill.classList.add('active');
-        var filter = pill.dataset.filter;
-        cards.forEach(function(card) {
-          if (filter === 'all' || card.dataset.category.indexOf(filter) !== -1) {
-            card.style.display = '';
-          } else {
-            card.style.display = 'none';
-          }
-        });
+        applyFilter(pill.dataset.filter);
       });
     });
+    var urlCat = new URLSearchParams(window.location.search).get('category');
+    if (urlCat) applyFilter(urlCat.toLowerCase());
   </script>
 
   <script>
