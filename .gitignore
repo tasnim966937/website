@@ -15,8 +15,14 @@ balerion-demo.html
 
 # Large / private assets
 CV/
-Photography/
 media_library_export-*/
 ref/paper/*.pdf
 ref/paper/fig*.jpg
 research/papers/*/page_*.png
+
+# Photography: raw source folders & raw JPGs (only keep optimized WebPs)
+photography/Death Valley/
+photography/Kitch_it-kipi/
+photography/Miami_Fl/
+photography/yosemite/*.jpg
+photography/manifest.json
