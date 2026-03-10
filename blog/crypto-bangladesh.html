@@ -40,6 +40,11 @@
     .mob-menu a:hover{color:#fff}
     .mob-menu .mob-cta{margin-top:1rem;padding:.7rem 2rem;border-radius:9999px;border:1px solid rgba(30,130,137,.4);background:rgba(30,130,137,.1);color:var(--accent-teal,#1E8289);font-size:.9rem}
     .mob-menu-close{position:absolute;top:1.5rem;right:2rem;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .scroll-arrows{position:fixed;right:20px;bottom:24px;z-index:100;display:flex;flex-direction:column;gap:8px}
+    .scroll-arrows button{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.08);background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.3s,border-color 0.3s,opacity 0.3s;opacity:0.5}
+    .scroll-arrows button:hover{background:rgba(30,130,137,0.15);border-color:rgba(30,130,137,0.3);opacity:1}
+    .scroll-arrows button svg{width:16px;height:16px;stroke:rgba(255,255,255,0.6);stroke-width:2;fill:none}
+    @media(max-width:640px){.scroll-arrows{right:12px;bottom:16px}.scroll-arrows button{width:36px;height:36px}}
   </style>
 </head>
 <body>
@@ -144,5 +149,15 @@
     menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''})});
   })();
   </script>
+<div class="scroll-arrows">
+  <button id="scroll-up" aria-label="Scroll to top"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></button>
+  <button id="scroll-down" aria-label="Scroll to bottom"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+</div>
+<script>
+(function(){
+  document.getElementById('scroll-up').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+  document.getElementById('scroll-down').addEventListener('click',function(){window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})});
+})();
+</script>
 </body>
 </html>

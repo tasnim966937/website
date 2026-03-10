@@ -464,6 +464,35 @@
     .blog-card-ft:nth-child(1)::before { background: radial-gradient(ellipse at 50% 20%, rgba(30,130,137,0.1) 0%, transparent 70%); }
     .blog-card-ft:nth-child(2)::before { background: radial-gradient(ellipse at 50% 20%, rgba(218,165,32,0.07) 0%, transparent 70%); }
     .blog-card-ft:nth-child(3)::before { background: radial-gradient(ellipse at 50% 20%, rgba(30,130,137,0.1) 0%, transparent 70%); }
+    .blog-card-ft .card-glow {
+      position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      opacity: 0; transition: opacity 0.35s ease;
+    }
+    .blog-card-ft:hover .card-glow { opacity: 1; }
+
+    @media (hover: none) {
+      .blog-card-ft::before { opacity: 1; }
+      .blog-card-ft {
+        border-color: rgba(255,255,255,0.06);
+      }
+      .blog-card-ft:nth-child(1),
+      .blog-card-ft:nth-child(3) {
+        box-shadow: 0 0 30px rgba(30,130,137,0.12), 0 0 60px rgba(30,130,137,0.06);
+      }
+      .blog-card-ft:nth-child(2) {
+        box-shadow: 0 0 30px rgba(218,165,32,0.10), 0 0 60px rgba(218,165,32,0.05);
+      }
+      .svc-card::before { opacity: 1; }
+      .svc-card {
+        border-color: rgba(255,255,255,0.06);
+      }
+      .svc-card:nth-child(odd) {
+        box-shadow: 0 0 30px rgba(30,130,137,0.12), 0 0 60px rgba(30,130,137,0.06);
+      }
+      .svc-card:nth-child(even) {
+        box-shadow: 0 0 30px rgba(218,165,32,0.10), 0 0 60px rgba(218,165,32,0.05);
+      }
+    }
 
     .blog-card-ft:hover {
       border-color: rgba(255,255,255,0.08);
@@ -872,19 +901,11 @@
       section.relative.py-28 { padding-top: 3.5rem !important; padding-bottom: 3.5rem !important; }
       section.relative .text-center.mb-20 { margin-bottom: 2.5rem !important; }
     }
-    @media (hover: none) {
-      .svc-card::before { opacity: 1; }
-      .svc-card { border-color: rgba(255,255,255,0.10); }
-      .svc-card:nth-child(odd) { box-shadow: 0 0 30px rgba(30,130,137,0.15), 0 0 2px rgba(30,130,137,0.4); }
-      .svc-card:nth-child(even) { box-shadow: 0 0 30px rgba(218,165,32,0.12), 0 0 2px rgba(218,165,32,0.35); }
-      .svc-card .svc-tag { opacity: 1; transform: translateY(0); }
-      .blog-card-ft::before { opacity: 1; }
-      .blog-card-ft { border-color: rgba(255,255,255,0.08); }
-      .blog-card-ft:nth-child(odd) { box-shadow: 0 0 25px rgba(30,130,137,0.12), 0 0 2px rgba(30,130,137,0.3); }
-      .blog-card-ft:nth-child(even) { box-shadow: 0 0 25px rgba(218,165,32,0.10), 0 0 2px rgba(218,165,32,0.25); }
-      .blog-card-ft .blog-ft-tag { opacity: 1; transform: translateY(0); }
-      .blog-card-ft .blog-ft-line { opacity: 1; }
-    }
+    .scroll-arrows{position:fixed;right:20px;bottom:24px;z-index:100;display:flex;flex-direction:column;gap:8px}
+    .scroll-arrows button{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.08);background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.3s,border-color 0.3s,opacity 0.3s;opacity:0.5}
+    .scroll-arrows button:hover{background:rgba(30,130,137,0.15);border-color:rgba(30,130,137,0.3);opacity:1}
+    .scroll-arrows button svg{width:16px;height:16px;stroke:rgba(255,255,255,0.6);stroke-width:2;fill:none}
+    @media(max-width:640px){.scroll-arrows{right:12px;bottom:16px}.scroll-arrows button{width:36px;height:36px}}
   </style>
 </head>
 <body>
@@ -1194,12 +1215,42 @@
       </div>
 
       <!-- Leave a review -->
-      <a href="mailto:tasnim966937@gmail.com,tasnimalam@ou.edu?subject=Review%20for%20Mir%20Md%20Tasnim%20Alam" class="mt-10 inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl border text-sm font-semibold" style="text-decoration: none; background: rgba(30,130,137,0.08); border-color: rgba(30,130,137,0.3); color: rgba(30,130,137,0.9); transition: background 0.3s ease, color 0.3s ease;" onmouseover="this.style.background='rgba(30,130,137,0.18)';this.style.color='#fff'" onmouseout="this.style.background='rgba(30,130,137,0.08)';this.style.color='rgba(30,130,137,0.9)'">
+      <button id="open-review-btn" class="mt-10 inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl border text-sm font-semibold" style="background: rgba(30,130,137,0.08); border-color: rgba(30,130,137,0.3); color: rgba(30,130,137,0.9); transition: background 0.3s ease, color 0.3s ease; cursor: pointer;" onmouseover="this.style.background='rgba(30,130,137,0.18)';this.style.color='#fff'" onmouseout="this.style.background='rgba(30,130,137,0.08)';this.style.color='rgba(30,130,137,0.9)'">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3 8h10"/></svg>
         Leave a Review
-      </a>
+      </button>
     </div>
   </section>
+
+  <!-- Review Modal -->
+  <div id="review-modal" style="display:none; position:fixed; inset:0; z-index:300; background:rgba(0,0,0,0.85); backdrop-filter:blur(20px); align-items:center; justify-content:center; padding:20px;">
+    <div style="position:relative; width:100%; max-width:480px; background:rgba(12,12,12,0.95); border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:40px 36px; box-shadow:0 0 60px rgba(30,130,137,0.1), 0 40px 80px rgba(0,0,0,0.5);">
+      <button id="close-review-btn" style="position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,255,255,0.08); background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h3 style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:20px; color:#fff; margin-bottom:6px; letter-spacing:-0.02em;">Leave a Review</h3>
+      <p style="color:rgba(255,255,255,0.4); font-size:13px; margin-bottom:28px;">Your feedback means a lot. All fields are required except photo.</p>
+      <form id="review-form" style="display:flex; flex-direction:column; gap:16px;">
+        <div>
+          <label style="display:block; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:rgba(30,130,137,0.8); margin-bottom:6px;">Name *</label>
+          <input type="text" id="rev-name" required placeholder="Your full name" style="width:100%; padding:12px 16px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.03); color:#fff; font-size:14px; font-family:'Plus Jakarta Sans',sans-serif; outline:none; transition:border-color 0.3s;" onfocus="this.style.borderColor='rgba(30,130,137,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+        </div>
+        <div>
+          <label style="display:block; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:rgba(30,130,137,0.8); margin-bottom:6px;">Affiliation *</label>
+          <input type="text" id="rev-affiliation" required placeholder="Company or university" style="width:100%; padding:12px 16px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.03); color:#fff; font-size:14px; font-family:'Plus Jakarta Sans',sans-serif; outline:none; transition:border-color 0.3s;" onfocus="this.style.borderColor='rgba(30,130,137,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+        </div>
+        <div>
+          <label style="display:block; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:rgba(30,130,137,0.8); margin-bottom:6px;">Photo <span style="color:rgba(255,255,255,0.25); text-transform:none; letter-spacing:0;">(optional, attach in email)</span></label>
+          <div style="padding:12px 16px; border-radius:12px; border:1px dashed rgba(255,255,255,0.08); background:rgba(255,255,255,0.02); color:rgba(255,255,255,0.3); font-size:13px;">You can attach your photo directly in the email that opens</div>
+        </div>
+        <div>
+          <label style="display:block; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:rgba(30,130,137,0.8); margin-bottom:6px;">Review *</label>
+          <textarea id="rev-text" required rows="4" placeholder="Share your experience working with me..." style="width:100%; padding:12px 16px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.03); color:#fff; font-size:14px; font-family:'Plus Jakarta Sans',sans-serif; outline:none; resize:vertical; transition:border-color 0.3s;" onfocus="this.style.borderColor='rgba(30,130,137,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'"></textarea>
+        </div>
+        <button type="submit" style="margin-top:8px; padding:14px; border-radius:12px; border:none; background:linear-gradient(135deg, #1E8289, #15656b); color:#fff; font-size:14px; font-weight:600; font-family:'Montserrat',sans-serif; cursor:pointer; transition:transform 0.3s, box-shadow 0.3s; box-shadow:0 0 20px rgba(30,130,137,0.2);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 40px rgba(30,130,137,0.35)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 0 20px rgba(30,130,137,0.2)'">Submit Review</button>
+      </form>
+    </div>
+  </div>
 
   <div class="section-divider mx-[7vw]"></div>
 
@@ -1870,6 +1921,39 @@
     });
   })();
   </script>
+
+  <script>
+  (function() {
+    var teal = { r: 30, g: 130, b: 137 };
+    var gold = { r: 218, g: 165, b: 32 };
+    document.querySelectorAll('.blog-card-ft').forEach(function(card, i) {
+      var glow = document.createElement('div');
+      glow.className = 'card-glow';
+      card.insertBefore(glow, card.firstChild);
+      var c = i % 2 === 0 ? teal : gold;
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left, y = e.clientY - rect.top;
+        var offX = x - rect.width / 2, offY = y - rect.height / 2;
+        card.style.boxShadow =
+          (offX * 0.12) + 'px ' + (offY * 0.12) + 'px 28px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.45),' +
+          (offX * 0.06) + 'px ' + (offY * 0.06) + 'px 55px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.2),' +
+          '0 0 3px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.7),' +
+          '0 0 90px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.1)';
+        glow.style.background =
+          'radial-gradient(350px circle at ' + x + 'px ' + y + 'px,' +
+          'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.2) 0%,' +
+          'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.06) 40%,' +
+          'transparent 65%)';
+      });
+      card.addEventListener('mouseleave', function() {
+        card.style.boxShadow = '';
+        glow.style.background = '';
+      });
+    });
+  })();
+  </script>
+
   <script>
   (function(){
     var btn=document.getElementById('mob-menu-btn'),menu=document.getElementById('mob-menu'),close=document.getElementById('mob-menu-close');
@@ -1899,5 +1983,40 @@
     }
   })();
   </script>
+  <script>
+  (function() {
+    var modal = document.getElementById('review-modal');
+    var openBtn = document.getElementById('open-review-btn');
+    var closeBtn = document.getElementById('close-review-btn');
+    var form = document.getElementById('review-form');
+    function open() { modal.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+    function close() { modal.style.display = 'none'; document.body.style.overflow = ''; }
+    openBtn.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    modal.addEventListener('click', function(e) { if (e.target === modal) close(); });
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var name = document.getElementById('rev-name').value.trim();
+      var affiliation = document.getElementById('rev-affiliation').value.trim();
+      var review = document.getElementById('rev-text').value.trim();
+      if (!name || !affiliation || !review) return;
+      var subject = encodeURIComponent('Review from ' + name + ' (' + affiliation + ')');
+      var body = encodeURIComponent('Name: ' + name + '\nAffiliation: ' + affiliation + '\n\nReview:\n' + review + '\n\n(Please attach your photo to this email if you would like it displayed on the website)');
+      window.location.href = 'mailto:tasnim966937@gmail.com,tasnimalam@ou.edu?subject=' + subject + '&body=' + body;
+      close();
+      form.reset();
+    });
+  })();
+  </script>
+<div class="scroll-arrows">
+  <button id="scroll-up" aria-label="Scroll to top"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></button>
+  <button id="scroll-down" aria-label="Scroll to bottom"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+</div>
+<script>
+(function(){
+  document.getElementById('scroll-up').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+  document.getElementById('scroll-down').addEventListener('click',function(){window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})});
+})();
+</script>
 </body>
 </html>
