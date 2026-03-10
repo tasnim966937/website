@@ -64,6 +64,15 @@
     .moving-border-btn .btn-inner { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; border-radius: 9999px; background: rgba(10,10,10,0.95); color: #fff; font-size: 0.75rem; font-weight: 600; padding: 0.6rem 1.4rem; transition: background 0.3s ease; }
     .moving-border-btn:hover .btn-inner { background: rgba(30,130,137,0.2); }
 
+    .mob-menu-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer}
+    @media(max-width:640px){.mob-menu-btn{display:flex}.nav-links{display:none!important}.moving-border-btn{display:none!important}.logo{font-size:1.25rem!important}}
+    .mob-menu{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.98);backdrop-filter:blur(30px);display:none;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+    .mob-menu.open{display:flex}
+    .mob-menu a{color:rgba(255,255,255,.6);font-family:'Montserrat',sans-serif;font-size:1.25rem;font-weight:600;letter-spacing:-.01em;text-decoration:none;transition:color .3s}
+    .mob-menu a:hover{color:#fff}
+    .mob-menu .mob-cta{margin-top:1rem;padding:.7rem 2rem;border-radius:9999px;border:1px solid rgba(30,130,137,.4);background:rgba(30,130,137,.1);color:var(--accent-teal,#1E8289);font-size:.9rem}
+    .mob-menu-close{position:absolute;top:1.5rem;right:2rem;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
     /* ─── Hero ─── */
     .photo-hero { position: relative; z-index: 1; padding: 9rem 5vw 4rem; text-align: center; }
     .photo-hero .eyebrow {
@@ -347,8 +356,30 @@
         </div>
         <span class="btn-inner">Get in Touch</span>
       </a>
+      <button class="mob-menu-btn" id="mob-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
     </div>
   </nav>
+
+  <div class="mob-menu" id="mob-menu">
+    <button class="mob-menu-close" id="mob-menu-close" aria-label="Close">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <a href="index.html">Home</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#services">Services</a>
+    <a href="blog.html">Blog</a>
+    <a href="photography.html">Photography</a>
+    <a href="mailto:tasnim966937@gmail.com,tasnimalam@ou.edu" class="mob-cta">Get in Touch</a>
+  </div>
 
   <!-- Hero -->
   <section class="photo-hero" id="photo-hero">
@@ -707,6 +738,15 @@
       }
       requestAnimationFrame(tick);
     });
+  })();
+  </script>
+  <script>
+  (function(){
+    var btn=document.getElementById('mob-menu-btn'),menu=document.getElementById('mob-menu'),close=document.getElementById('mob-menu-close');
+    if(!btn||!menu)return;
+    btn.addEventListener('click',function(){menu.classList.add('open');document.body.style.overflow='hidden'});
+    close.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''});
+    menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''})});
   })();
   </script>
 </body>

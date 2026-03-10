@@ -56,6 +56,15 @@
     ::-webkit-scrollbar-thumb { background: linear-gradient(45deg, var(--accent-teal), var(--accent-gold)); border-radius: 4px; }
     ::-webkit-scrollbar-track { background: var(--cosmic-black); }
 
+    .mob-menu-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer}
+    @media(max-width:640px){.mob-menu-btn{display:flex}}
+    .mob-menu{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.98);backdrop-filter:blur(30px);display:none;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+    .mob-menu.open{display:flex}
+    .mob-menu a{color:rgba(255,255,255,.6);font-family:'Montserrat',sans-serif;font-size:1.25rem;font-weight:600;letter-spacing:-.01em;text-decoration:none;transition:color .3s}
+    .mob-menu a:hover{color:#fff}
+    .mob-menu .mob-cta{margin-top:1rem;padding:.7rem 2rem;border-radius:9999px;border:1px solid rgba(30,130,137,.4);background:rgba(30,130,137,.1);color:var(--accent-teal,#1E8289);font-size:.9rem}
+    .mob-menu-close{position:absolute;top:1.5rem;right:2rem;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
     .phone-glow { animation: phoneGlow 2.5s ease-in-out infinite alternate; }
     @keyframes phoneGlow {
       0% { box-shadow: 0 0 20px rgba(30,130,137,0.2), 0 0 60px rgba(30,130,137,0.08); }
@@ -141,7 +150,7 @@
   <nav class="fixed top-0 left-0 right-0 z-50 px-[5vw] py-5" style="background: rgba(0,0,0,0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.03);">
     <div class="max-w-[1200px] mx-auto flex items-center justify-between">
       <a href="index.html" style="text-decoration: none;">
-        <span class="text-white font-extrabold text-3xl" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.03em; text-shadow: 0 0 20px rgba(30,130,137,0.3);">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</span>
+        <span class="text-white font-extrabold text-xl sm:text-3xl" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.03em; text-shadow: 0 0 20px rgba(30,130,137,0.3);">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</span>
       </a>
       <div class="hidden sm:flex items-center gap-8 text-sm" style="color: rgba(255,255,255,0.4); font-weight: 400;">
         <a href="index.html" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Home</a>
@@ -154,8 +163,30 @@
         <div class="border-track"><svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="100%"><rect fill="none" width="100%" height="100%" rx="50%" ry="50%" class="border-path"/></svg><div class="glow-orb-btn"></div></div>
         <span class="btn-inner">Get in Touch</span>
       </a>
+      <button class="mob-menu-btn sm:hidden" id="mob-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
     </div>
   </nav>
+
+  <div class="mob-menu" id="mob-menu">
+    <button class="mob-menu-close" id="mob-menu-close" aria-label="Close">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <a href="index.html">Home</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#services">Services</a>
+    <a href="blog.html">Blog</a>
+    <a href="photography.html">Photography</a>
+    <a href="mailto:tasnim966937@gmail.com,tasnimalam@ou.edu" class="mob-cta">Get in Touch</a>
+  </div>
 
   <!-- Hero -->
   <section class="relative pt-44 pb-24 px-[7vw]" style="z-index: 1;">
@@ -617,6 +648,15 @@
       if(!p||!o) return;
       (function tick(t) { requestAnimationFrame(tick); var l=p.getTotalLength(); if(!l)return; var d=(t*(l/3600))%l, pt=p.getPointAtLength(d); o.style.transform='translateX('+pt.x+'px) translateY('+pt.y+'px) translateX(-50%) translateY(-50%)'; })(0);
     });
+  </script>
+  <script>
+  (function(){
+    var btn=document.getElementById('mob-menu-btn'),menu=document.getElementById('mob-menu'),close=document.getElementById('mob-menu-close');
+    if(!btn||!menu)return;
+    btn.addEventListener('click',function(){menu.classList.add('open');document.body.style.overflow='hidden'});
+    close.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''});
+    menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''})});
+  })();
   </script>
 </body>
 </html>

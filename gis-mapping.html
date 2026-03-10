@@ -28,6 +28,15 @@
     .moving-border-btn .btn-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;border-radius:9999px;background:rgba(10,10,10,.95);color:#fff;font-size:.75rem;font-weight:600;padding:.6rem 1.4rem;transition:background .3s}
     .moving-border-btn:hover .btn-inner{background:rgba(30,130,137,.2)}
 
+    .mob-menu-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer}
+    @media(max-width:640px){.mob-menu-btn{display:flex}.nav-links{display:none!important}.moving-border-btn{display:none!important}.logo{font-size:1.25rem!important}}
+    .mob-menu{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.98);backdrop-filter:blur(30px);display:none;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+    .mob-menu.open{display:flex}
+    .mob-menu a{color:rgba(255,255,255,.6);font-family:'Montserrat',sans-serif;font-size:1.25rem;font-weight:600;letter-spacing:-.01em;text-decoration:none;transition:color .3s}
+    .mob-menu a:hover{color:#fff}
+    .mob-menu .mob-cta{margin-top:1rem;padding:.7rem 2rem;border-radius:9999px;border:1px solid rgba(30,130,137,.4);background:rgba(30,130,137,.1);color:var(--accent-teal,#1E8289);font-size:.9rem}
+    .mob-menu-close{position:absolute;top:1.5rem;right:2rem;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
     .page-hero{position:relative;z-index:1;padding:9rem 5vw 4rem;text-align:center}
     .page-hero .eyebrow{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-teal);margin-bottom:1.5rem;opacity:0;transform:translateY(20px);animation:fadeUp .8s .2s forwards}
     .page-hero h1{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(2.5rem,6vw,4.5rem);letter-spacing:-.04em;color:#fff;line-height:1.1;margin-bottom:1.5rem;opacity:0;transform:translateY(30px);animation:fadeUp .8s .35s forwards}
@@ -110,8 +119,30 @@
         </div>
         <span class="btn-inner">Get in Touch</span>
       </a>
+      <button class="mob-menu-btn" id="mob-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
     </div>
   </nav>
+
+  <div class="mob-menu" id="mob-menu">
+    <button class="mob-menu-close" id="mob-menu-close" aria-label="Close">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <a href="index.html">Home</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#services">Services</a>
+    <a href="blog.html">Blog</a>
+    <a href="photography.html">Photography</a>
+    <a href="mailto:tasnim966937@gmail.com,tasnimalam@ou.edu" class="mob-cta">Get in Touch</a>
+  </div>
 
   <section class="page-hero">
     <p class="eyebrow">Spatial Analysis &middot; Cartography &middot; 3D Visualization</p>
@@ -294,6 +325,15 @@
       function tick(time) { requestAnimationFrame(tick); var len = pathEl.getTotalLength(); if (!len) return; var pt = pathEl.getPointAtLength((time * (len / 3600)) % len); orb.style.transform = 'translateX(' + pt.x + 'px) translateY(' + pt.y + 'px) translateX(-50%) translateY(-50%)'; }
       requestAnimationFrame(tick);
     });
+  })();
+  </script>
+  <script>
+  (function(){
+    var btn=document.getElementById('mob-menu-btn'),menu=document.getElementById('mob-menu'),close=document.getElementById('mob-menu-close');
+    if(!btn||!menu)return;
+    btn.addEventListener('click',function(){menu.classList.add('open');document.body.style.overflow='hidden'});
+    close.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''});
+    menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''})});
   })();
   </script>
 </body>
