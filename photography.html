@@ -87,7 +87,7 @@
       opacity: 0; transform: translateY(30px); animation: fadeUp 0.8s 0.35s forwards;
     }
     .photo-hero p {
-      max-width: 520px; margin: 0 auto; color: rgba(255,255,255,0.35);
+      max-width: 520px; margin: 0 auto; color: rgba(255,255,255,0.48);
       font-size: 1.05rem; line-height: 1.7;
       opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s 0.5s forwards;
     }
@@ -168,7 +168,7 @@
       color: #fff; line-height: 1.2; margin-bottom: 0.5rem;
     }
     .album-info .album-count {
-      font-size: 0.8rem; color: rgba(255,255,255,0.35); font-weight: 400;
+      font-size: 0.8rem; color: rgba(255,255,255,0.48); font-weight: 400;
     }
     .album-info .album-count span { color: rgba(255,255,255,0.6); }
 
@@ -202,7 +202,7 @@
     }
     .album-back {
       display: inline-flex; align-items: center; gap: 0.6rem;
-      color: rgba(255,255,255,0.4); font-size: 0.8rem; font-weight: 500;
+      color: rgba(255,255,255,0.55); font-size: 0.8rem; font-weight: 500;
       cursor: pointer; padding: 0.5rem 0;
       transition: color 0.3s ease;
       border: none; background: none; font-family: inherit;
@@ -217,13 +217,13 @@
       color: #fff; line-height: 1.1;
     }
     .album-detail-header .detail-meta {
-      font-size: 0.85rem; color: rgba(255,255,255,0.3);
+      font-size: 0.85rem; color: rgba(255,255,255,0.45);
       margin-top: 0.5rem;
     }
     .album-detail-header .detail-meta span { color: var(--accent-teal); }
 
     .album-description {
-      max-width: 640px; color: rgba(255,255,255,0.3);
+      max-width: 640px; color: rgba(255,255,255,0.45);
       font-size: 0.95rem; line-height: 1.8; font-style: italic;
       padding: 1rem 0 2rem;
       border-bottom: 1px solid rgba(255,255,255,0.04);
@@ -303,8 +303,8 @@
     .lightbox .lb-prev { left: 1.5rem; }
     .lightbox .lb-next { right: 1.5rem; }
     .lightbox .lb-nav svg { width: 20px; height: 20px; stroke: rgba(255,255,255,0.6); stroke-width: 2; fill: none; }
-    .lightbox .lb-counter { position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: rgba(255,255,255,0.3); z-index: 10; }
-    .lightbox .lb-location { position: absolute; top: 1.8rem; left: 2rem; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); z-index: 10; }
+    .lightbox .lb-counter { position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: rgba(255,255,255,0.45); z-index: 10; }
+    .lightbox .lb-location { position: absolute; top: 1.8rem; left: 2rem; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; color: rgba(255,255,255,0.48); z-index: 10; }
 
     /* ─── Footer ─── */
     footer {
@@ -515,7 +515,7 @@
           '<div class="album-overlay"></div>' +
           '<div class="album-info">' +
             '<p class="album-date">' + album.date + '</p>' +
-            '<h3>' + album.title + '<span style="display:block;font-size:0.55em;font-weight:400;color:rgba(255,255,255,0.35);margin-top:0.25rem;letter-spacing:0.05em;">' + album.subtitle + '</span></h3>' +
+            '<h3>' + album.title + '<span style="display:block;font-size:0.55em;font-weight:400;color:rgba(255,255,255,0.48);margin-top:0.25rem;letter-spacing:0.05em;">' + album.subtitle + '</span></h3>' +
             '<p class="album-count"><span>' + album.images.length + '</span> photos</p>' +
           '</div>' +
           '<div class="album-arrow"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></div>' +

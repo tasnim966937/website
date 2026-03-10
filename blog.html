@@ -27,12 +27,12 @@
   </script>
   <style>
     :root {
-      --cosmic-black: #0d0d0d;
+      --cosmic-black: #000000;
       --cosmic-dark: #151515;
       --cosmic-surface: #1a1a1a;
       --text-primary: #f0f0f0;
-      --text-secondary: rgba(255,255,255,0.55);
-      --text-tertiary: rgba(255,255,255,0.3);
+      --text-secondary: rgba(255,255,255,0.65);
+      --text-tertiary: rgba(255,255,255,0.35);
       --accent-teal: #1E8289;
       --accent-gold: #DAA520;
     }
@@ -61,6 +61,13 @@
       height: 0.40em;
       top: -0.08em;
       box-shadow: 0 0 0.12em rgba(30,130,137,0.9), 0 0 0.35em rgba(30,130,137,0.4);
+    }
+
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
     }
 
     .cosmic-bg {
@@ -128,7 +135,7 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       border: 1px solid rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.45);
+      color: rgba(255,255,255,0.55);
       transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
       cursor: pointer;
     }
@@ -223,10 +230,12 @@
     .mob-menu-close{position:absolute;top:1.5rem;right:2rem;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
   </style>
 </head>
-<body class="min-h-screen cosmic-bg">
+<body class="min-h-screen">
+
+  <canvas id="starfield"></canvas>
 
   <!-- Nav -->
-  <nav class="fixed top-0 left-0 right-0 z-50 px-[5vw] py-5" style="background: rgba(13,13,13,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.04);">
+  <nav class="fixed top-0 left-0 right-0 z-50 px-[5vw] py-5" style="background: rgba(0,0,0,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.04);">
     <div class="max-w-[1400px] mx-auto flex items-center justify-between">
       <a href="index.html" class="group flex items-center gap-3" style="text-decoration: none;">
         <span class="text-white font-extrabold text-xl sm:text-3xl" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.03em; text-shadow: 0 0 20px rgba(30,130,137,0.3);">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</span>
@@ -273,18 +282,18 @@
   </div>
 
   <!-- Hero -->
-  <header class="relative pt-40 pb-20 px-[7vw]">
+  <header class="relative pt-40 pb-20 px-[7vw]" style="z-index: 1;">
     <div class="max-w-[900px] mx-auto text-center relative z-10">
       <p class="scroll-reveal text-mir-teal text-xs font-semibold tracking-[0.2em] uppercase mb-5">Thoughts & Insights</p>
       <h1 class="scroll-reveal text-white font-extrabold leading-[1.05] mb-6" style="font-family: 'Montserrat', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -0.03em;">The Blog</h1>
-      <p class="scroll-reveal text-white/40 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">Exploring geology, economics, technology, and the world through data-driven analysis and curiosity.</p>
+      <p class="scroll-reveal text-white/48 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">Exploring geology, economics, technology, and the world through data-driven analysis and curiosity.</p>
     </div>
   </header>
 
-  <div class="divider-line mx-[7vw]"></div>
+  <div class="divider-line mx-[7vw]" style="position: relative; z-index: 1;"></div>
 
   <!-- Filter -->
-  <section class="px-[7vw] py-10">
+  <section class="px-[7vw] py-10" style="position: relative; z-index: 1;">
     <div class="max-w-[1200px] mx-auto">
       <div class="scroll-reveal flex flex-wrap items-center gap-3" id="blog-filters">
         <button class="category-pill active" data-filter="all">All</button>
@@ -296,7 +305,7 @@
   </section>
 
   <!-- Blog Grid -->
-  <section class="px-[7vw] pb-28">
+  <section class="px-[7vw] pb-28" style="position: relative; z-index: 1;">
     <div class="max-w-[1200px] mx-auto">
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-grid">
 
@@ -308,9 +317,9 @@
             <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12);">Analysis</span>
           </div>
           <div class="p-6 sm:p-7">
-            <p class="text-white/25 text-xs tracking-wider uppercase mb-3">11 February 2026</p>
+            <p class="text-white/40 text-xs tracking-wider uppercase mb-3">11 February 2026</p>
             <h3 class="blog-card-title text-white font-bold text-base sm:text-lg leading-snug mb-3" style="transition: color 0.3s ease;">How the 2026 Trade Deal Ties Bangladesh Closer to the U.S.</h3>
-            <p class="text-white/35 text-sm leading-relaxed line-clamp-3">The new 2026 trade agreement signals something different. It moves the relationship away from aid and toward a direct, business-driven partnership.</p>
+            <p class="text-white/48 text-sm leading-relaxed line-clamp-3">The new 2026 trade agreement signals something different. It moves the relationship away from aid and toward a direct, business-driven partnership.</p>
           </div>
         </a>
 
@@ -322,9 +331,9 @@
             <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12);">Economics</span>
           </div>
           <div class="p-6 sm:p-7">
-            <p class="text-white/25 text-xs tracking-wider uppercase mb-3">17 January 2025</p>
+            <p class="text-white/40 text-xs tracking-wider uppercase mb-3">17 January 2025</p>
             <h3 class="blog-card-title text-white font-bold text-base sm:text-lg leading-snug mb-3" style="transition: color 0.3s ease;">Debunking Some Myths of Old Golden Days in Bengal</h3>
-            <p class="text-white/35 text-sm leading-relaxed line-clamp-3">People often boast of the Bengal past. But history data indicates something different, something delicate.</p>
+            <p class="text-white/48 text-sm leading-relaxed line-clamp-3">People often boast of the Bengal past. But history data indicates something different, something delicate.</p>
           </div>
         </a>
 
@@ -336,9 +345,9 @@
             <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12);">Economics</span>
           </div>
           <div class="p-6 sm:p-7">
-            <p class="text-white/25 text-xs tracking-wider uppercase mb-3">17 January 2025</p>
+            <p class="text-white/40 text-xs tracking-wider uppercase mb-3">17 January 2025</p>
             <h3 class="blog-card-title text-white font-bold text-base sm:text-lg leading-snug mb-3" style="transition: color 0.3s ease;">Cryptocurrencies in Bangladesh: A Growing Shadow Economy</h3>
-            <p class="text-white/35 text-sm leading-relaxed line-clamp-3">Despite official restrictions, there is a thriving underground market where individuals regularly engage in cryptocurrency trading.</p>
+            <p class="text-white/48 text-sm leading-relaxed line-clamp-3">Despite official restrictions, there is a thriving underground market where individuals regularly engage in cryptocurrency trading.</p>
           </div>
         </a>
 
@@ -350,9 +359,9 @@
             <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12);">Geology</span>
           </div>
           <div class="p-6 sm:p-7">
-            <p class="text-white/25 text-xs tracking-wider uppercase mb-3">22 October 2023</p>
+            <p class="text-white/40 text-xs tracking-wider uppercase mb-3">22 October 2023</p>
             <h3 class="blog-card-title text-white font-bold text-base sm:text-lg leading-snug mb-3" style="transition: color 0.3s ease;">Sticks Can't Tell!</h3>
-            <p class="text-white/35 text-sm leading-relaxed line-clamp-3">Tectonic plates are elastic. They put themselves back into their previous position and continue their 'breaking bad' game repeatedly year after year.</p>
+            <p class="text-white/48 text-sm leading-relaxed line-clamp-3">Tectonic plates are elastic. They put themselves back into their previous position and continue their 'breaking bad' game repeatedly year after year.</p>
           </div>
         </a>
 
@@ -364,9 +373,9 @@
             <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12);">Economics</span>
           </div>
           <div class="p-6 sm:p-7">
-            <p class="text-white/25 text-xs tracking-wider uppercase mb-3">22 October 2023</p>
+            <p class="text-white/40 text-xs tracking-wider uppercase mb-3">22 October 2023</p>
             <h3 class="blog-card-title text-white font-bold text-base sm:text-lg leading-snug mb-3" style="transition: color 0.3s ease;">NGOs to Save or Exploit People?</h3>
-            <p class="text-white/35 text-sm leading-relaxed line-clamp-3">We have a common perception towards NGOs that they suppress and exploit our poor people. What is the story behind this?</p>
+            <p class="text-white/48 text-sm leading-relaxed line-clamp-3">We have a common perception towards NGOs that they suppress and exploit our poor people. What is the story behind this?</p>
           </div>
         </a>
 
@@ -375,7 +384,7 @@
   </section>
 
   <!-- Footer -->
-  <footer class="px-[7vw] py-14 border-t border-white/[0.04]">
+  <footer class="px-[7vw] py-14 border-t border-white/[0.04]" style="position: relative; z-index: 1;">
     <div class="max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-3">
         <span class="text-white font-bold text-lg" style="font-family: 'Montserrat', sans-serif;">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</span>
@@ -478,6 +487,32 @@
     btn.addEventListener('click',function(){menu.classList.add('open');document.body.style.overflow='hidden'});
     close.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''});
     menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''})});
+  })();
+  </script>
+  <script>
+  (function() {
+    var canvas = document.getElementById('starfield');
+    var ctx = canvas.getContext('2d');
+    var stars = [];
+    var STAR_COUNT = 180;
+    function resize() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+    for (var i = 0; i < STAR_COUNT; i++) {
+      stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.2 + 0.3, a: Math.random(), speed: 0.002 + Math.random() * 0.008 });
+    }
+    function drawStars(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        var flicker = 0.5 + 0.5 * Math.sin(t * s.speed + s.a * 6.28);
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.28);
+        ctx.fillStyle = 'rgba(255,255,255,' + (flicker * 0.6).toFixed(2) + ')';
+        ctx.fill();
+      }
+      requestAnimationFrame(drawStars);
+    }
+    requestAnimationFrame(drawStars);
   })();
   </script>
 </body>
