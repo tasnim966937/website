@@ -10,20 +10,39 @@ Mir Md Tasnim Alam — Geospatial Data Scientist & AI Specialist
 
 ## Site Architecture
 
+### Pages
 | File | Purpose |
 |------|---------|
-| `index.html` | **Production home page** — edit directly |
-| `photography.html` | Photography gallery — masonry grid, 4 locations, lightbox |
-| `photography/` | Optimized WebP images + thumbnails (from `Photography/` raw source) |
-| `ai-automation.html` | AI & Web Solutions service page (voice agents, website creation, sales, AI integration, workflow automation, custom agents) |
-| `research.html` | Publications & Research — 15 cards from Google Scholar, filter pills, animated stats |
+| `index.html` | **Production home page** - edit directly |
+| `ai-automation.html` | AI & Web Solutions service page |
+| `research.html` | Publications & Research - 15 cards, filter pills, animated stats |
+| `remote-sensing.html` | Remote Sensing & AI project showcase + published research cards |
+| `gis-mapping.html` | GIS & Mapping project showcase |
+| `photography.html` | Photography gallery - masonry grid, 4 locations, lightbox |
 | `blog.html` | Blog listing page |
 | `blog/*.html` | 5 individual blog posts |
-| `frames/` | 145 WebP frames (frame_0001–frame_0145) for scroll-driven planet canvas animation |
+| `paper-chl.html` | Paper showcase: Canopy Chlorophyll (ML vs RTM) |
+| `paper-nitrogen.html` | Paper showcase: Chlorophyll & Nitrogen from EnMAP |
+| `paper-phosphorus.html` | Paper showcase: CCC/CNC/CPC from Google Satellite Embeddings |
+
+### Assets
+| Folder | Purpose |
+|--------|---------|
+| `frames/` | 145 WebP frames for scroll-driven planet canvas animation |
+| `research/` | Optimized images/videos for remote-sensing & gis-mapping pages |
+| `research/papers/` | Extracted figures for the 3 paper showcase pages (chl, nitrogen, phosphorus) |
+| `photography/` | Optimized WebP images + thumbnails for the photography gallery |
 | `ref/` | Reviewer profile images (zach.jfif, jeff.webp, ifran.jfif) |
 | `brand_assets/` | Logo (Mir.png), brand guideline, reference designs |
-| `serve.mjs` | Local dev server → `http://localhost:3000` |
+
+### Dev Tools (keep for future use)
+| File | Purpose |
+|------|---------|
+| `serve.mjs` | Local dev server at `http://localhost:3000` |
 | `screenshot.mjs` | Puppeteer screenshot utility |
+| `CLAUDE.md` | Frontend design rules for AI sessions |
+| `SKILL.md` | Cursor agent skill definition |
+| `package.json` | Node dependencies (puppeteer, sharp) |
 
 ## Critical Workflow
 1. **Edit `index.html` directly** for home page changes (no more balerion-demo workflow)
@@ -79,4 +98,4 @@ Mir Md Tasnim Alam — Geospatial Data Scientist & AI Specialist
 - **Never use em dashes (—)** in any user-facing text, headings, descriptions, or copy. Use commas, periods, or rewrite the sentence instead.
 
 ## .gitignore Exclusions
-`node_modules/`, `temporary screenshots/`, `video2web/`, `globe_options/`, `globe-picker.html`, `logo-picker.html`, `index-old.html`, `CV/`, `Photography/`, `optimize-photos.mjs`
+`node_modules/`, `temporary screenshots/`, `video2web/`, `globe_options/`, `globe-picker.html`, `logo-picker.html`, `index-old.html`, `balerion-demo.html`, `CV/`, `Photography/`, `media_library_export-*/`, `optimize-photos.mjs`, `extract_figs.py`, `ref/paper/*.pdf`, `ref/paper/fig*.jpg`, `research/papers/*/page_*.png`

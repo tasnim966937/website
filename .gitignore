@@ -1,14 +1,22 @@
 node_modules/
 temporary screenshots/
-video2web/
-globe_options/
+
+# Dev tools (one-off, not needed in repo)
+extract_figs.py
+optimize-photos.mjs
 globe-picker.html
 logo-picker.html
+globe_options/
+video2web/
+
+# Obsolete / archive
 index-old.html
+balerion-demo.html
+
+# Large / private assets
 CV/
 Photography/
-optimize-photos.mjs
 media_library_export-*/
-extract_figs.py
 ref/paper/*.pdf
+ref/paper/fig*.jpg
 research/papers/*/page_*.png
