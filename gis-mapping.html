@@ -69,6 +69,12 @@
     .card-wrap{grid-column:span 6;grid-row:span 2}
     @media(max-width:768px){.card-wrap{grid-column:span 1;grid-row:span 1}}
 
+    @media(hover:none){
+      .card-border-glow{opacity:.8}
+      .card-inner{border-color:rgba(30,130,137,.35)}
+      .card-wrap{box-shadow:inset 0 0 30px rgba(30,130,137,.10),0 0 18px rgba(30,130,137,.20),0 0 50px rgba(30,130,137,.08)}
+    }
+
     /* Lightbox */
     .lightbox{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.96);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);display:none;align-items:center;justify-content:center;flex-direction:column;padding:60px 5vw}
     .lightbox.open{display:flex}

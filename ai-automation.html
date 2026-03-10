@@ -133,6 +133,27 @@
       box-shadow: 0 16px 40px -10px rgba(0,0,0,0.4);
     }
 
+    @media (hover: none) {
+      .glass-card::before { opacity: 1; }
+      .glass-card {
+        border-color: rgba(30,130,137,0.30);
+        box-shadow: inset 0 0 30px rgba(30,130,137,0.10), 0 0 18px rgba(30,130,137,0.16), 0 0 50px rgba(30,130,137,0.06);
+      }
+      .stat-card::before { opacity: 1; }
+      .stat-card:nth-child(odd) {
+        border-color: rgba(30,130,137,0.35);
+        box-shadow: inset 0 0 30px rgba(30,130,137,0.12), 0 0 18px rgba(30,130,137,0.20), 0 0 50px rgba(30,130,137,0.08);
+      }
+      .stat-card:nth-child(even) {
+        border-color: rgba(218,165,32,0.30);
+        box-shadow: inset 0 0 30px rgba(218,165,32,0.10), 0 0 18px rgba(218,165,32,0.18), 0 0 50px rgba(218,165,32,0.06);
+      }
+      .industry-card {
+        border-color: rgba(30,130,137,0.30);
+        box-shadow: inset 0 0 25px rgba(30,130,137,0.10), 0 0 15px rgba(30,130,137,0.16);
+      }
+    }
+
     .workflow-step {
       display: flex; align-items: center; gap: 16px;
       padding: 20px 24px; border-radius: 14px;
