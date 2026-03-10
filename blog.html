@@ -31,7 +31,7 @@
       --cosmic-dark: #151515;
       --cosmic-surface: #1a1a1a;
       --text-primary: #f0f0f0;
-      --text-secondary: rgba(255,255,255,0.65);
+      --text-secondary: rgba(255,255,255,0.72);
       --text-tertiary: rgba(255,255,255,0.35);
       --accent-teal: #1E8289;
       --accent-gold: #DAA520;
@@ -100,31 +100,144 @@
 
     .blog-card {
       position: relative;
-      background: var(--cosmic-surface);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
+      display: block;
+      text-decoration: none;
+      background: rgba(255,255,255,0.015);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 20px;
       overflow: hidden;
-      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease, border-color 0.4s ease;
+      transition: border-color 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s ease;
     }
+    .blog-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+    .blog-card:hover::before { opacity: 1; }
+    .blog-card:nth-child(odd)::before { background: radial-gradient(ellipse at 50% 20%, rgba(30,130,137,0.1) 0%, transparent 70%); }
+    .blog-card:nth-child(even)::before { background: radial-gradient(ellipse at 50% 20%, rgba(218,165,32,0.07) 0%, transparent 70%); }
     .blog-card .card-glow {
       position: absolute; inset: 0; pointer-events: none; z-index: 1;
       opacity: 0; transition: opacity 0.35s ease;
     }
     .blog-card:hover .card-glow { opacity: 1; }
     .blog-card:hover {
+      border-color: rgba(255,255,255,0.08);
       transform: translateY(-6px);
-      border-color: rgba(30,130,137,0.2);
+      box-shadow: 0 30px 80px -20px rgba(0,0,0,0.6);
+    }
+    .blog-card .blog-img-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .blog-card .blog-img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.15) 40%, transparent 100%);
+      pointer-events: none;
+    }
+    .blog-card .blog-card-img {
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);
     }
     .blog-card:hover .blog-card-img {
-      transform: scale(1.05);
+      transform: scale(1.08);
     }
-    .blog-card-img {
-      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    .blog-card .blog-num {
+      position: absolute;
+      top: 16px; right: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 42px;
+      line-height: 1;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.10);
+      color: transparent;
+      z-index: 2;
+      pointer-events: none;
+      transition: -webkit-text-stroke-color 0.4s ease;
     }
-
-    .blog-card:hover .blog-card-title {
-      color: var(--accent-teal);
+    .blog-card:hover .blog-num {
+      -webkit-text-stroke-color: rgba(255,255,255,0.18);
     }
+    .blog-card .blog-body {
+      position: relative;
+      z-index: 2;
+      padding: 28px 28px 32px;
+    }
+    .blog-card .blog-date {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      transition: color 0.3s ease;
+    }
+    .blog-card:nth-child(odd) .blog-date { color: rgba(30,130,137,0.6); }
+    .blog-card:nth-child(even) .blog-date { color: rgba(218,165,32,0.5); }
+    .blog-card:hover:nth-child(odd) .blog-date { color: rgba(30,130,137,0.9); }
+    .blog-card:hover:nth-child(even) .blog-date { color: rgba(218,165,32,0.8); }
+    .blog-card .blog-card-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.4;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+      transition: color 0.3s ease;
+    }
+    .blog-card .blog-excerpt {
+      font-size: 13px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.50);
+      transition: color 0.4s ease;
+    }
+    .blog-card:hover .blog-excerpt { color: rgba(255,255,255,0.65); }
+    .blog-card .blog-tag {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease 0.05s, transform 0.4s ease 0.05s;
+    }
+    .blog-card:hover .blog-tag { opacity: 1; transform: translateY(0); }
+    .blog-tag-teal { color: var(--accent-teal); background: rgba(30,130,137,0.1); border: 1px solid rgba(30,130,137,0.15); }
+    .blog-tag-gold { color: var(--accent-gold); background: rgba(218,165,32,0.08); border: 1px solid rgba(218,165,32,0.12); }
+    .blog-card .blog-arrow {
+      position: absolute;
+      bottom: 28px; right: 28px;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s ease;
+    }
+    .blog-card:hover .blog-arrow { opacity: 1; transform: translateX(0); }
+    .blog-card:nth-child(odd):hover .blog-arrow { background: rgba(30,130,137,0.12); border-color: rgba(30,130,137,0.2); }
+    .blog-card:nth-child(even):hover .blog-arrow { background: rgba(218,165,32,0.1); border-color: rgba(218,165,32,0.18); }
+    .blog-card .blog-line {
+      position: absolute;
+      bottom: 0; left: 28px; right: 28px;
+      height: 1px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .blog-card:hover .blog-line { opacity: 1; }
+    .blog-card:nth-child(odd) .blog-line { background: linear-gradient(90deg, transparent, rgba(30,130,137,0.2), transparent); }
+    .blog-card:nth-child(even) .blog-line { background: linear-gradient(90deg, transparent, rgba(218,165,32,0.15), transparent); }
 
     .category-pill {
       display: inline-block;
@@ -286,7 +399,7 @@
     <div class="max-w-[900px] mx-auto text-center relative z-10">
       <p class="scroll-reveal text-mir-teal text-xs font-semibold tracking-[0.2em] uppercase mb-5">Thoughts & Insights</p>
       <h1 class="scroll-reveal text-white font-extrabold leading-[1.05] mb-6" style="font-family: 'Montserrat', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -0.03em;">The Blog</h1>
-      <p class="scroll-reveal text-white/48 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">Exploring geology, economics, technology, and the world through data-driven analysis and curiosity.</p>
+      <p class="scroll-reveal text-white/55 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">Exploring geology, economics, technology, and the world through data-driven analysis and curiosity.</p>
     </div>
   </header>
 
@@ -310,73 +423,98 @@
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-grid">
 
         <!-- Card 1: Trade Deal -->
-        <a href="blog/trade-deal-bangladesh-us.html" class="blog-card scroll-reveal block group" data-category="economics analysis">
-          <div class="aspect-[16/10] overflow-hidden relative">
+        <a href="blog/trade-deal-bangladesh-us.html" class="blog-card scroll-reveal" data-category="economics analysis">
+          <div class="blog-img-wrap aspect-[16/10]">
             <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=375&fit=crop&crop=center" alt="Global trade" class="blog-card-img w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
-            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12);">Analysis</span>
+            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12); z-index:2;">Analysis</span>
+            <span class="blog-num">01</span>
           </div>
-          <div class="p-6 sm:p-7">
-            <p class="text-white/40 text-xs tracking-wider uppercase mb-3">11 February 2026</p>
-            <h3 class="blog-card-title text-white font-bold text-base sm:text-lg leading-snug mb-3" style="transition: color 0.3s ease;">How the 2026 Trade Deal Ties Bangladesh Closer to the U.S.</h3>
-            <p class="text-white/48 text-sm leading-relaxed line-clamp-3">The new 2026 trade agreement signals something different. It moves the relationship away from aid and toward a direct, business-driven partnership.</p>
+          <div class="blog-body">
+            <p class="blog-date">11 February 2026</p>
+            <h3 class="blog-card-title">How the 2026 Trade Deal Ties Bangladesh Closer to the U.S.</h3>
+            <p class="blog-excerpt">The new 2026 trade agreement signals something different. It moves the relationship away from aid and toward a direct, business-driven partnership.</p>
+            <span class="blog-tag blog-tag-teal">Economics &middot; Analysis</span>
           </div>
+          <div class="blog-arrow">
+            <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 13L13 1M13 1H3M13 1v10"/></svg>
+          </div>
+          <div class="blog-line"></div>
         </a>
 
         <!-- Card 2: Debunking Bengal Myths -->
-        <a href="blog/debunking-myths-bengal.html" class="blog-card scroll-reveal block group" data-category="economics">
-          <div class="aspect-[16/10] overflow-hidden relative">
+        <a href="blog/debunking-myths-bengal.html" class="blog-card scroll-reveal" data-category="economics">
+          <div class="blog-img-wrap aspect-[16/10]">
             <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&h=375&fit=crop&crop=center" alt="Historical Bengal" class="blog-card-img w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
-            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12);">Economics</span>
+            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12); z-index:2;">Economics</span>
+            <span class="blog-num">02</span>
           </div>
-          <div class="p-6 sm:p-7">
-            <p class="text-white/40 text-xs tracking-wider uppercase mb-3">17 January 2025</p>
-            <h3 class="blog-card-title text-white font-bold text-base sm:text-lg leading-snug mb-3" style="transition: color 0.3s ease;">Debunking Some Myths of Old Golden Days in Bengal</h3>
-            <p class="text-white/48 text-sm leading-relaxed line-clamp-3">People often boast of the Bengal past. But history data indicates something different, something delicate.</p>
+          <div class="blog-body">
+            <p class="blog-date">17 January 2025</p>
+            <h3 class="blog-card-title">Debunking Some Myths of Old Golden Days in Bengal</h3>
+            <p class="blog-excerpt">People often boast of the Bengal past. But history data indicates something different, something delicate.</p>
+            <span class="blog-tag blog-tag-gold">Economics</span>
           </div>
+          <div class="blog-arrow">
+            <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 13L13 1M13 1H3M13 1v10"/></svg>
+          </div>
+          <div class="blog-line"></div>
         </a>
 
         <!-- Card 3: Crypto Bangladesh -->
-        <a href="blog/crypto-bangladesh.html" class="blog-card scroll-reveal block group" data-category="economics">
-          <div class="aspect-[16/10] overflow-hidden relative">
+        <a href="blog/crypto-bangladesh.html" class="blog-card scroll-reveal" data-category="economics">
+          <div class="blog-img-wrap aspect-[16/10]">
             <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&h=375&fit=crop&crop=center" alt="Cryptocurrency" class="blog-card-img w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
-            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12);">Economics</span>
+            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12); z-index:2;">Economics</span>
+            <span class="blog-num">03</span>
           </div>
-          <div class="p-6 sm:p-7">
-            <p class="text-white/40 text-xs tracking-wider uppercase mb-3">17 January 2025</p>
-            <h3 class="blog-card-title text-white font-bold text-base sm:text-lg leading-snug mb-3" style="transition: color 0.3s ease;">Cryptocurrencies in Bangladesh: A Growing Shadow Economy</h3>
-            <p class="text-white/48 text-sm leading-relaxed line-clamp-3">Despite official restrictions, there is a thriving underground market where individuals regularly engage in cryptocurrency trading.</p>
+          <div class="blog-body">
+            <p class="blog-date">17 January 2025</p>
+            <h3 class="blog-card-title">Cryptocurrencies in Bangladesh: A Growing Shadow Economy</h3>
+            <p class="blog-excerpt">Despite official restrictions, there is a thriving underground market where individuals regularly engage in cryptocurrency trading.</p>
+            <span class="blog-tag blog-tag-teal">Fintech &middot; Crypto</span>
           </div>
+          <div class="blog-arrow">
+            <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 13L13 1M13 1H3M13 1v10"/></svg>
+          </div>
+          <div class="blog-line"></div>
         </a>
 
         <!-- Card 4: Sticks can't tell -->
-        <a href="blog/sticks-cant-tell.html" class="blog-card scroll-reveal block group" data-category="geology">
-          <div class="aspect-[16/10] overflow-hidden relative">
+        <a href="blog/sticks-cant-tell.html" class="blog-card scroll-reveal" data-category="geology">
+          <div class="blog-img-wrap aspect-[16/10]">
             <img src="https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=600&h=375&fit=crop&crop=center" alt="Geological formations" class="blog-card-img w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
-            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12);">Geology</span>
+            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12); z-index:2;">Geology</span>
+            <span class="blog-num">04</span>
           </div>
-          <div class="p-6 sm:p-7">
-            <p class="text-white/40 text-xs tracking-wider uppercase mb-3">22 October 2023</p>
-            <h3 class="blog-card-title text-white font-bold text-base sm:text-lg leading-snug mb-3" style="transition: color 0.3s ease;">Sticks Can't Tell!</h3>
-            <p class="text-white/48 text-sm leading-relaxed line-clamp-3">Tectonic plates are elastic. They put themselves back into their previous position and continue their 'breaking bad' game repeatedly year after year.</p>
+          <div class="blog-body">
+            <p class="blog-date">22 October 2023</p>
+            <h3 class="blog-card-title">Sticks Can't Tell!</h3>
+            <p class="blog-excerpt">Tectonic plates are elastic. They put themselves back into their previous position and continue their 'breaking bad' game repeatedly year after year.</p>
+            <span class="blog-tag blog-tag-gold">Geology &middot; Tectonics</span>
           </div>
+          <div class="blog-arrow">
+            <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 13L13 1M13 1H3M13 1v10"/></svg>
+          </div>
+          <div class="blog-line"></div>
         </a>
 
         <!-- Card 5: NGOs -->
-        <a href="blog/ngos-save-or-exploit.html" class="blog-card scroll-reveal block group" data-category="economics">
-          <div class="aspect-[16/10] overflow-hidden relative">
+        <a href="blog/ngos-save-or-exploit.html" class="blog-card scroll-reveal" data-category="economics">
+          <div class="blog-img-wrap aspect-[16/10]">
             <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&h=375&fit=crop&crop=center" alt="NGO community work" class="blog-card-img w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
-            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12);">Economics</span>
+            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12); z-index:2;">Economics</span>
+            <span class="blog-num">05</span>
           </div>
-          <div class="p-6 sm:p-7">
-            <p class="text-white/40 text-xs tracking-wider uppercase mb-3">22 October 2023</p>
-            <h3 class="blog-card-title text-white font-bold text-base sm:text-lg leading-snug mb-3" style="transition: color 0.3s ease;">NGOs to Save or Exploit People?</h3>
-            <p class="text-white/48 text-sm leading-relaxed line-clamp-3">We have a common perception towards NGOs that they suppress and exploit our poor people. What is the story behind this?</p>
+          <div class="blog-body">
+            <p class="blog-date">22 October 2023</p>
+            <h3 class="blog-card-title">NGOs to Save or Exploit People?</h3>
+            <p class="blog-excerpt">We have a common perception towards NGOs that they suppress and exploit our poor people. What is the story behind this?</p>
+            <span class="blog-tag blog-tag-teal">Economics</span>
           </div>
+          <div class="blog-arrow">
+            <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 13L13 1M13 1H3M13 1v10"/></svg>
+          </div>
+          <div class="blog-line"></div>
         </a>
 
       </div>
