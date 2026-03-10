@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remote Sensing & AI - Mir Md Tasnim Alam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --cosmic-black:#000; --cosmic-dark:#080808; --cosmic-surface:#161616; --accent-teal:#1E8289; --accent-gold:#DAA520; }
+    *{margin:0;padding:0;box-sizing:border-box}html{overflow-x:clip}
+    body{background:var(--cosmic-black);color:rgba(255,255,255,.5);font-family:'Plus Jakarta Sans',sans-serif;font-weight:300;font-size:16px;line-height:1.7;overflow-x:clip;-webkit-font-smoothing:antialiased}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:linear-gradient(45deg,var(--accent-teal),var(--accent-gold));border-radius:4px}::-webkit-scrollbar-track{background:var(--cosmic-black)}
+    #starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+    .mir-i{position:relative;display:inline-block}.mir-dot{position:absolute;border-radius:50%;background:radial-gradient(circle at 36% 33%,#5ce0e4,#22b0b4 55%,#17696e);pointer-events:none;z-index:2;left:58%;transform:translateX(-50%);width:.4em;height:.4em;top:-.08em;box-shadow:0 0 .12em rgba(30,130,137,.9),0 0 .35em rgba(30,130,137,.4)}
+
+    /* Nav */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.25rem 5vw;background:rgba(10,10,10,.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.03)}
+    nav .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    nav .logo{color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.875rem;letter-spacing:-.03em;text-shadow:0 0 20px rgba(30,130,137,.3);text-decoration:none}
+    nav .nav-links{display:flex;align-items:center;gap:2rem}
+    nav .nav-links a{color:rgba(255,255,255,.4);font-size:.875rem;font-weight:400;text-decoration:none;position:relative;transition:color .3s}
+    nav .nav-links a:hover{color:rgba(255,255,255,.8)}
+    nav .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1.5px;background:var(--accent-gold);transition:width .3s}
+    nav .nav-links a:hover::after{width:100%}
+    .moving-border-btn{position:relative;display:inline-flex;padding:2px;overflow:hidden;border-radius:9999px;background:rgba(30,130,137,.15);text-decoration:none}
+    .moving-border-btn .border-track{position:absolute;inset:0;border-radius:inherit;overflow:hidden}
+    .moving-border-btn .border-track svg{position:absolute;width:100%;height:100%}
+    .moving-border-btn .glow-orb-btn{position:absolute;top:0;left:0;width:100px;height:100px;border-radius:50%;background:radial-gradient(#fff 0%,var(--accent-teal) 30%,rgba(30,130,137,.5) 55%,transparent 70%);transform:translate(-50%,-50%);pointer-events:none;filter:blur(2px)}
+    .moving-border-btn .btn-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;border-radius:9999px;background:rgba(10,10,10,.95);color:#fff;font-size:.75rem;font-weight:600;padding:.6rem 1.4rem;transition:background .3s}
+    .moving-border-btn:hover .btn-inner{background:rgba(30,130,137,.2)}
+
+    /* Hero */
+    .page-hero{position:relative;z-index:1;padding:9rem 5vw 4rem;text-align:center}
+    .page-hero .eyebrow{font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-gold);margin-bottom:1.5rem;opacity:0;transform:translateY(20px);animation:fadeUp .8s .2s forwards}
+    .page-hero h1{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(2.5rem,6vw,4.5rem);letter-spacing:-.04em;color:#fff;line-height:1.1;margin-bottom:1.5rem;opacity:0;transform:translateY(30px);animation:fadeUp .8s .35s forwards}
+    .page-hero h1 span{background:linear-gradient(135deg,var(--accent-teal),var(--accent-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .page-hero p{max-width:560px;margin:0 auto;color:rgba(255,255,255,.35);font-size:1.05rem;line-height:1.7;opacity:0;transform:translateY(20px);animation:fadeUp .8s .5s forwards}
+    @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+    /* Bento Grid */
+    .bento{position:relative;z-index:1;padding:2rem 5vw 6rem;max-width:1200px;margin:0 auto}
+    .bento-grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      grid-auto-rows:minmax(180px,auto);
+      gap:16px;
+    }
+    @media(max-width:768px){.bento-grid{grid-template-columns:1fr;grid-auto-rows:auto}}
+
+    /* Card wrapper (for glow) */
+    .card-wrap{
+      position:relative;border-radius:18px;
+      opacity:0;transform:translateY(30px);
+      transition:transform .6s cubic-bezier(.16,1,.3,1),opacity .7s ease,box-shadow .4s ease;
+      cursor:pointer;
+    }
+    .card-wrap.visible{opacity:1;transform:translateY(0)}
+    .card-wrap:active{transform:scale(.98)}
+
+    .card-border-glow{
+      position:absolute;inset:-2px;border-radius:20px;
+      pointer-events:none;z-index:0;opacity:0;transition:opacity .35s ease;
+    }
+    .card-wrap:hover .card-border-glow{opacity:1}
+
+    .card-inner{
+      position:relative;z-index:1;border-radius:16px;overflow:hidden;
+      background:#000;border:1px solid rgba(255,255,255,.04);
+      height:100%;display:flex;flex-direction:column;
+      transition:border-color .4s ease;
+    }
+    .card-wrap:hover .card-inner{border-color:rgba(218,165,32,.25)}
+
+    .card-inner .thumb{position:relative;overflow:hidden;flex:1;min-height:0}
+    .card-inner .thumb img,.card-inner .thumb video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+    .card-wrap:hover .thumb img,.card-wrap:hover .thumb video{transform:scale(1.05)}
+
+    .card-inner .label{
+      position:absolute;bottom:0;left:0;right:0;
+      padding:16px 20px;
+      background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.4) 50%,transparent 100%);
+      pointer-events:none;
+    }
+    .card-inner .label h3{
+      font-family:'Montserrat',sans-serif;font-weight:700;font-size:.9rem;
+      color:#fff;letter-spacing:-.01em;line-height:1.3;margin-bottom:4px;
+    }
+    .card-inner .label .tag-row{display:flex;flex-wrap:wrap;gap:4px}
+    .card-inner .label .tag-row span{
+      padding:2px 8px;border-radius:100px;font-size:9px;font-weight:600;
+      letter-spacing:.05em;text-transform:uppercase;
+      color:var(--accent-gold);background:rgba(218,165,32,.12);
+      border:1px solid rgba(218,165,32,.15);
+    }
+
+    /* Expand icon */
+    .card-inner .expand-icon{
+      position:absolute;top:14px;right:14px;width:32px;height:32px;
+      border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08);
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;transform:scale(.8);transition:opacity .3s,transform .3s;
+      pointer-events:none;
+    }
+    .card-wrap:hover .expand-icon{opacity:1;transform:scale(1)}
+    .expand-icon svg{width:16px;height:16px;stroke:#fff;stroke-width:1.5;fill:none}
+
+    /* Bento sizing */
+    .card-wrap:nth-child(1){grid-column:span 8;grid-row:span 2}
+    .card-wrap:nth-child(2){grid-column:span 4;grid-row:span 2}
+    .card-wrap:nth-child(3){grid-column:span 4;grid-row:span 2}
+    .card-wrap:nth-child(4){grid-column:span 8;grid-row:span 2}
+    @media(max-width:768px){.card-wrap:nth-child(n){grid-column:span 1;grid-row:span 1}}
+
+    /* Fullscreen Modal */
+    .modal-overlay{
+      position:fixed;inset:0;z-index:200;
+      background:rgba(0,0,0,.92);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+      opacity:0;pointer-events:none;
+      transition:opacity .4s ease;
+      display:flex;align-items:center;justify-content:center;
+      padding:60px 5vw;
+    }
+    .modal-overlay.open{opacity:1;pointer-events:auto}
+
+    .modal-content{
+      max-width:1100px;width:100%;max-height:calc(100vh - 120px);
+      display:flex;gap:40px;align-items:flex-start;
+      opacity:0;transform:translateY(30px) scale(.97);
+      transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);
+    }
+    .modal-overlay.open .modal-content{opacity:1;transform:translateY(0) scale(1);transition-delay:.1s}
+    @media(max-width:900px){.modal-content{flex-direction:column;overflow-y:auto}}
+
+    .modal-media{flex:1.4;min-width:0;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+    .modal-media img,.modal-media video{width:100%;display:block}
+
+    .modal-info{flex:1;padding:8px 0}
+    .modal-info h2{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.6rem;color:#fff;letter-spacing:-.02em;line-height:1.3;margin-bottom:16px}
+    .modal-info p{color:rgba(255,255,255,.4);font-size:.9rem;line-height:1.8;margin-bottom:20px}
+    .modal-info .modal-tags{display:flex;flex-wrap:wrap;gap:6px}
+    .modal-info .modal-tags span{
+      padding:5px 14px;border-radius:100px;font-size:10px;font-weight:600;
+      letter-spacing:.06em;text-transform:uppercase;
+      color:var(--accent-gold);background:rgba(218,165,32,.08);border:1px solid rgba(218,165,32,.12);
+    }
+
+    .modal-close{
+      position:fixed;top:24px;right:28px;z-index:210;
+      width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.6);cursor:pointer;display:flex;align-items:center;justify-content:center;
+      opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;
+    }
+    .modal-overlay.open~.modal-close,.modal-close.show{opacity:1;pointer-events:auto}
+    .modal-close:hover{background:rgba(255,255,255,.08);transform:scale(1.1)}
+    .modal-close svg{width:20px;height:20px;stroke:#fff;stroke-width:1.5}
+
+    /* Section divider */
+    .section-divider{
+      position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 5vw 2rem;
+    }
+    .section-divider .divider-line{
+      height:1px;
+      background:linear-gradient(90deg,transparent 0%,rgba(30,130,137,.25) 20%,rgba(218,165,32,.25) 80%,transparent 100%);
+      margin-bottom:2.5rem;
+    }
+    .section-divider .divider-label{
+      font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.02em;color:#fff;
+    }
+    .section-divider .divider-label span{
+      background:linear-gradient(135deg,var(--accent-teal),var(--accent-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .section-divider .divider-sub{
+      color:rgba(255,255,255,.3);font-size:.85rem;margin-top:.5rem;
+    }
+
+    /* Paper cards (link style) */
+    .papers-bento{position:relative;z-index:1;padding:0 5vw 6rem;max-width:1200px;margin:0 auto}
+    .papers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    @media(max-width:768px){.papers-grid{grid-template-columns:1fr}}
+    .paper-card{
+      position:relative;border-radius:18px;text-decoration:none;color:inherit;
+      opacity:0;transform:translateY(30px);
+      transition:transform .6s cubic-bezier(.16,1,.3,1),opacity .7s ease,box-shadow .4s ease;
+      cursor:pointer;display:block;
+    }
+    .paper-card.visible{opacity:1;transform:translateY(0)}
+    .paper-card .paper-glow{
+      position:absolute;inset:-2px;border-radius:20px;
+      pointer-events:none;z-index:0;opacity:0;transition:opacity .35s ease;
+    }
+    .paper-card:hover .paper-glow{opacity:1}
+    .paper-card .paper-inner{
+      position:relative;z-index:1;border-radius:16px;overflow:hidden;
+      background:#000;border:1px solid rgba(255,255,255,.04);
+      height:100%;display:flex;flex-direction:column;
+      transition:border-color .4s ease;
+    }
+    .paper-card:hover .paper-inner{border-color:rgba(30,130,137,.25)}
+    .paper-card .paper-thumb{position:relative;overflow:hidden;height:200px}
+    .paper-card .paper-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+    .paper-card:hover .paper-thumb img{transform:scale(1.05)}
+    .paper-card .paper-thumb .paper-badge{
+      position:absolute;top:12px;left:12px;
+      padding:4px 12px;border-radius:100px;font-size:9px;font-weight:700;
+      letter-spacing:.06em;text-transform:uppercase;
+      background:rgba(0,0,0,.7);border:1px solid rgba(30,130,137,.3);
+      color:var(--accent-teal);backdrop-filter:blur(8px);
+    }
+    .paper-card .paper-body{padding:20px;flex:1;display:flex;flex-direction:column}
+    .paper-card .paper-body h3{
+      font-family:'Montserrat',sans-serif;font-weight:700;font-size:.85rem;
+      color:#fff;letter-spacing:-.01em;line-height:1.4;margin-bottom:8px;
+    }
+    .paper-card .paper-body p{
+      font-size:.75rem;color:rgba(255,255,255,.3);line-height:1.6;flex:1;
+    }
+    .paper-card .paper-body .paper-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+    .paper-card .paper-body .paper-tags span{
+      padding:3px 8px;border-radius:100px;font-size:8px;font-weight:600;
+      letter-spacing:.05em;text-transform:uppercase;
+      color:var(--accent-teal);background:rgba(30,130,137,.08);
+      border:1px solid rgba(30,130,137,.12);
+    }
+    .paper-card .arrow-icon{
+      position:absolute;top:14px;right:14px;width:28px;height:28px;z-index:2;
+      border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08);
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;transform:scale(.8);transition:opacity .3s,transform .3s;pointer-events:none;
+    }
+    .paper-card:hover .arrow-icon{opacity:1;transform:scale(1)}
+    .arrow-icon svg{width:14px;height:14px;stroke:#fff;stroke-width:1.5;fill:none}
+
+    /* Footer */
+    footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.03);padding:3rem 5vw}
+    .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem}
+    .footer-logo{display:flex;align-items:center;gap:.75rem}
+    .footer-logo .logo-text{color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.125rem}
+    .footer-logo .divider{color:rgba(255,255,255,.1);font-size:.75rem;margin:0 .5rem}
+    .footer-logo .name{color:rgba(255,255,255,.2);font-size:.75rem;font-family:'Montserrat',sans-serif;font-weight:500;letter-spacing:.03em}
+    .footer-links{display:flex;gap:1.5rem}.footer-links a{color:rgba(255,255,255,.2);font-size:.75rem;text-decoration:none;transition:color .3s}.footer-links a:hover{color:rgba(255,255,255,.5)}
+    .copyright{color:rgba(255,255,255,.1);font-size:.7rem;width:100%;text-align:center;margin-top:1rem}
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#services">Services</a>
+        <a href="blog.html">Blog</a>
+        <a href="photography.html">Photography</a>
+      </div>
+      <a href="mailto:tasnim966937@gmail.com,tasnimalam@ou.edu" class="moving-border-btn" style="display:inline-flex;">
+        <div class="border-track">
+          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="100%"><rect fill="none" width="100%" height="100%" rx="50%" ry="50%" class="border-path"/></svg>
+          <div class="glow-orb-btn"></div>
+        </div>
+        <span class="btn-inner">Get in Touch</span>
+      </a>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <p class="eyebrow">Satellite Imagery &middot; Deep Learning &middot; Environmental Science</p>
+    <h1>Remote Sensing <span>& AI</span></h1>
+    <p>Applying deep learning and satellite remote sensing to solve real-world environmental monitoring challenges.</p>
+  </section>
+
+  <div class="section-divider" style="padding-top:0">
+    <h2 class="divider-label">Published <span>Research</span></h2>
+    <p class="divider-sub">Peer-reviewed publications in remote sensing and precision agriculture.</p>
+  </div>
+
+  <div class="papers-bento">
+    <div class="papers-grid" id="papers-grid"></div>
+  </div>
+
+  <div class="section-divider">
+    <div class="divider-line"></div>
+    <h2 class="divider-label">Project <span>Visualizations</span></h2>
+    <p class="divider-sub">Satellite imagery analysis, timelapse mapping, and conference research posters.</p>
+  </div>
+
+  <div class="bento">
+    <div class="bento-grid" id="bento-grid"></div>
+  </div>
+
+  <!-- Fullscreen Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-content">
+      <div class="modal-media" id="modal-media"></div>
+      <div class="modal-info">
+        <h2 id="modal-title"></h2>
+        <p id="modal-desc"></p>
+        <div class="modal-tags" id="modal-tags"></div>
+      </div>
+    </div>
+  </div>
+  <button class="modal-close" id="modal-close" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span class="logo-text">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</span>
+        <span class="divider">|</span>
+        <span class="name">&copy; 2026 Mir Md Tasnim Alam</span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#services">Services</a>
+        <a href="blog.html">Blog</a>
+        <a href="photography.html">Photography</a>
+      </div>
+      <p class="copyright">All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+  (function() {
+    var projects = [
+      {
+        title: 'Meghna River Course Change',
+        desc: 'Satellite timelapse tracking the shifting path of the Meghna River in Bangladesh from 1988 onward. Built using multi-temporal Landsat imagery and false-color composites to reveal decades of fluvial geomorphological change.',
+        media: 'research/river_timelapse.mp4',
+        type: 'video',
+        tags: ['Landsat', 'Timelapse', 'GEE']
+      },
+      {
+        title: 'Night Light of Bangladesh',
+        desc: 'Satellite timelapse of nighttime light growth across Bangladesh from 1992 onward, revealing rapid urban expansion and electrification patterns. Processed from DMSP-OLS and VIIRS satellite nighttime radiance data.',
+        media: 'research/nightlight_bd.mp4',
+        type: 'video',
+        tags: ['VIIRS', 'Night Light', 'Timelapse']
+      },
+      {
+        title: 'Sea Surface Temperature & Chlorophyll-a in Bay of Bengal',
+        desc: 'Research poster presented at AGU Ocean Sciences 2024. Analyzed multi-decadal SST and chlorophyll-a trends using MODIS and NOAA satellite data to study seasonal marine productivity patterns and upwelling dynamics in the Bay of Bengal.',
+        media: 'research/poster_sst.jpg',
+        type: 'image',
+        tags: ['MODIS', 'SST', 'Chlorophyll-a', 'AGU 2024']
+      },
+      {
+        title: 'ML-Based Canopy Chlorophyll Estimation',
+        desc: 'Conference poster from GSA Connects 2023. Compared machine learning approaches (GPR, KRR, SVR, KNNR) for estimating canopy chlorophyll content from multi-sensor satellite imagery including Landsat 7, RapidEye, and PlanetScope, incorporating data fusion with drone NDRE.',
+        media: 'research/poster_chlorophyll.jpg',
+        type: 'image',
+        tags: ['Machine Learning', 'PlanetScope', 'GSA 2023']
+      }
+    ];
+
+    var grid = document.getElementById('bento-grid');
+    var modal = document.getElementById('modal');
+    var modalMedia = document.getElementById('modal-media');
+    var modalTitle = document.getElementById('modal-title');
+    var modalDesc = document.getElementById('modal-desc');
+    var modalTags = document.getElementById('modal-tags');
+    var modalClose = document.getElementById('modal-close');
+
+    projects.forEach(function(p, i) {
+      var wrap = document.createElement('div');
+      wrap.className = 'card-wrap';
+      var mediaEl = p.type === 'video'
+        ? '<video src="' + p.media + '" autoplay loop muted playsinline></video>'
+        : '<img src="' + p.media + '" alt="' + p.title + '" loading="lazy">';
+      var tagHtml = p.tags.map(function(t) { return '<span>' + t + '</span>'; }).join('');
+
+      wrap.innerHTML =
+        '<div class="card-border-glow"></div>' +
+        '<div class="card-inner">' +
+          '<div class="thumb">' + mediaEl +
+            '<div class="label"><h3>' + p.title + '</h3><div class="tag-row">' + tagHtml + '</div></div>' +
+            '<div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div>' +
+          '</div>' +
+        '</div>';
+
+      wrap.addEventListener('click', function() { openModal(i); });
+      grid.appendChild(wrap);
+    });
+
+    function openModal(i) {
+      var p = projects[i];
+      modalTitle.textContent = p.title;
+      modalDesc.textContent = p.desc;
+      modalTags.innerHTML = p.tags.map(function(t) { return '<span>' + t + '</span>'; }).join('');
+      if (p.type === 'video') {
+        modalMedia.innerHTML = '<video src="' + p.media + '" autoplay loop muted playsinline></video>';
+      } else {
+        modalMedia.innerHTML = '<img src="' + p.media + '" alt="' + p.title + '">';
+      }
+      modal.classList.add('open');
+      modalClose.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modalClose.classList.remove('show');
+      document.body.style.overflow = '';
+      setTimeout(function() { modalMedia.innerHTML = ''; }, 400);
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+
+    // Paper cards
+    var papers = [
+      {
+        title: 'Canopy Chlorophyll: ML vs. Radiative Transfer Model',
+        desc: 'Compared 5 ML algorithms against hybrid PROSAIL models for chlorophyll estimation from multi-sensor satellite and UAV data.',
+        thumb: 'research/papers/chl/fig_07_p10.jpeg',
+        badge: 'Remote Sensing 2024',
+        tags: ['KRR', 'PROSAIL', 'UAV Fusion'],
+        href: 'paper-chl.html'
+      },
+      {
+        title: 'Chlorophyll & Nitrogen from EnMAP Hyperspectral',
+        desc: 'Empirical vs. hybrid RTM retrieval of CCC and CNC using 219-band EnMAP data, with a novel nitrogen conversion factor.',
+        thumb: 'research/papers/nitrogen/fig_07_p9.png',
+        badge: 'Env. Challenges 2025',
+        tags: ['EnMAP', 'CNC', 'Active Learning'],
+        href: 'paper-nitrogen.html'
+      },
+      {
+        title: 'CCC/CNC/CPC from Google Satellite Embeddings',
+        desc: 'First retrieval of chlorophyll, nitrogen, and phosphorus from 64-dim Google embeddings using dimensionality-optimized ML.',
+        thumb: 'research/papers/phosphorus/fig_10_p12.png',
+        badge: 'Smart Ag. Tech. 2025',
+        tags: ['Google Embeddings', 'Phosphorus', '11 MLRAs'],
+        href: 'paper-phosphorus.html'
+      }
+    ];
+
+    var papersGrid = document.getElementById('papers-grid');
+    papers.forEach(function(p) {
+      var card = document.createElement('a');
+      card.className = 'paper-card';
+      card.href = p.href;
+      var tagHtml = p.tags.map(function(t) { return '<span>' + t + '</span>'; }).join('');
+      card.innerHTML =
+        '<div class="paper-glow"></div>' +
+        '<div class="paper-inner">' +
+          '<div class="paper-thumb">' +
+            '<img src="' + p.thumb + '" alt="' + p.title + '" loading="lazy">' +
+            '<span class="paper-badge">' + p.badge + '</span>' +
+            '<div class="arrow-icon"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>' +
+          '</div>' +
+          '<div class="paper-body">' +
+            '<h3>' + p.title + '</h3>' +
+            '<p>' + p.desc + '</p>' +
+            '<div class="paper-tags">' + tagHtml + '</div>' +
+          '</div>' +
+        '</div>';
+      papersGrid.appendChild(card);
+    });
+
+    // Scroll reveal
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e, i) {
+        if (e.isIntersecting) {
+          setTimeout(function() { e.target.classList.add('visible'); }, i * 120);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.card-wrap, .paper-card').forEach(function(c) { obs.observe(c); });
+
+    // Cursor border glow
+    document.querySelectorAll('.card-wrap').forEach(function(wrap) {
+      var glow = wrap.querySelector('.card-border-glow');
+      wrap.addEventListener('mousemove', function(e) {
+        var rect = wrap.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        var w = rect.width, h = rect.height;
+        var offX = x - w / 2, offY = y - h / 2;
+        wrap.style.boxShadow =
+          offX * 0.15 + 'px ' + offY * 0.15 + 'px 30px rgba(218,165,32,0.55),' +
+          offX * 0.08 + 'px ' + offY * 0.08 + 'px 60px rgba(218,165,32,0.3),' +
+          '0 0 4px rgba(218,165,32,0.9),' +
+          '0 0 100px rgba(218,165,32,0.2)';
+        glow.style.background =
+          'radial-gradient(450px circle at ' + x + 'px ' + y + 'px,' +
+          'rgba(218,165,32,1) 0%,rgba(218,165,32,0.7) 25%,rgba(218,165,32,0.35) 45%,rgba(30,130,137,0.15) 60%,transparent 75%)';
+      });
+      wrap.addEventListener('mouseleave', function() {
+        wrap.style.boxShadow = '';
+        glow.style.background = '';
+      });
+    });
+
+    // Cursor glow for paper cards
+    document.querySelectorAll('.paper-card').forEach(function(card, i) {
+      var glow = card.querySelector('.paper-glow');
+      var colors = [
+        { r: 30, g: 130, b: 137 },
+        { r: 218, g: 165, b: 32 },
+        { r: 30, g: 130, b: 137 }
+      ];
+      var c = colors[i % 3];
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left, y = e.clientY - rect.top;
+        var offX = x - rect.width / 2, offY = y - rect.height / 2;
+        card.style.boxShadow =
+          offX * 0.12 + 'px ' + offY * 0.12 + 'px 28px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.45),' +
+          offX * 0.06 + 'px ' + offY * 0.06 + 'px 55px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.2),' +
+          '0 0 3px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.7),' +
+          '0 0 80px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.1)';
+        glow.style.background =
+          'radial-gradient(350px circle at ' + x + 'px ' + y + 'px,' +
+          'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.22) 0%,' +
+          'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.06) 40%,' +
+          'transparent 65%)';
+      });
+      card.addEventListener('mouseleave', function() {
+        card.style.boxShadow = '';
+        glow.style.background = '';
+      });
+    });
+
+    // Starfield
+    var canvas = document.getElementById('starfield');
+    var ctx = canvas.getContext('2d');
+    var stars = [];
+    var SC = 180;
+    function resize() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
+    resize(); window.addEventListener('resize', resize);
+    for (var i = 0; i < SC; i++) stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.2 + .3, a: Math.random(), speed: .002 + Math.random() * .008 });
+    function drawStars(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i], f = .5 + .5 * Math.sin(t * s.speed + s.a * 6.28);
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.28);
+        ctx.fillStyle = 'rgba(255,255,255,' + (f * .6).toFixed(2) + ')'; ctx.fill();
+      }
+      requestAnimationFrame(drawStars);
+    }
+    requestAnimationFrame(drawStars);
+
+    // Glow orb button
+    document.querySelectorAll('.moving-border-btn').forEach(function(btn) {
+      var pathEl = btn.querySelector('.border-path'), orb = btn.querySelector('.glow-orb-btn');
+      if (!pathEl || !orb) return;
+      function tick(time) {
+        requestAnimationFrame(tick);
+        var len = pathEl.getTotalLength(); if (!len) return;
+        var pt = pathEl.getPointAtLength((time * (len / 3600)) % len);
+        orb.style.transform = 'translateX(' + pt.x + 'px) translateY(' + pt.y + 'px) translateX(-50%) translateY(-50%)';
+      }
+      requestAnimationFrame(tick);
+    });
+  })();
+  </script>
+</body>
+</html>

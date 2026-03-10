@@ -148,6 +148,7 @@
         <a href="index.html#about" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">About</a>
         <a href="index.html#services" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Services</a>
         <a href="blog.html" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Blog</a>
+        <a href="photography.html" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Photography</a>
       </div>
       <a href="mailto:info@tasnimalam.com,tasnimpksf@gmail.com" class="hidden sm:inline-flex moving-border-btn">
         <div class="border-track"><svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="100%"><rect fill="none" width="100%" height="100%" rx="50%" ry="50%" class="border-path"/></svg><div class="glow-orb-btn"></div></div>
@@ -591,6 +592,7 @@
         <a href="index.html#about" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">About</a>
         <a href="index.html#services" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Services</a>
         <a href="blog.html" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Blog</a>
+        <a href="photography.html" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Photography</a>
       </div>
     </div>
   </footer>
@@ -613,7 +615,7 @@
     document.querySelectorAll('.moving-border-btn').forEach(function(btn) {
       var p = btn.querySelector('.border-path'), o = btn.querySelector('.glow-orb-btn');
       if(!p||!o) return;
-      (function tick(t) { requestAnimationFrame(tick); var l=p.getTotalLength(); if(!l)return; var d=(t*(l/2200))%l, pt=p.getPointAtLength(d); o.style.transform='translateX('+pt.x+'px) translateY('+pt.y+'px) translateX(-50%) translateY(-50%)'; })(0);
+      (function tick(t) { requestAnimationFrame(tick); var l=p.getTotalLength(); if(!l)return; var d=(t*(l/3600))%l, pt=p.getPointAtLength(d); o.style.transform='translateX('+pt.x+'px) translateY('+pt.y+'px) translateX(-50%) translateY(-50%)'; })(0);
     });
   </script>
 </body>

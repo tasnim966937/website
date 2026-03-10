@@ -12,8 +12,9 @@ Mir Md Tasnim Alam — Geospatial Data Scientist & AI Specialist
 
 | File | Purpose |
 |------|---------|
-| `index.html` | **Production home page** (copy of `balerion-demo.html`) |
-| `balerion-demo.html` | **Working draft** — edit this first, then sync to `index.html` |
+| `index.html` | **Production home page** — edit directly |
+| `photography.html` | Photography gallery — masonry grid, 4 locations, lightbox |
+| `photography/` | Optimized WebP images + thumbnails (from `Photography/` raw source) |
 | `ai-automation.html` | AI & Web Solutions service page (voice agents, website creation, sales, AI integration, workflow automation, custom agents) |
 | `research.html` | Publications & Research — 15 cards from Google Scholar, filter pills, animated stats |
 | `blog.html` | Blog listing page |
@@ -25,9 +26,8 @@ Mir Md Tasnim Alam — Geospatial Data Scientist & AI Specialist
 | `screenshot.mjs` | Puppeteer screenshot utility |
 
 ## Critical Workflow
-1. **Always edit `balerion-demo.html`** for home page changes
-2. **Sync after edits**: `Copy-Item "balerion-demo.html" "index.html" -Force`
-3. The title in `index.html` should be "Mir Md Tasnim Alam - Geospatial Data Scientist & AI Specialist"
+1. **Edit `index.html` directly** for home page changes (no more balerion-demo workflow)
+2. The title in `index.html` should be "Mir Md Tasnim Alam - Geospatial Data Scientist & AI Specialist"
 
 ## Design System
 
@@ -67,6 +67,7 @@ Mir Md Tasnim Alam — Geospatial Data Scientist & AI Specialist
 - About → `index.html#about` (scrolls to planet entry)
 - Services → `index.html#services`
 - Blog → `blog.html`
+- Photography → `photography.html`
 - Get in Touch → `mailto:tasnim966937@gmail.com,tasnimalam@ou.edu`
 
 ## GitHub
@@ -74,5 +75,8 @@ Mir Md Tasnim Alam — Geospatial Data Scientist & AI Specialist
 - Branch: `main`
 - Shell: PowerShell (no `&&` chaining, no heredocs — use `$msg` variable for commit messages)
 
+## Copy Rules
+- **Never use em dashes (—)** in any user-facing text, headings, descriptions, or copy. Use commas, periods, or rewrite the sentence instead.
+
 ## .gitignore Exclusions
-`node_modules/`, `temporary screenshots/`, `video2web/`, `globe_options/`, `globe-picker.html`, `logo-picker.html`, `index-old.html`, `CV/`
+`node_modules/`, `temporary screenshots/`, `video2web/`, `globe_options/`, `globe-picker.html`, `logo-picker.html`, `index-old.html`, `CV/`, `Photography/`, `optimize-photos.mjs`

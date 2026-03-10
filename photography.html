@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photography - Mir Md Tasnim Alam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cosmic-black: #000000;
+      --cosmic-dark: #080808;
+      --cosmic-surface: #161616;
+      --accent-teal: #1E8289;
+      --accent-gold: #DAA520;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { overflow-x: clip; }
+    body {
+      background: var(--cosmic-black);
+      color: rgba(255,255,255,0.5);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: clip;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(45deg, var(--accent-teal), var(--accent-gold)); border-radius: 4px; }
+    ::-webkit-scrollbar-track { background: var(--cosmic-black); }
+
+    #starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .mir-i { position: relative; display: inline-block; }
+    .mir-dot {
+      position: absolute; border-radius: 50%;
+      background: radial-gradient(circle at 36% 33%, #5ce0e4, #22b0b4 55%, #17696e);
+      pointer-events: none; z-index: 2;
+      left: 58%; transform: translateX(-50%);
+      width: 0.40em; height: 0.40em; top: -0.08em;
+      box-shadow: 0 0 0.12em rgba(30,130,137,0.9), 0 0 0.35em rgba(30,130,137,0.4);
+    }
+
+    /* ─── Nav ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.25rem 5vw;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    nav .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    nav .logo { color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.875rem; letter-spacing: -0.03em; text-shadow: 0 0 20px rgba(30,130,137,0.3); text-decoration: none; }
+    nav .nav-links { display: flex; align-items: center; gap: 2rem; }
+    nav .nav-links a { color: rgba(255,255,255,0.4); font-size: 0.875rem; font-weight: 400; text-decoration: none; position: relative; transition: color 0.3s ease; }
+    nav .nav-links a:hover { color: rgba(255,255,255,0.8); }
+    nav .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1.5px; background: var(--accent-gold); transition: width 0.3s ease; }
+    nav .nav-links a:hover::after { width: 100%; }
+    nav .nav-links a.active { color: rgba(255,255,255,0.8); }
+    nav .nav-links a.active::after { width: 100%; }
+    .moving-border-btn { position: relative; display: inline-flex; padding: 2px; overflow: hidden; border-radius: 9999px; background: rgba(30,130,137,0.15); text-decoration: none; }
+    .moving-border-btn .border-track { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; }
+    .moving-border-btn .border-track svg { position: absolute; width: 100%; height: 100%; }
+    .moving-border-btn .glow-orb-btn { position: absolute; top: 0; left: 0; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(#fff 0%, var(--accent-teal) 30%, rgba(30,130,137,0.5) 55%, transparent 70%); transform: translate(-50%, -50%); pointer-events: none; filter: blur(2px); }
+    .moving-border-btn .btn-inner { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; border-radius: 9999px; background: rgba(10,10,10,0.95); color: #fff; font-size: 0.75rem; font-weight: 600; padding: 0.6rem 1.4rem; transition: background 0.3s ease; }
+    .moving-border-btn:hover .btn-inner { background: rgba(30,130,137,0.2); }
+
+    /* ─── Hero ─── */
+    .photo-hero { position: relative; z-index: 1; padding: 9rem 5vw 4rem; text-align: center; }
+    .photo-hero .eyebrow {
+      font-family: 'Montserrat', sans-serif; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent-teal);
+      margin-bottom: 1.5rem; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .photo-hero h1 {
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: -0.04em;
+      color: #fff; line-height: 1.1; margin-bottom: 1.5rem;
+      opacity: 0; transform: translateY(30px); animation: fadeUp 0.8s 0.35s forwards;
+    }
+    .photo-hero p {
+      max-width: 520px; margin: 0 auto; color: rgba(255,255,255,0.35);
+      font-size: 1.05rem; line-height: 1.7;
+      opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s 0.5s forwards;
+    }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* ─── Album Grid ─── */
+    .albums-view { position: relative; z-index: 1; padding: 1rem 5vw 6rem; max-width: 1400px; margin: 0 auto; }
+    .albums-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 768px) { .albums-grid { grid-template-columns: 1fr; } }
+
+    .album-card-wrap {
+      position: relative;
+      border-radius: 18px;
+      opacity: 0; transform: translateY(40px);
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.6s ease, box-shadow 0.4s ease;
+    }
+    .album-card-wrap.visible { opacity: 1; transform: translateY(0); }
+
+    .album-border-glow {
+      position: absolute;
+      inset: -2px;
+      border-radius: 20px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .album-card-wrap:hover .album-border-glow { opacity: 1; }
+
+    .album-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      aspect-ratio: 16 / 10;
+      z-index: 1;
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: border-color 0.4s ease;
+    }
+    .album-card-wrap:hover .album-card {
+      border-color: rgba(30,130,137,0.6);
+    }
+
+    .album-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);
+      will-change: transform;
+    }
+    .album-card-wrap:hover .album-card img { transform: scale(1.06); }
+
+    .album-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.35) 35%, rgba(0,0,0,0.08) 60%, rgba(0,0,0,0.02) 100%);
+      transition: background 0.5s ease;
+    }
+    .album-card-wrap:hover .album-overlay {
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 35%, rgba(0,0,0,0.12) 60%, rgba(0,0,0,0.05) 100%);
+    }
+
+    .album-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 2rem 2.2rem;
+      z-index: 2;
+    }
+    .album-info .album-date {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--accent-teal);
+      margin-bottom: 0.6rem;
+    }
+    .album-info h3 {
+      font-family: 'Montserrat', sans-serif; font-weight: 800;
+      font-size: clamp(1.2rem, 2.2vw, 1.8rem); letter-spacing: -0.02em;
+      color: #fff; line-height: 1.2; margin-bottom: 0.5rem;
+    }
+    .album-info .album-count {
+      font-size: 0.8rem; color: rgba(255,255,255,0.35); font-weight: 400;
+    }
+    .album-info .album-count span { color: rgba(255,255,255,0.6); }
+
+    .album-arrow {
+      position: absolute; bottom: 2rem; right: 2.2rem;
+      width: 42px; height: 42px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 2;
+      opacity: 0; transform: translateX(-8px);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), background 0.3s ease, border-color 0.3s ease;
+    }
+    .album-card-wrap:hover .album-arrow { opacity: 1; transform: translateX(0); }
+    .album-arrow:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.25); }
+    .album-arrow svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.7); stroke-width: 2; fill: none; }
+
+    /* ─── Album Detail View ─── */
+    .album-detail {
+      position: relative; z-index: 1;
+      display: none;
+      padding: 0 5vw 5rem;
+      max-width: 1400px; margin: 0 auto;
+    }
+    .album-detail.open { display: block; }
+
+    .album-detail-header {
+      padding: 7rem 0 2.5rem;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .album-back {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      color: rgba(255,255,255,0.4); font-size: 0.8rem; font-weight: 500;
+      cursor: pointer; padding: 0.5rem 0;
+      transition: color 0.3s ease;
+      border: none; background: none; font-family: inherit;
+      margin-bottom: 1rem;
+    }
+    .album-back:hover { color: rgba(255,255,255,0.8); }
+    .album-back svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+    .album-detail-header h2 {
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -0.03em;
+      color: #fff; line-height: 1.1;
+    }
+    .album-detail-header .detail-meta {
+      font-size: 0.85rem; color: rgba(255,255,255,0.3);
+      margin-top: 0.5rem;
+    }
+    .album-detail-header .detail-meta span { color: var(--accent-teal); }
+
+    .album-description {
+      max-width: 640px; color: rgba(255,255,255,0.3);
+      font-size: 0.95rem; line-height: 1.8; font-style: italic;
+      padding: 1rem 0 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      margin-bottom: 2.5rem;
+    }
+
+    /* Masonry inside album */
+    .masonry { columns: 3; column-gap: 14px; }
+    @media (max-width: 1024px) { .masonry { columns: 2; } }
+    @media (max-width: 640px) { .masonry { columns: 1; column-gap: 10px; } }
+
+    .masonry-item {
+      break-inside: avoid; margin-bottom: 14px;
+      border-radius: 10px; overflow: hidden;
+      position: relative; cursor: pointer;
+      opacity: 0; transform: translateY(30px);
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.6s ease;
+    }
+    .masonry-item.visible { opacity: 1; transform: translateY(0); }
+    .masonry-item img {
+      display: block; width: 100%; height: auto;
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .masonry-item::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 40%);
+      opacity: 0; transition: opacity 0.4s ease; pointer-events: none;
+    }
+    .masonry-item:hover img { transform: scale(1.04); }
+    .masonry-item:hover::after { opacity: 1; }
+    .masonry-item .img-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.2rem; display: flex; align-items: center; justify-content: center;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+      pointer-events: none; z-index: 2;
+    }
+    .masonry-item:hover .img-overlay { opacity: 1; transform: translateY(0); }
+    .img-overlay svg { width: 36px; height: 36px; fill: none; stroke: rgba(255,255,255,0.8); stroke-width: 1.5; }
+
+    /* ─── Lightbox ─── */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.96); display: none;
+      align-items: center; justify-content: center;
+      cursor: zoom-out;
+      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 92vw; max-height: 90vh; object-fit: contain;
+      border-radius: 6px; opacity: 0; transform: scale(0.92);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+      cursor: default;
+    }
+    .lightbox.open img.loaded { opacity: 1; transform: scale(1); }
+    .lightbox .lb-close {
+      position: absolute; top: 1.5rem; right: 2rem;
+      width: 44px; height: 44px;
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 50%;
+      background: rgba(255,255,255,0.05); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s ease, border-color 0.3s ease; z-index: 10;
+    }
+    .lightbox .lb-close:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+    .lightbox .lb-close svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.7); stroke-width: 2; }
+    .lightbox .lb-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 50px; height: 50px;
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 50%;
+      background: rgba(255,255,255,0.04); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1); z-index: 10;
+    }
+    .lightbox .lb-nav:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+    .lightbox .lb-nav:active { transform: translateY(-50%) scale(0.92); }
+    .lightbox .lb-prev { left: 1.5rem; }
+    .lightbox .lb-next { right: 1.5rem; }
+    .lightbox .lb-nav svg { width: 20px; height: 20px; stroke: rgba(255,255,255,0.6); stroke-width: 2; fill: none; }
+    .lightbox .lb-counter { position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: rgba(255,255,255,0.3); z-index: 10; }
+    .lightbox .lb-location { position: absolute; top: 1.8rem; left: 2rem; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); z-index: 10; }
+
+    /* ─── Footer ─── */
+    footer {
+      position: relative; z-index: 2;
+      padding: 3.5rem 7vw;
+      border-top: 1px solid rgba(255,255,255,0.03);
+      background: var(--cosmic-black);
+    }
+    footer .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; }
+    footer .footer-logo { display: flex; align-items: center; gap: 0.75rem; }
+    footer .footer-logo .logo-text { color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.125rem; }
+    footer .footer-logo .divider { color: rgba(255,255,255,0.1); font-size: 12px; }
+    footer .footer-logo .name { color: rgba(255,255,255,0.2); font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 0.03em; white-space: nowrap; }
+    footer .footer-links { display: flex; gap: 1.5rem; }
+    footer .footer-links a { color: rgba(255,255,255,0.25); font-size: 0.75rem; text-decoration: none; transition: color 0.3s ease; }
+    footer .footer-links a:hover { color: rgba(255,255,255,0.5); }
+    footer .copyright { color: rgba(255,255,255,0.15); font-size: 0.75rem; }
+
+    @media (max-width: 640px) {
+      nav .nav-links, nav .moving-border-btn { display: none; }
+      .photo-hero { padding-top: 7rem; }
+      .album-info { padding: 1.2rem 1.4rem; }
+      .album-arrow { bottom: 1.2rem; right: 1.4rem; width: 36px; height: 36px; }
+      .lightbox .lb-prev { left: 0.5rem; }
+      .lightbox .lb-next { right: 0.5rem; }
+      .lightbox .lb-nav { width: 40px; height: 40px; }
+      .lightbox .lb-location { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#services">Services</a>
+        <a href="blog.html">Blog</a>
+        <a href="photography.html" class="active">Photography</a>
+      </div>
+      <a href="mailto:tasnim966937@gmail.com,tasnimalam@ou.edu" class="moving-border-btn" style="display:inline-flex;">
+        <div class="border-track">
+          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="100%"><rect fill="none" width="100%" height="100%" rx="50%" ry="50%" class="border-path"/></svg>
+          <div class="glow-orb-btn"></div>
+        </div>
+        <span class="btn-inner">Get in Touch</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="photo-hero" id="photo-hero">
+    <p class="eyebrow">Landscapes I Lived, Unhurried</p>
+    <h1>Photography</h1>
+    <p>Capturing the raw beauty of landscapes across the World through my Nikon Z6.</p>
+  </section>
+
+  <!-- Albums View -->
+  <div class="albums-view" id="albums-view">
+    <div class="albums-grid" id="albums-grid"></div>
+  </div>
+
+  <!-- Album Detail View -->
+  <div class="album-detail" id="album-detail">
+    <div class="album-detail-header">
+      <div>
+        <button class="album-back" id="album-back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          All Albums
+        </button>
+        <h2 id="detail-title"></h2>
+        <p class="detail-meta" id="detail-meta"></p>
+      </div>
+    </div>
+    <div class="album-description" id="detail-description" style="display:none;"></div>
+    <div class="masonry" id="detail-masonry"></div>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <div class="lb-location" id="lb-location"></div>
+    <button class="lb-close" id="lb-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button class="lb-nav lb-prev" id="lb-prev" aria-label="Previous">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <img id="lb-img" src="" alt="Photography by Mir">
+    <button class="lb-nav lb-next" id="lb-next" aria-label="Next">
+      <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </button>
+    <div class="lb-counter" id="lb-counter"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span class="logo-text">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</span>
+        <span class="divider">|</span>
+        <span class="name">&copy; 2026 Mir Md Tasnim Alam</span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#services">Services</a>
+        <a href="blog.html">Blog</a>
+        <a href="photography.html">Photography</a>
+      </div>
+      <p class="copyright">All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+  (function() {
+    var albums = [
+      {
+        slug: 'yosemite',
+        title: 'Yosemite National Park',
+        subtitle: 'California',
+        date: 'February 2025',
+        cover: 'photography/yosemite/DSC_2725.webp',
+        images: [
+          'DSC_2725','DSC_2748','DSC_2767','DSC_2768','DSC_2771','DSC_2778','DSC_2781','DSC_2789',
+          'DSC_2793','DSC_2795','DSC_2801','DSC_2808','DSC_2821','DSC_2835','DSC_2839','DSC_2849',
+          'DSC_2853','DSC_2856','DSC_2859','DSC_2868','DSC_2870','DSC_2873','DSC_2874','DSC_2877',
+          'DSC_2895','DSC_2904','DSC_2913','DSC_2915','DSC_2917','DSC_2921','DSC_2928','DSC_2930',
+          'DSC_2932','DSC_2934','DSC_2936','DSC_2937','DSC_2938','DSC_2939','DSC_2940','DSC_2952',
+          'DSC_2997','DSC_3005','DSC_3049','DSC_3059','DSC_3081','DSC_3098','IMG_9838','IMG_9862','IMG_9886'
+        ]
+      },
+      {
+        slug: 'death-valley',
+        title: 'Death Valley National Park',
+        subtitle: 'California',
+        date: 'February 2025',
+        cover: 'photography/death-valley/DSC_2614.webp',
+        images: [
+          'DSC_2609','DSC_2610','DSC_2612','DSC_2613','DSC_2614','DSC_2615','DSC_2616','DSC_2618',
+          'DSC_2620','DSC_2621','DSC_2626','DSC_2631','DSC_2633','DSC_2641','DSC_2645','DSC_2651',
+          'DSC_2661','DSC_2674','DSC_2687','DSC_2688'
+        ]
+      },
+      {
+        slug: 'miami',
+        title: 'Miami',
+        subtitle: 'Florida',
+        date: 'March 2024',
+        cover: 'photography/miami/DSC_2308-1.webp',
+        images: [
+          'DSC_2191-1','DSC_2236-1','DSC_2248-1','DSC_2250-1','DSC_2252-1','DSC_2255-1','DSC_2257-1',
+          'DSC_2265-1','DSC_2287','DSC_2295-1','DSC_2302-1','DSC_2308-1','DSC_2309-1','DSC_2338-1',
+          'DSC_2339-1','DSC_2340-1','DSC_2343-1','DSC_2346-1','Pittsburgh-1'
+        ]
+      },
+      {
+        slug: 'kitch-iti-kipi',
+        title: 'Kitch-Iti Kipi',
+        subtitle: 'Michigan',
+        date: 'October 2023',
+        cover: 'photography/kitch-iti-kipi/DSC_1694.webp',
+        description: 'Water is so transparent you almost can see the bed of the lake. The limestone bed has many minerals that get dissolved with water with time and create this beautiful color of water. Many thermal hot springs can also be noticed here and that water also brings many minerals from the northern part of Michigan\u2019s subsurface.',
+        images: [
+          'DSC_1621','DSC_1643','DSC_1646','DSC_1648-1','DSC_1651','DSC_1662-1','DSC_1666','DSC_1674',
+          'DSC_1689','DSC_1694','DSC_1697','DSC_1709','DSC_1719','DSC_1737','DSC_1741','DSC_1753-1',
+          'DSC_1787','DSC_1792','DSC_1802-1','DSC_1823','DSC_1882-1','DSC_1884','DSC_1886-1','DSC_1939',
+          'DSC_1970','DSC_1983-1','DSC_1996','DSC_2002-1','DSC_2004-1','DSC_2007-1'
+        ]
+      }
+    ];
+
+    // ── Build album cards ──
+    var grid = document.getElementById('albums-grid');
+    albums.forEach(function(album, ai) {
+      var wrap = document.createElement('div');
+      wrap.className = 'album-card-wrap';
+      wrap.dataset.album = ai;
+      wrap.innerHTML =
+        '<div class="album-border-glow"></div>' +
+        '<div class="album-card">' +
+          '<img src="' + album.cover + '" alt="' + album.title + '" loading="lazy">' +
+          '<div class="album-overlay"></div>' +
+          '<div class="album-info">' +
+            '<p class="album-date">' + album.date + '</p>' +
+            '<h3>' + album.title + '<span style="display:block;font-size:0.55em;font-weight:400;color:rgba(255,255,255,0.35);margin-top:0.25rem;letter-spacing:0.05em;">' + album.subtitle + '</span></h3>' +
+            '<p class="album-count"><span>' + album.images.length + '</span> photos</p>' +
+          '</div>' +
+          '<div class="album-arrow"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></div>' +
+        '</div>';
+      grid.appendChild(wrap);
+    });
+
+    // ── Scroll reveal for album cards ──
+    var cardObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e, i) {
+        if (e.isIntersecting) {
+          setTimeout(function() { e.target.classList.add('visible'); }, i * 120);
+          cardObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.album-card-wrap').forEach(function(c) { cardObs.observe(c); });
+
+    // ── Cursor border glow tracking ──
+    document.querySelectorAll('.album-card-wrap').forEach(function(wrap) {
+      var borderGlow = wrap.querySelector('.album-border-glow');
+      wrap.addEventListener('mousemove', function(e) {
+        var rect = wrap.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        var w = rect.width;
+        var h = rect.height;
+        var offX = x - w / 2;
+        var offY = y - h / 2;
+        wrap.style.boxShadow =
+          offX * 0.1 + 'px ' + offY * 0.1 + 'px 25px rgba(30,130,137,0.45),' +
+          offX * 0.05 + 'px ' + offY * 0.05 + 'px 50px rgba(30,130,137,0.2),' +
+          '0 0 2px rgba(30,130,137,0.8),' +
+          '0 0 80px rgba(30,130,137,0.12)';
+        var gradient = 'radial-gradient(400px circle at ' + x + 'px ' + y + 'px, ' +
+          'rgba(30,130,137,1) 0%, rgba(30,130,137,0.5) 30%, rgba(218,165,32,0.2) 55%, transparent 70%)';
+        borderGlow.style.background = gradient;
+      });
+      wrap.addEventListener('mouseleave', function() {
+        wrap.style.boxShadow = '';
+        borderGlow.style.background = '';
+      });
+    });
+
+    // ── Album detail ──
+    var albumsView = document.getElementById('albums-view');
+    var heroEl = document.getElementById('photo-hero');
+    var detailView = document.getElementById('album-detail');
+    var detailTitle = document.getElementById('detail-title');
+    var detailMeta = document.getElementById('detail-meta');
+    var detailDesc = document.getElementById('detail-description');
+    var detailMasonry = document.getElementById('detail-masonry');
+    var backBtn = document.getElementById('album-back');
+    var currentAlbumImages = [];
+
+    function openAlbum(idx) {
+      var album = albums[idx];
+      currentAlbumImages = [];
+
+      detailTitle.textContent = album.title;
+      detailMeta.innerHTML = '<span>' + album.images.length + '</span> photos &middot; ' + album.date + ' &middot; ' + album.subtitle;
+
+      if (album.description) {
+        detailDesc.textContent = album.description;
+        detailDesc.style.display = '';
+      } else {
+        detailDesc.style.display = 'none';
+      }
+
+      detailMasonry.innerHTML = '';
+      album.images.forEach(function(name, i) {
+        var full = 'photography/' + album.slug + '/' + name + '.webp';
+        var thumb = 'photography/' + album.slug + '/thumbs/' + name + '.webp';
+        currentAlbumImages.push({ full: full, location: album.title });
+
+        var item = document.createElement('div');
+        item.className = 'masonry-item';
+        item.dataset.index = i;
+        item.innerHTML =
+          '<img src="' + thumb + '" alt="' + album.title + '" loading="lazy">' +
+          '<div class="img-overlay"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>';
+        detailMasonry.appendChild(item);
+      });
+
+      heroEl.style.display = 'none';
+      albumsView.style.display = 'none';
+      detailView.classList.add('open');
+      window.scrollTo({ top: 0 });
+
+      // Observe masonry items for staggered reveal
+      setTimeout(function() {
+        var items = detailMasonry.querySelectorAll('.masonry-item');
+        var mObs = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) {
+              var d = Math.random() * 200;
+              setTimeout(function() { e.target.classList.add('visible'); }, d);
+              mObs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.08 });
+        items.forEach(function(el) { mObs.observe(el); });
+
+        // Lightbox click handlers
+        items.forEach(function(item) {
+          item.addEventListener('click', function() {
+            openLightbox(parseInt(item.dataset.index));
+          });
+        });
+      }, 50);
+    }
+
+    function closeAlbum() {
+      detailView.classList.remove('open');
+      heroEl.style.display = '';
+      albumsView.style.display = '';
+      currentAlbumImages = [];
+      window.scrollTo({ top: heroEl.offsetHeight - 100 });
+    }
+
+    document.querySelectorAll('.album-card-wrap').forEach(function(wrap) {
+      wrap.addEventListener('click', function() { openAlbum(parseInt(wrap.dataset.album)); });
+    });
+    backBtn.addEventListener('click', closeAlbum);
+
+    // ── Lightbox ──
+    var lightbox = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lb-img');
+    var lbCounter = document.getElementById('lb-counter');
+    var lbLocation = document.getElementById('lb-location');
+    var currentIdx = 0;
+
+    function openLightbox(idx) {
+      currentIdx = idx;
+      updateLightbox();
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lbImg.classList.remove('loaded');
+      document.body.style.overflow = '';
+    }
+    function updateLightbox() {
+      lbImg.classList.remove('loaded');
+      var data = currentAlbumImages[currentIdx];
+      lbImg.src = data.full;
+      lbImg.onload = function() { lbImg.classList.add('loaded'); };
+      lbCounter.textContent = (currentIdx + 1) + ' / ' + currentAlbumImages.length;
+      lbLocation.textContent = data.location;
+    }
+    function nextImage() { currentIdx = (currentIdx + 1) % currentAlbumImages.length; updateLightbox(); }
+    function prevImage() { currentIdx = (currentIdx - 1 + currentAlbumImages.length) % currentAlbumImages.length; updateLightbox(); }
+
+    document.getElementById('lb-close').addEventListener('click', closeLightbox);
+    document.getElementById('lb-next').addEventListener('click', function(e) { e.stopPropagation(); nextImage(); });
+    document.getElementById('lb-prev').addEventListener('click', function(e) { e.stopPropagation(); prevImage(); });
+    lightbox.addEventListener('click', function(e) { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', function(e) {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    });
+    var touchStartX = 0;
+    lbImg.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+    lbImg.addEventListener('touchend', function(e) {
+      var diff = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(diff) > 50) { diff > 0 ? prevImage() : nextImage(); }
+    });
+
+    // Handle URL hash for direct album links
+    function checkHash() {
+      var hash = window.location.hash.replace('#', '');
+      if (hash) {
+        for (var i = 0; i < albums.length; i++) {
+          if (albums[i].slug === hash) { openAlbum(i); return; }
+        }
+      }
+    }
+    checkHash();
+
+    // ── Starfield ──
+    var canvas = document.getElementById('starfield');
+    var ctx = canvas.getContext('2d');
+    var stars = [];
+    var STAR_COUNT = 180;
+    function resize() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+    for (var i = 0; i < STAR_COUNT; i++) {
+      stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.2 + 0.3, a: Math.random(), speed: 0.002 + Math.random() * 0.008 });
+    }
+    function drawStars(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        var flicker = 0.5 + 0.5 * Math.sin(t * s.speed + s.a * 6.28);
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.28);
+        ctx.fillStyle = 'rgba(255,255,255,' + (flicker * 0.6).toFixed(2) + ')';
+        ctx.fill();
+      }
+      requestAnimationFrame(drawStars);
+    }
+    requestAnimationFrame(drawStars);
+
+    // ── Glow orb ──
+    document.querySelectorAll('.moving-border-btn').forEach(function(btn) {
+      var pathEl = btn.querySelector('.border-path');
+      var orb = btn.querySelector('.glow-orb-btn');
+      if (!pathEl || !orb) return;
+      var DURATION = 3600;
+      function tick(time) {
+        requestAnimationFrame(tick);
+        var length = pathEl.getTotalLength();
+        if (!length) return;
+        var dist = (time * (length / DURATION)) % length;
+        var pt = pathEl.getPointAtLength(dist);
+        orb.style.transform = 'translateX(' + pt.x + 'px) translateY(' + pt.y + 'px) translateX(-50%) translateY(-50%)';
+      }
+      requestAnimationFrame(tick);
+    });
+  })();
+  </script>
+</body>
+</html>

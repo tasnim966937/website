@@ -107,11 +107,11 @@
       position: relative;
       text-align: center;
       padding: 36px 24px;
-      background: rgba(255,255,255,0.015);
-      border: 1px solid rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
       border-radius: 20px;
       overflow: hidden;
-      transition: border-color 0.5s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+      transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
     }
     .stat-card::before {
       content: '';
@@ -121,12 +121,17 @@
       transition: opacity 0.5s ease;
       pointer-events: none;
     }
-    .stat-card:hover { border-color: rgba(255,255,255,0.08); transform: translateY(-4px); }
+    .stat-card .card-glow {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      opacity: 0; transition: opacity 0.35s ease;
+    }
+    .stat-card:hover .card-glow { opacity: 1; }
+    .stat-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-4px); }
     .stat-card:hover::before { opacity: 1; }
-    .stat-card:nth-child(1)::before { background: radial-gradient(ellipse at 50% 30%, rgba(30,130,137,0.1) 0%, transparent 70%); }
-    .stat-card:nth-child(2)::before { background: radial-gradient(ellipse at 50% 30%, rgba(218,165,32,0.08) 0%, transparent 70%); }
-    .stat-card:nth-child(3)::before { background: radial-gradient(ellipse at 50% 30%, rgba(30,130,137,0.1) 0%, transparent 70%); }
-    .stat-card:nth-child(4)::before { background: radial-gradient(ellipse at 50% 30%, rgba(218,165,32,0.08) 0%, transparent 70%); }
+    .stat-card:nth-child(1)::before { background: radial-gradient(ellipse at 50% 30%, rgba(30,130,137,0.15) 0%, transparent 70%); }
+    .stat-card:nth-child(2)::before { background: radial-gradient(ellipse at 50% 30%, rgba(218,165,32,0.12) 0%, transparent 70%); }
+    .stat-card:nth-child(3)::before { background: radial-gradient(ellipse at 50% 30%, rgba(30,130,137,0.15) 0%, transparent 70%); }
+    .stat-card:nth-child(4)::before { background: radial-gradient(ellipse at 50% 30%, rgba(218,165,32,0.12) 0%, transparent 70%); }
 
     .stat-num {
       font-family: 'Montserrat', sans-serif;
@@ -151,30 +156,35 @@
       position: relative;
       display: block;
       padding: 32px 32px 36px;
-      background: rgba(255,255,255,0.015);
-      border: 1px solid rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
       border-radius: 16px;
       overflow: hidden;
       text-decoration: none;
-      transition: border-color 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s ease;
+      transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
     }
+    .pub-card .card-glow {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      opacity: 0; transition: opacity 0.35s ease;
+    }
+    .pub-card:hover .card-glow { opacity: 1; }
     .pub-card::before {
       content: '';
       position: absolute;
       inset: 0;
       opacity: 0;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.5s ease;
       pointer-events: none;
     }
     .pub-card:hover::before { opacity: 1; }
     .pub-card:hover {
-      border-color: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.14);
       transform: translateY(-4px);
       box-shadow: 0 24px 60px -15px rgba(0,0,0,0.5);
     }
 
-    .pub-card:nth-child(odd)::before { background: radial-gradient(ellipse at 20% 30%, rgba(30,130,137,0.07) 0%, transparent 65%); }
-    .pub-card:nth-child(even)::before { background: radial-gradient(ellipse at 80% 30%, rgba(218,165,32,0.05) 0%, transparent 65%); }
+    .pub-card:nth-child(odd)::before { background: radial-gradient(ellipse at 20% 30%, rgba(30,130,137,0.14) 0%, transparent 65%); }
+    .pub-card:nth-child(even)::before { background: radial-gradient(ellipse at 80% 30%, rgba(218,165,32,0.1) 0%, transparent 65%); }
 
     .pub-num {
       position: absolute;
@@ -357,6 +367,7 @@
         <a href="index.html#about" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">About</a>
         <a href="index.html#services" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Services</a>
         <a href="blog.html" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Blog</a>
+        <a href="photography.html" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Photography</a>
       </div>
       <a href="mailto:info@tasnimalam.com,tasnimpksf@gmail.com" class="hidden sm:inline-flex moving-border-btn">
         <div class="border-track">
@@ -622,6 +633,7 @@
         <a href="index.html#about" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">About</a>
         <a href="index.html#services" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Services</a>
         <a href="blog.html" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Blog</a>
+        <a href="photography.html" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Photography</a>
       </div>
     </div>
   </footer>
@@ -723,7 +735,7 @@
       var pathEl = btn.querySelector('.border-path');
       var orb = btn.querySelector('.glow-orb-btn');
       if (!pathEl || !orb) return;
-      var DURATION = 2200;
+      var DURATION = 3600;
       function tick(time) {
         requestAnimationFrame(tick);
         var length = pathEl.getTotalLength();
@@ -734,6 +746,50 @@
       }
       requestAnimationFrame(tick);
     });
+
+    // Cursor-following glow for pub-cards and stat-cards
+    (function() {
+      var teal = { r: 30, g: 130, b: 137 };
+      var gold = { r: 218, g: 165, b: 32 };
+
+      function addGlow(cards, colorFn) {
+        cards.forEach(function(card, i) {
+          var glow = document.createElement('div');
+          glow.className = 'card-glow';
+          card.insertBefore(glow, card.firstChild);
+          var c = colorFn(i);
+          card.addEventListener('mousemove', function(e) {
+            var rect = card.getBoundingClientRect();
+            var x = e.clientX - rect.left, y = e.clientY - rect.top;
+            var offX = x - rect.width / 2, offY = y - rect.height / 2;
+            card.style.boxShadow =
+              (offX * 0.12) + 'px ' + (offY * 0.12) + 'px 28px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.5),' +
+              (offX * 0.06) + 'px ' + (offY * 0.06) + 'px 55px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.22),' +
+              '0 0 3px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.75),' +
+              '0 0 90px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.12)';
+            glow.style.background =
+              'radial-gradient(300px circle at ' + x + 'px ' + y + 'px,' +
+              'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.22) 0%,' +
+              'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.06) 40%,' +
+              'transparent 65%)';
+          });
+          card.addEventListener('mouseleave', function() {
+            card.style.boxShadow = '';
+            glow.style.background = '';
+          });
+        });
+      }
+
+      addGlow(
+        Array.from(document.querySelectorAll('.pub-card')),
+        function(i) { return i % 2 === 0 ? teal : gold; }
+      );
+
+      addGlow(
+        Array.from(document.querySelectorAll('.stat-card')),
+        function(i) { return i % 2 === 0 ? teal : gold; }
+      );
+    })();
   </script>
 
 </body>

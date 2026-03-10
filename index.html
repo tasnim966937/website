@@ -289,28 +289,35 @@
     .svc-card {
       position: relative;
       padding: 48px 36px 44px;
-      background: rgba(255,255,255,0.015);
-      border: 1px solid rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
       overflow: hidden;
-      transition: background 0.5s ease, border-color 0.5s ease;
+      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
     }
     .svc-card::before {
       content: '';
       position: absolute;
       inset: 0;
       opacity: 0;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.5s ease;
       pointer-events: none;
     }
     .svc-card:hover::before { opacity: 1; }
-    .svc-card:nth-child(1)::before { background: radial-gradient(ellipse at 30% 20%, rgba(30,130,137,0.08) 0%, transparent 70%); }
-    .svc-card:nth-child(2)::before { background: radial-gradient(ellipse at 70% 30%, rgba(218,165,32,0.06) 0%, transparent 70%); }
-    .svc-card:nth-child(3)::before { background: radial-gradient(ellipse at 40% 80%, rgba(30,130,137,0.08) 0%, transparent 70%); }
-    .svc-card:nth-child(4)::before { background: radial-gradient(ellipse at 60% 20%, rgba(218,165,32,0.06) 0%, transparent 70%); }
+    .svc-card:nth-child(1)::before { background: radial-gradient(ellipse at 30% 20%, rgba(30,130,137,0.18) 0%, rgba(30,130,137,0.04) 50%, transparent 70%); }
+    .svc-card:nth-child(2)::before { background: radial-gradient(ellipse at 70% 30%, rgba(218,165,32,0.15) 0%, rgba(218,165,32,0.03) 50%, transparent 70%); }
+    .svc-card:nth-child(3)::before { background: radial-gradient(ellipse at 40% 80%, rgba(30,130,137,0.18) 0%, rgba(30,130,137,0.04) 50%, transparent 70%); }
+    .svc-card:nth-child(4)::before { background: radial-gradient(ellipse at 60% 20%, rgba(218,165,32,0.15) 0%, rgba(218,165,32,0.03) 50%, transparent 70%); }
+
+    .svc-card .svc-glow {
+      position: absolute; inset: -1px; pointer-events: none; z-index: 0;
+      opacity: 0; transition: opacity 0.35s ease;
+    }
+    .svc-card:hover .svc-glow { opacity: 1; }
 
     .svc-card:hover {
-      background: rgba(255,255,255,0.025);
-      border-color: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.035);
+      border-color: rgba(255,255,255,0.12);
+      transform: translateY(-2px);
     }
 
     .svc-card:nth-child(1) { border-radius: 24px 4px 4px 4px; }
@@ -327,28 +334,28 @@
       width: 56px; height: 56px;
       display: flex; align-items: center; justify-content: center;
       border-radius: 16px;
-      position: relative;
+      position: relative; z-index: 1;
       margin-bottom: 28px;
       transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
     }
     .svc-card:hover .svc-icon {
-      transform: translateY(-4px) scale(1.05);
+      transform: translateY(-4px) scale(1.08);
     }
     .svc-icon-teal {
-      background: linear-gradient(135deg, rgba(30,130,137,0.15), rgba(30,130,137,0.05));
-      border: 1px solid rgba(30,130,137,0.2);
-      box-shadow: 0 0 20px rgba(30,130,137,0.1);
+      background: linear-gradient(135deg, rgba(30,130,137,0.2), rgba(30,130,137,0.06));
+      border: 1px solid rgba(30,130,137,0.3);
+      box-shadow: 0 0 24px rgba(30,130,137,0.15), 0 0 60px rgba(30,130,137,0.05);
     }
     .svc-card:hover .svc-icon-teal {
-      box-shadow: 0 0 30px rgba(30,130,137,0.25), 0 8px 24px -8px rgba(30,130,137,0.2);
+      box-shadow: 0 0 40px rgba(30,130,137,0.45), 0 8px 30px -6px rgba(30,130,137,0.35), 0 0 80px rgba(30,130,137,0.12);
     }
     .svc-icon-gold {
-      background: linear-gradient(135deg, rgba(218,165,32,0.15), rgba(218,165,32,0.05));
-      border: 1px solid rgba(218,165,32,0.2);
-      box-shadow: 0 0 20px rgba(218,165,32,0.08);
+      background: linear-gradient(135deg, rgba(218,165,32,0.2), rgba(218,165,32,0.06));
+      border: 1px solid rgba(218,165,32,0.3);
+      box-shadow: 0 0 24px rgba(218,165,32,0.12), 0 0 60px rgba(218,165,32,0.04);
     }
     .svc-card:hover .svc-icon-gold {
-      box-shadow: 0 0 30px rgba(218,165,32,0.2), 0 8px 24px -8px rgba(218,165,32,0.15);
+      box-shadow: 0 0 40px rgba(218,165,32,0.4), 0 8px 30px -6px rgba(218,165,32,0.3), 0 0 80px rgba(218,165,32,0.1);
     }
 
     .svc-num {
@@ -358,13 +365,13 @@
       font-weight: 800;
       font-size: 48px;
       line-height: 1;
-      -webkit-text-stroke: 1px rgba(255,255,255,0.04);
+      -webkit-text-stroke: 1px rgba(255,255,255,0.05);
       color: transparent;
       pointer-events: none;
       transition: -webkit-text-stroke-color 0.4s ease;
     }
     .svc-card:hover .svc-num {
-      -webkit-text-stroke-color: rgba(255,255,255,0.08);
+      -webkit-text-stroke-color: rgba(255,255,255,0.12);
     }
 
     .svc-title {
@@ -374,16 +381,18 @@
       color: #fff;
       margin-bottom: 12px;
       letter-spacing: -0.01em;
+      position: relative; z-index: 1;
       transition: color 0.3s ease;
     }
 
     .svc-desc {
       font-size: 14px;
       line-height: 1.75;
-      color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.35);
+      position: relative; z-index: 1;
       transition: color 0.4s ease;
     }
-    .svc-card:hover .svc-desc { color: rgba(255,255,255,0.45); }
+    .svc-card:hover .svc-desc { color: rgba(255,255,255,0.55); }
 
     .svc-tag {
       display: inline-block;
@@ -394,6 +403,7 @@
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+      position: relative; z-index: 1;
       opacity: 0;
       transform: translateY(6px);
       transition: opacity 0.4s ease, transform 0.4s ease;
@@ -404,20 +414,20 @@
     }
     .svc-tag-teal {
       color: var(--accent-teal);
-      background: rgba(30,130,137,0.1);
-      border: 1px solid rgba(30,130,137,0.15);
+      background: rgba(30,130,137,0.12);
+      border: 1px solid rgba(30,130,137,0.2);
     }
     .svc-tag-gold {
       color: var(--accent-gold);
-      background: rgba(218,165,32,0.08);
-      border: 1px solid rgba(218,165,32,0.12);
+      background: rgba(218,165,32,0.1);
+      border: 1px solid rgba(218,165,32,0.18);
     }
 
     .svc-line {
       position: absolute;
       bottom: 0; left: 36px; right: 36px;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
       opacity: 0;
       transition: opacity 0.5s ease;
     }
@@ -914,6 +924,7 @@
         <a href="#about" onclick="event.preventDefault();var el=document.getElementById('video-scroll-container');if(el){var top=el.getBoundingClientRect().top+window.scrollY-window.innerHeight*0.5;window.scrollTo({top:top,behavior:'smooth'})}" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">About</a>
         <a href="#services" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Services</a>
         <a href="blog.html" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Blog</a>
+        <a href="photography.html" style="color: rgba(255,255,255,0.4); transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Photography</a>
       </div>
       <a href="mailto:info@tasnimalam.com,tasnimpksf@gmail.com" class="hidden sm:inline-flex moving-border-btn">
         <div class="border-track">
@@ -997,7 +1008,8 @@
 
       <div class="svc-grid">
         <!-- Card 1 -->
-        <a href="ai-automation.html" class="svc-card text-reveal" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <a href="ai-automation.html" class="svc-card text-reveal" data-glow="teal" style="text-decoration: none; color: inherit; cursor: pointer;">
+          <div class="svc-glow"></div>
           <span class="svc-num">01</span>
           <div class="svc-icon svc-icon-teal">
             <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#1E8289" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1013,7 +1025,8 @@
         </a>
 
         <!-- Card 2 -->
-        <div class="svc-card text-reveal text-reveal-delay-1">
+        <a href="remote-sensing.html" class="svc-card text-reveal text-reveal-delay-1" data-glow="gold" style="text-decoration: none; color: inherit; cursor: pointer;">
+          <div class="svc-glow"></div>
           <span class="svc-num">02</span>
           <div class="svc-icon svc-icon-gold">
             <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#DAA520" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1025,10 +1038,11 @@
           <p class="svc-desc">Deep learning models for environmental monitoring, land-use classification, and infrastructure assessment.</p>
           <span class="svc-tag svc-tag-gold">CNN &middot; SAR &middot; Satellite</span>
           <div class="svc-line"></div>
-        </div>
+        </a>
 
         <!-- Card 3 -->
-        <div class="svc-card text-reveal text-reveal-delay-2">
+        <a href="gis-mapping.html" class="svc-card text-reveal text-reveal-delay-2" data-glow="teal" style="text-decoration: none; color: inherit; cursor: pointer;">
+          <div class="svc-glow"></div>
           <span class="svc-num">03</span>
           <div class="svc-icon svc-icon-teal">
             <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#1E8289" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1041,10 +1055,11 @@
           <p class="svc-desc">ArcGIS, QGIS, Google Earth Engine spatial analysis, web mapping, and 3D visualization.</p>
           <span class="svc-tag svc-tag-teal">GEE &middot; ArcGIS &middot; QGIS</span>
           <div class="svc-line"></div>
-        </div>
+        </a>
 
         <!-- Card 4 -->
-        <a href="research.html" class="svc-card text-reveal text-reveal-delay-3" style="text-decoration: none; color: inherit; cursor: pointer;">
+        <a href="research.html" class="svc-card text-reveal text-reveal-delay-3" data-glow="gold" style="text-decoration: none; color: inherit; cursor: pointer;">
+          <div class="svc-glow"></div>
           <span class="svc-num">04</span>
           <div class="svc-icon svc-icon-gold">
             <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#DAA520" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1389,7 +1404,7 @@
   (function() {
     /* --- Config --- */
     var FRAME_COUNT = 145;
-    var FRAME_SPEED = 2.0;
+    var FRAME_SPEED = 1.2;
     var IMAGE_SCALE = 0.88;
     var frames = [];
     var currentFrame = -1;
@@ -1491,7 +1506,10 @@
           if (i % 30 === 0) sampleBgColor(img);
           resolve();
         };
-        img.onerror = function() { resolve(); };
+        img.onerror = function() {
+          console.warn('[Planet] Frame load failed:', i + 1, 'frames/frame_' + String(i + 1).padStart(4, '0') + '.webp');
+          resolve();
+        };
         img.src = 'frames/frame_' + String(i + 1).padStart(4, '0') + '.webp';
       });
     }
@@ -1505,10 +1523,10 @@
         drawFrame(0);
         currentFrame = 0;
       }
+      initScrollAnimations();
       var rest = [];
       for (var j = 10; j < FRAME_COUNT; j++) rest.push(loadFrame(j));
       await Promise.all(rest);
-      initScrollAnimations();
     }
 
     /* --- Section animation system --- */
@@ -1720,12 +1738,16 @@
             canvasWrap.style.clipPath = 'none';
           }
 
-          /* Frame binding */
+          /* Frame binding — fall back to nearest loaded frame */
           var accelerated = Math.min(p * FRAME_SPEED, 1);
           var index = Math.min(Math.floor(accelerated * FRAME_COUNT), FRAME_COUNT - 1);
-          if (index !== currentFrame && frames[index]) {
-            currentFrame = index;
-            requestAnimationFrame(function() { drawFrame(currentFrame); });
+          if (index !== currentFrame) {
+            var fi = index;
+            while (fi > 0 && !frames[fi]) fi--;
+            if (frames[fi]) {
+              currentFrame = fi;
+              requestAnimationFrame(function() { drawFrame(currentFrame); });
+            }
           }
 
           /* Dark overlay for stats */
@@ -1757,7 +1779,7 @@
       var pathEl = btn.querySelector('.border-path');
       var orb = btn.querySelector('.glow-orb');
       if (!pathEl || !orb) return;
-      var DURATION = 2200;
+      var DURATION = 3600;
       function tick(time) {
         requestAnimationFrame(tick);
         var length = pathEl.getTotalLength();
@@ -1768,6 +1790,37 @@
       }
       requestAnimationFrame(tick);
     });
+  </script>
+
+  <script>
+  (function() {
+    var tealC = { r: 30, g: 130, b: 137 };
+    var goldC = { r: 218, g: 165, b: 32 };
+    document.querySelectorAll('.svc-card[data-glow]').forEach(function(card) {
+      var glow = card.querySelector('.svc-glow');
+      if (!glow) return;
+      var c = card.dataset.glow === 'teal' ? tealC : goldC;
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left, y = e.clientY - rect.top;
+        var offX = x - rect.width / 2, offY = y - rect.height / 2;
+        card.style.boxShadow =
+          (offX * 0.12) + 'px ' + (offY * 0.12) + 'px 28px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.45),' +
+          (offX * 0.06) + 'px ' + (offY * 0.06) + 'px 55px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.2),' +
+          '0 0 3px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.7),' +
+          '0 0 90px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.12)';
+        glow.style.background =
+          'radial-gradient(350px circle at ' + x + 'px ' + y + 'px,' +
+          'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.25) 0%,' +
+          'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.08) 35%,' +
+          'transparent 65%)';
+      });
+      card.addEventListener('mouseleave', function() {
+        card.style.boxShadow = '';
+        glow.style.background = '';
+      });
+    });
+  })();
   </script>
 </body>
 </html>

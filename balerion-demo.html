@@ -1389,7 +1389,7 @@
   (function() {
     /* --- Config --- */
     var FRAME_COUNT = 145;
-    var FRAME_SPEED = 2.0;
+    var FRAME_SPEED = 1.2;
     var IMAGE_SCALE = 0.88;
     var frames = [];
     var currentFrame = -1;
@@ -1505,10 +1505,10 @@
         drawFrame(0);
         currentFrame = 0;
       }
+      initScrollAnimations();
       var rest = [];
       for (var j = 10; j < FRAME_COUNT; j++) rest.push(loadFrame(j));
       await Promise.all(rest);
-      initScrollAnimations();
     }
 
     /* --- Section animation system --- */
@@ -1720,12 +1720,16 @@
             canvasWrap.style.clipPath = 'none';
           }
 
-          /* Frame binding */
+          /* Frame binding — fall back to nearest loaded frame */
           var accelerated = Math.min(p * FRAME_SPEED, 1);
           var index = Math.min(Math.floor(accelerated * FRAME_COUNT), FRAME_COUNT - 1);
-          if (index !== currentFrame && frames[index]) {
-            currentFrame = index;
-            requestAnimationFrame(function() { drawFrame(currentFrame); });
+          if (index !== currentFrame) {
+            var fi = index;
+            while (fi > 0 && !frames[fi]) fi--;
+            if (frames[fi]) {
+              currentFrame = fi;
+              requestAnimationFrame(function() { drawFrame(currentFrame); });
+            }
           }
 
           /* Dark overlay for stats */
@@ -1757,7 +1761,7 @@
       var pathEl = btn.querySelector('.border-path');
       var orb = btn.querySelector('.glow-orb');
       if (!pathEl || !orb) return;
-      var DURATION = 2200;
+      var DURATION = 3600;
       function tick(time) {
         requestAnimationFrame(tick);
         var length = pathEl.getTotalLength();

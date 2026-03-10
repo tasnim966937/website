@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "mammoth": "^1.11.0",
-    "puppeteer": "^24.38.0"
+    "puppeteer": "^24.38.0",
+    "sharp": "^0.34.5"
   }
 }

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canopy Chlorophyll: ML vs RTM - Mir Md Tasnim Alam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--cosmic-black:#000;--cosmic-dark:#080808;--cosmic-surface:#161616;--accent-teal:#1E8289;--accent-gold:#DAA520}
+    *{margin:0;padding:0;box-sizing:border-box}html{overflow-x:clip}
+    body{background:var(--cosmic-black);color:rgba(255,255,255,.5);font-family:'Plus Jakarta Sans',sans-serif;font-weight:300;font-size:16px;line-height:1.7;overflow-x:clip;-webkit-font-smoothing:antialiased}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:linear-gradient(45deg,var(--accent-teal),var(--accent-gold));border-radius:4px}::-webkit-scrollbar-track{background:var(--cosmic-black)}
+    #starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+    .mir-i{position:relative;display:inline-block}.mir-dot{position:absolute;border-radius:50%;background:radial-gradient(circle at 36% 33%,#5ce0e4,#22b0b4 55%,#17696e);pointer-events:none;z-index:2;left:58%;transform:translateX(-50%);width:.4em;height:.4em;top:-.08em;box-shadow:0 0 .12em rgba(30,130,137,.9),0 0 .35em rgba(30,130,137,.4)}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.25rem 5vw;background:rgba(10,10,10,.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.03)}
+    nav .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    nav .logo{color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.875rem;letter-spacing:-.03em;text-shadow:0 0 20px rgba(30,130,137,.3);text-decoration:none}
+    nav .nav-links{display:flex;align-items:center;gap:2rem}
+    nav .nav-links a{color:rgba(255,255,255,.4);font-size:.875rem;font-weight:400;text-decoration:none;position:relative;transition:color .3s}
+    nav .nav-links a:hover{color:rgba(255,255,255,.8)}
+    nav .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1.5px;background:var(--accent-gold);transition:width .3s}
+    nav .nav-links a:hover::after{width:100%}
+    .moving-border-btn{position:relative;display:inline-flex;padding:2px;overflow:hidden;border-radius:9999px;background:rgba(30,130,137,.15);text-decoration:none}
+    .moving-border-btn .border-track{position:absolute;inset:0;border-radius:inherit;overflow:hidden}
+    .moving-border-btn .border-track svg{position:absolute;width:100%;height:100%}
+    .moving-border-btn .glow-orb-btn{position:absolute;top:0;left:0;width:100px;height:100px;border-radius:50%;background:radial-gradient(#fff 0%,var(--accent-teal) 30%,rgba(30,130,137,.5) 55%,transparent 70%);transform:translate(-50%,-50%);pointer-events:none;filter:blur(2px)}
+    .moving-border-btn .btn-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;border-radius:9999px;background:rgba(10,10,10,.95);color:#fff;font-size:.75rem;font-weight:600;padding:.6rem 1.4rem;transition:background .3s}
+    .moving-border-btn:hover .btn-inner{background:rgba(30,130,137,.2)}
+
+    .page-hero{position:relative;z-index:1;padding:9rem 5vw 2rem;text-align:center;max-width:900px;margin:0 auto}
+    .page-hero .back-link{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--accent-gold);font-size:.8rem;font-weight:500;text-decoration:none;margin-bottom:3rem;opacity:0;transform:translateY(20px);animation:fadeUp .8s .1s forwards;transition:color .3s}
+    .page-hero .back-link:hover{color:#fff}
+    .page-hero .back-link svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.5;fill:none}
+    .page-hero .journal-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;border-radius:100px;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-teal);background:rgba(30,130,137,.08);border:1px solid rgba(30,130,137,.15);margin-bottom:1.5rem;opacity:0;transform:translateY(20px);animation:fadeUp .8s .2s forwards}
+    .page-hero .journal-badge .dot{width:4px;height:4px;border-radius:50%;background:var(--accent-teal)}
+    .page-hero h1{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,3.5rem);letter-spacing:-.04em;color:#fff;line-height:1.15;margin-bottom:1.5rem;opacity:0;transform:translateY(30px);animation:fadeUp .8s .35s forwards}
+    .page-hero h1 span{background:linear-gradient(135deg,var(--accent-teal),var(--accent-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .page-hero .subtitle{max-width:600px;margin:0 auto 2rem;color:rgba(255,255,255,.35);font-size:1rem;line-height:1.7;opacity:0;transform:translateY(20px);animation:fadeUp .8s .5s forwards}
+    .page-hero .doi-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:100px;font-size:.8rem;font-weight:600;color:#fff;background:rgba(30,130,137,.15);border:1px solid rgba(30,130,137,.25);text-decoration:none;transition:all .3s;opacity:0;transform:translateY(20px);animation:fadeUp .8s .6s forwards}
+    .page-hero .doi-btn:hover{background:rgba(30,130,137,.3);border-color:rgba(30,130,137,.5);transform:translateY(-2px);box-shadow:0 8px 30px rgba(30,130,137,.2)}
+    .page-hero .doi-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
+    @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+    /* Stat cards */
+    .stats-section{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 5vw 3rem}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    @media(max-width:768px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+    .stat-card{
+      position:relative;text-align:center;padding:32px 16px;
+      background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.04);
+      border-radius:16px;overflow:hidden;
+      transition:border-color .4s ease,transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s ease;
+      opacity:0;transform:translateY(20px);
+    }
+    .stat-card.visible{opacity:1;transform:translateY(0)}
+    .stat-card .card-glow{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .35s ease}
+    .stat-card:hover .card-glow{opacity:1}
+    .stat-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-3px)}
+    .stat-card .stat-value{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.8rem;letter-spacing:-.03em;color:#fff;position:relative;z-index:1}
+    .stat-card .stat-value span{background:linear-gradient(135deg,var(--accent-teal),var(--accent-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .stat-card .stat-label{font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.3);margin-top:8px;position:relative;z-index:1}
+
+    /* Section shared */
+    .section-wrap{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 5vw}
+    .section-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.02em;color:#fff;margin-bottom:1.25rem}
+    .section-title span{background:linear-gradient(135deg,var(--accent-teal),var(--accent-gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+    /* Abstract */
+    .abstract-section{padding:3rem 0}
+    .abstract-text{color:rgba(255,255,255,.4);font-size:1.05rem;line-height:1.9;max-width:800px}
+    .abstract-text strong{color:rgba(255,255,255,.7);font-weight:600}
+
+    /* Figures gallery */
+    .gallery-section{padding:2rem 0 3rem}
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      grid-auto-rows:minmax(200px,auto);
+      gap:14px;
+    }
+    @media(max-width:768px){.gallery-grid{grid-template-columns:1fr;grid-auto-rows:auto}}
+
+    .fig-card{
+      position:relative;border-radius:14px;
+      opacity:0;transform:translateY(25px);
+      transition:transform .6s cubic-bezier(.16,1,.3,1),opacity .7s ease,box-shadow .4s ease;
+      cursor:pointer;
+    }
+    .fig-card.visible{opacity:1;transform:translateY(0)}
+    .fig-card .fig-glow{position:absolute;inset:-2px;border-radius:16px;pointer-events:none;z-index:0;opacity:0;transition:opacity .35s ease}
+    .fig-card:hover .fig-glow{opacity:1}
+    .fig-card .fig-inner{
+      position:relative;z-index:1;border-radius:12px;overflow:hidden;
+      background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);
+      height:100%;display:flex;flex-direction:column;
+      transition:border-color .4s ease;
+    }
+    .fig-card:hover .fig-inner{border-color:rgba(30,130,137,.3)}
+    .fig-card .fig-img{flex:1;min-height:0;overflow:hidden;position:relative;background:#0a0a0a}
+    .fig-card .fig-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+    .fig-card:hover .fig-img img{transform:scale(1.04)}
+    .fig-card .fig-caption{padding:12px 16px;font-size:.72rem;font-weight:500;color:rgba(255,255,255,.4);letter-spacing:.02em;position:relative;z-index:1}
+    .fig-card .fig-num{color:var(--accent-teal);font-weight:700;margin-right:6px}
+    .fig-card .expand-icon{
+      position:absolute;top:10px;right:10px;width:28px;height:28px;z-index:2;
+      border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08);
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;transform:scale(.8);transition:opacity .3s,transform .3s;pointer-events:none;
+    }
+    .fig-card:hover .expand-icon{opacity:1;transform:scale(1)}
+    .expand-icon svg{width:14px;height:14px;stroke:#fff;stroke-width:1.5;fill:none}
+
+    .fig-card:nth-child(1){grid-column:span 7;grid-row:span 2}
+    .fig-card:nth-child(2){grid-column:span 5;grid-row:span 2}
+    .fig-card:nth-child(3){grid-column:span 5;grid-row:span 2}
+    .fig-card:nth-child(4){grid-column:span 7;grid-row:span 2}
+    .fig-card:nth-child(5){grid-column:span 12;grid-row:span 2}
+    @media(max-width:768px){.fig-card:nth-child(n){grid-column:span 1;grid-row:span 1}}
+
+    /* Findings */
+    .findings-section{padding:2rem 0 4rem}
+    .findings-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:768px){.findings-grid{grid-template-columns:1fr}}
+    .finding-card{
+      position:relative;padding:24px 28px;
+      background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.04);
+      border-radius:14px;overflow:hidden;
+      transition:border-color .4s ease,transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s ease;
+    }
+    .finding-card .card-glow{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .35s ease}
+    .finding-card:hover .card-glow{opacity:1}
+    .finding-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px)}
+    .finding-card .finding-icon{width:36px;height:36px;border-radius:10px;background:rgba(30,130,137,.1);border:1px solid rgba(30,130,137,.15);display:flex;align-items:center;justify-content:center;margin-bottom:14px;position:relative;z-index:1}
+    .finding-card .finding-icon svg{width:18px;height:18px;stroke:var(--accent-teal);stroke-width:1.5;fill:none}
+    .finding-card h4{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.85rem;color:#fff;letter-spacing:-.01em;margin-bottom:8px;position:relative;z-index:1}
+    .finding-card p{font-size:.82rem;color:rgba(255,255,255,.35);line-height:1.7;position:relative;z-index:1}
+
+    /* Fullscreen Modal */
+    .modal-overlay{
+      position:fixed;inset:0;z-index:200;
+      background:rgba(0,0,0,.94);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+      opacity:0;pointer-events:none;transition:opacity .4s ease;
+      display:flex;align-items:center;justify-content:center;padding:60px 5vw;
+    }
+    .modal-overlay.open{opacity:1;pointer-events:auto}
+    .modal-content{
+      max-width:1000px;width:100%;max-height:calc(100vh - 120px);overflow:auto;
+      text-align:center;
+      opacity:0;transform:translateY(30px) scale(.97);
+      transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);
+    }
+    .modal-overlay.open .modal-content{opacity:1;transform:translateY(0) scale(1);transition-delay:.1s}
+    .modal-content img{max-width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.06)}
+    .modal-caption{margin-top:16px;font-size:.85rem;color:rgba(255,255,255,.4);max-width:700px;margin-left:auto;margin-right:auto}
+    .modal-close{
+      position:fixed;top:24px;right:28px;z-index:210;
+      width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.6);cursor:pointer;display:flex;align-items:center;justify-content:center;
+      opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;
+    }
+    .modal-overlay.open~.modal-close,.modal-close.show{opacity:1;pointer-events:auto}
+    .modal-close:hover{background:rgba(255,255,255,.08);transform:scale(1.1)}
+    .modal-close svg{width:20px;height:20px;stroke:#fff;stroke-width:1.5}
+
+    footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.03);padding:3rem 5vw}
+    .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem}
+    .footer-logo{display:flex;align-items:center;gap:.75rem}
+    .footer-logo .logo-text{color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.125rem}
+    .footer-logo .divider{color:rgba(255,255,255,.1);font-size:.75rem;margin:0 .5rem}
+    .footer-logo .name{color:rgba(255,255,255,.2);font-size:.75rem;font-family:'Montserrat',sans-serif;font-weight:500;letter-spacing:.03em}
+    .footer-links{display:flex;gap:1.5rem}.footer-links a{color:rgba(255,255,255,.2);font-size:.75rem;text-decoration:none;transition:color .3s}.footer-links a:hover{color:rgba(255,255,255,.5)}
+    .copyright{color:rgba(255,255,255,.1);font-size:.7rem;width:100%;text-align:center;margin-top:1rem}
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#services">Services</a>
+        <a href="blog.html">Blog</a>
+        <a href="photography.html">Photography</a>
+      </div>
+      <a href="mailto:tasnim966937@gmail.com,tasnimalam@ou.edu" class="moving-border-btn" style="display:inline-flex;">
+        <div class="border-track">
+          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="100%"><rect fill="none" width="100%" height="100%" rx="50%" ry="50%" class="border-path"/></svg>
+          <div class="glow-orb-btn"></div>
+        </div>
+        <span class="btn-inner">Get in Touch</span>
+      </a>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <a href="remote-sensing.html" class="back-link">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Remote Sensing
+    </a>
+    <div class="journal-badge">
+      <span class="dot"></span>
+      Remote Sensing (MDPI) <span class="dot"></span> 2024
+    </div>
+    <h1>Retrieval of Crop Canopy <span>Chlorophyll</span></h1>
+    <p class="subtitle">Machine Learning vs. Radiative Transfer Model. Comparing five ML algorithms against hybrid PROSAIL models for chlorophyll estimation using satellite and UAV data fusion.</p>
+    <a href="https://doi.org/10.3390/rs16122058" target="_blank" rel="noopener" class="doi-btn">
+      <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      View Paper
+    </a>
+  </section>
+
+  <section class="stats-section">
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value"><span>R = 0.94</span></div>
+        <div class="stat-label">Best Accuracy (Fusion)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><span>5</span></div>
+        <div class="stat-label">ML Algorithms Tested</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><span>3</span></div>
+        <div class="stat-label">Satellite Sensors</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><span>24</span></div>
+        <div class="stat-label">Field Parcels</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-wrap">
+    <section class="abstract-section">
+      <h2 class="section-title">The <span>Research</span></h2>
+      <p class="abstract-text">
+        This study tackles a critical question in precision agriculture: <strong>can we accurately map crop chlorophyll from space?</strong> We tested five machine learning regression algorithms (KRR, GPR, PLSR, LSLR, and Neural Networks) across three distinct scenarios, including standalone satellite imagery, UAV-satellite data fusion, and a hybrid PROSAIL radiative transfer model approach.
+        <br><br>
+        The results showed that <strong>fusing UAV data with satellite imagery significantly outperforms both standalone satellite and physics-based hybrid models</strong>. Using Kernel Ridge Regression (KRR) on RapidEye data fused with UAV measurements, we achieved R = 0.94, a substantial jump from R = 0.55 without fusion on Landsat 7.
+      </p>
+    </section>
+
+    <section class="gallery-section">
+      <h2 class="section-title">Key <span>Visualizations</span></h2>
+      <div class="gallery-grid" id="gallery-grid"></div>
+    </section>
+
+    <section class="findings-section">
+      <h2 class="section-title">Key <span>Findings</span></h2>
+      <div class="findings-grid" id="findings-grid"></div>
+    </section>
+  </div>
+
+  <div class="modal-overlay" id="modal">
+    <div class="modal-content">
+      <img id="modal-img" src="" alt="">
+      <p class="modal-caption" id="modal-caption"></p>
+    </div>
+  </div>
+  <button class="modal-close" id="modal-close" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span class="logo-text">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</span>
+        <span class="divider">|</span>
+        <span class="name">&copy; 2026 Mir Md Tasnim Alam</span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#services">Services</a>
+        <a href="blog.html">Blog</a>
+        <a href="photography.html">Photography</a>
+      </div>
+      <p class="copyright">All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+  (function() {
+    var figures = [
+      { img: 'research/papers/chl/fig_03_p4.png', caption: 'Study site at Kellogg Biological Station, Michigan with 24 corn parcels under four chemical and management treatments.', num: 'Fig 1' },
+      { img: 'research/papers/chl/fig_05_p5.png', caption: 'Multi-sensor satellite comparison: Landsat 7 (30m), RapidEye (5m), PlanetScope (3.125m), and UAV (0.13m) imagery acquired in August 2017.', num: 'Fig 2' },
+      { img: 'research/papers/chl/fig_06_p6.jpeg', caption: 'Methodology flowchart illustrating MLRA, UAV fusion, and hybrid PROSAIL model pipelines for canopy chlorophyll content (CCC) retrieval.', num: 'Fig 3' },
+      { img: 'research/papers/chl/fig_07_p10.jpeg', caption: 'CCC maps (9-panel grid) generated from Landsat 7, RapidEye, and PlanetScope using best-performing MLRA, UAV fusion, and hybrid models.', num: 'Fig 4' },
+      { img: 'research/papers/chl/page_11.png', caption: 'Scatter plots showing measured vs. estimated CCC values. Fusion approach (R = 0.93 to 0.94) dramatically outperforms standalone MLRA (R = 0.55 to 0.79).', num: 'Fig 5' }
+    ];
+
+    var findings = [
+      { icon: 'trending-up', title: 'UAV Fusion Beats Everything', text: 'Adding UAV-derived NDRE, LAI, and plant height to satellite bands boosted KRR accuracy from R = 0.55 to R = 0.93 on Landsat, and from R = 0.79 to R = 0.94 on RapidEye.' },
+      { icon: 'layers', title: 'Red Edge Matters', text: 'RapidEye, with its dedicated red-edge band at 690nm, consistently outperformed other sensors in both empirical and hybrid modeling approaches.' },
+      { icon: 'cpu', title: 'KRR is the Top Performer', text: 'Kernel Ridge Regression emerged as the best MLRA across nearly all scenarios, handling high-dimensional spectroscopic data efficiently without dimensionality reduction.' },
+      { icon: 'x-circle', title: 'Hybrid Models Fall Short', text: 'Despite careful PROSAIL parametrization, hybrid radiative transfer models showed higher RMSE values than empirical MLRAs, especially for coarser-resolution Landsat data.' }
+    ];
+
+    var icons = {
+      'trending-up': '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
+      'layers': '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>',
+      'cpu': '<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/>',
+      'x-circle': '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'
+    };
+
+    var grid = document.getElementById('gallery-grid');
+    var modal = document.getElementById('modal');
+    var modalImg = document.getElementById('modal-img');
+    var modalCaption = document.getElementById('modal-caption');
+    var modalClose = document.getElementById('modal-close');
+
+    figures.forEach(function(f, i) {
+      var card = document.createElement('div');
+      card.className = 'fig-card';
+      card.innerHTML =
+        '<div class="fig-glow"></div>' +
+        '<div class="fig-inner">' +
+          '<div class="fig-img"><img src="' + f.img + '" alt="' + f.num + '" loading="lazy"></div>' +
+          '<div class="fig-caption"><span class="fig-num">' + f.num + '</span>' + f.caption.split('.')[0] + '.</div>' +
+          '<div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div>' +
+        '</div>';
+      card.addEventListener('click', function() {
+        modalImg.src = f.img;
+        modalCaption.textContent = f.caption;
+        modal.classList.add('open');
+        modalClose.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      });
+      grid.appendChild(card);
+    });
+
+    var findingsGrid = document.getElementById('findings-grid');
+    findings.forEach(function(f) {
+      var card = document.createElement('div');
+      card.className = 'finding-card';
+      card.innerHTML =
+        '<div class="card-glow"></div>' +
+        '<div class="finding-icon"><svg viewBox="0 0 24 24">' + icons[f.icon] + '</svg></div>' +
+        '<h4>' + f.title + '</h4>' +
+        '<p>' + f.text + '</p>';
+      findingsGrid.appendChild(card);
+    });
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modalClose.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+
+    // Scroll reveal
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e, idx) {
+        if (e.isIntersecting) {
+          setTimeout(function() { e.target.classList.add('visible'); }, idx * 100);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fig-card, .stat-card').forEach(function(c) { obs.observe(c); });
+
+    // Cursor glow for figure cards
+    var teal = { r: 30, g: 130, b: 137 };
+    var gold = { r: 218, g: 165, b: 32 };
+    function addGlow(cards, colorFn) {
+      cards.forEach(function(card, i) {
+        var glow = card.querySelector('.fig-glow, .card-glow');
+        if (!glow) return;
+        var c = colorFn(i);
+        card.addEventListener('mousemove', function(e) {
+          var rect = card.getBoundingClientRect();
+          var x = e.clientX - rect.left, y = e.clientY - rect.top;
+          var offX = x - rect.width / 2, offY = y - rect.height / 2;
+          card.style.boxShadow =
+            offX * 0.12 + 'px ' + offY * 0.12 + 'px 28px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.45),' +
+            offX * 0.06 + 'px ' + offY * 0.06 + 'px 55px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.2),' +
+            '0 0 3px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.7),' +
+            '0 0 80px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.1)';
+          glow.style.background =
+            'radial-gradient(350px circle at ' + x + 'px ' + y + 'px,' +
+            'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.22) 0%,' +
+            'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.06) 40%,' +
+            'transparent 65%)';
+        });
+        card.addEventListener('mouseleave', function() {
+          card.style.boxShadow = '';
+          glow.style.background = '';
+        });
+      });
+    }
+    addGlow(Array.from(document.querySelectorAll('.fig-card')), function(i) { return i % 2 === 0 ? teal : gold; });
+    addGlow(Array.from(document.querySelectorAll('.stat-card')), function(i) { return i % 2 === 0 ? teal : gold; });
+    addGlow(Array.from(document.querySelectorAll('.finding-card')), function(i) { return i % 2 === 0 ? gold : teal; });
+
+    // Starfield
+    var canvas = document.getElementById('starfield');
+    var ctx = canvas.getContext('2d');
+    var stars = [];
+    var SC = 180;
+    function resize() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
+    resize(); window.addEventListener('resize', resize);
+    for (var i = 0; i < SC; i++) stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.2 + .3, a: Math.random(), speed: .002 + Math.random() * .008 });
+    function drawStars(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i], f = .5 + .5 * Math.sin(t * s.speed + s.a * 6.28);
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.28);
+        ctx.fillStyle = 'rgba(255,255,255,' + (f * .6).toFixed(2) + ')'; ctx.fill();
+      }
+      requestAnimationFrame(drawStars);
+    }
+    requestAnimationFrame(drawStars);
+
+    // Glow orb button
+    document.querySelectorAll('.moving-border-btn').forEach(function(btn) {
+      var pathEl = btn.querySelector('.border-path'), orb = btn.querySelector('.glow-orb-btn');
+      if (!pathEl || !orb) return;
+      function tick(time) {
+        requestAnimationFrame(tick);
+        var len = pathEl.getTotalLength(); if (!len) return;
+        var pt = pathEl.getPointAtLength((time * (len / 3600)) % len);
+        orb.style.transform = 'translateX(' + pt.x + 'px) translateY(' + pt.y + 'px) translateX(-50%) translateY(-50%)';
+      }
+      requestAnimationFrame(tick);
+    });
+  })();
+  </script>
+</body>
+</html>

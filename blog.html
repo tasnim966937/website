@@ -92,18 +92,21 @@
     .nav-link-dark:hover::after { width: 100%; }
 
     .blog-card {
+      position: relative;
       background: var(--cosmic-surface);
-      border: 1px solid rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
       border-radius: 16px;
       overflow: hidden;
-      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease, border-color 0.4s ease;
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease, border-color 0.4s ease;
     }
+    .blog-card .card-glow {
+      position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      opacity: 0; transition: opacity 0.35s ease;
+    }
+    .blog-card:hover .card-glow { opacity: 1; }
     .blog-card:hover {
       transform: translateY(-6px);
-      border-color: rgba(30,130,137,0.15);
-      box-shadow:
-        0 20px 60px -15px rgba(0,0,0,0.5),
-        0 0 30px -10px rgba(30,130,137,0.08);
+      border-color: rgba(30,130,137,0.2);
     }
     .blog-card:hover .blog-card-img {
       transform: scale(1.05);
@@ -224,6 +227,7 @@
         <a href="index.html#about" class="nav-link-dark">About</a>
         <a href="index.html#services" class="nav-link-dark">Services</a>
         <a href="blog.html" class="nav-link-dark" style="color: rgba(255,255,255,0.85);">Blog</a>
+        <a href="photography.html" class="nav-link-dark">Photography</a>
       </div>
       <a href="mailto:info@tasnimalam.com,tasnimpksf@gmail.com" class="hidden sm:inline-flex moving-border-btn">
         <div class="border-track">
@@ -352,6 +356,7 @@
         <a href="index.html#about" class="hover:text-white/50" style="transition: color 0.3s ease;">About</a>
         <a href="index.html#services" class="hover:text-white/50" style="transition: color 0.3s ease;">Services</a>
         <a href="blog.html" class="hover:text-white/50" style="transition: color 0.3s ease;">Blog</a>
+        <a href="photography.html" class="hover:text-white/50" style="transition: color 0.3s ease;">Photography</a>
       </div>
       <p class="text-white/15 text-xs">&copy; 2026 Mir Md Tasnim Alam</p>
     </div>
@@ -386,7 +391,7 @@
       var pathEl = btn.querySelector('.border-path');
       var orb = btn.querySelector('.glow-orb-btn');
       if (!pathEl || !orb) return;
-      var DURATION = 2200;
+      var DURATION = 3600;
       function tick(time) {
         requestAnimationFrame(tick);
         var length = pathEl.getTotalLength();
@@ -397,6 +402,38 @@
       }
       requestAnimationFrame(tick);
     });
+  </script>
+
+  <script>
+  (function() {
+    var teal = { r: 30, g: 130, b: 137 };
+    var gold = { r: 218, g: 165, b: 32 };
+    document.querySelectorAll('.blog-card').forEach(function(card, i) {
+      var glow = document.createElement('div');
+      glow.className = 'card-glow';
+      card.insertBefore(glow, card.firstChild);
+      var c = i % 2 === 0 ? teal : gold;
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left, y = e.clientY - rect.top;
+        var offX = x - rect.width / 2, offY = y - rect.height / 2;
+        card.style.boxShadow =
+          (offX * 0.12) + 'px ' + (offY * 0.12) + 'px 28px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.45),' +
+          (offX * 0.06) + 'px ' + (offY * 0.06) + 'px 55px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.2),' +
+          '0 0 3px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.7),' +
+          '0 0 90px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.1)';
+        glow.style.background =
+          'radial-gradient(350px circle at ' + x + 'px ' + y + 'px,' +
+          'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.2) 0%,' +
+          'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.06) 40%,' +
+          'transparent 65%)';
+      });
+      card.addEventListener('mouseleave', function() {
+        card.style.boxShadow = '';
+        glow.style.background = '';
+      });
+    });
+  })();
   </script>
 </body>
 </html>

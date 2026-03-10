@@ -6,3 +6,9 @@ globe-picker.html
 logo-picker.html
 index-old.html
 CV/
+Photography/
+optimize-photos.mjs
+media_library_export-*/
+extract_figs.py
+ref/paper/*.pdf
+research/papers/*/page_*.png
