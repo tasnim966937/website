@@ -872,6 +872,19 @@
       section.relative.py-28 { padding-top: 3.5rem !important; padding-bottom: 3.5rem !important; }
       section.relative .text-center.mb-20 { margin-bottom: 2.5rem !important; }
     }
+    @media (hover: none) {
+      .svc-card::before { opacity: 1; }
+      .svc-card { border-color: rgba(255,255,255,0.10); }
+      .svc-card:nth-child(odd) { box-shadow: 0 0 30px rgba(30,130,137,0.15), 0 0 2px rgba(30,130,137,0.4); }
+      .svc-card:nth-child(even) { box-shadow: 0 0 30px rgba(218,165,32,0.12), 0 0 2px rgba(218,165,32,0.35); }
+      .svc-card .svc-tag { opacity: 1; transform: translateY(0); }
+      .blog-card-ft::before { opacity: 1; }
+      .blog-card-ft { border-color: rgba(255,255,255,0.08); }
+      .blog-card-ft:nth-child(odd) { box-shadow: 0 0 25px rgba(30,130,137,0.12), 0 0 2px rgba(30,130,137,0.3); }
+      .blog-card-ft:nth-child(even) { box-shadow: 0 0 25px rgba(218,165,32,0.10), 0 0 2px rgba(218,165,32,0.25); }
+      .blog-card-ft .blog-ft-tag { opacity: 1; transform: translateY(0); }
+      .blog-card-ft .blog-ft-line { opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -1181,10 +1194,10 @@
       </div>
 
       <!-- Leave a review -->
-      <button class="mt-10 inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl border text-sm font-semibold" style="background: rgba(30,130,137,0.08); border-color: rgba(30,130,137,0.3); color: rgba(30,130,137,0.9); transition: background 0.3s ease, color 0.3s ease;" onmouseover="this.style.background='rgba(30,130,137,0.18)';this.style.color='#fff'" onmouseout="this.style.background='rgba(30,130,137,0.08)';this.style.color='rgba(30,130,137,0.9)'">
+      <a href="mailto:tasnim966937@gmail.com,tasnimalam@ou.edu?subject=Review%20for%20Mir%20Md%20Tasnim%20Alam" class="mt-10 inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl border text-sm font-semibold" style="text-decoration: none; background: rgba(30,130,137,0.08); border-color: rgba(30,130,137,0.3); color: rgba(30,130,137,0.9); transition: background 0.3s ease, color 0.3s ease;" onmouseover="this.style.background='rgba(30,130,137,0.18)';this.style.color='#fff'" onmouseout="this.style.background='rgba(30,130,137,0.08)';this.style.color='rgba(30,130,137,0.9)'">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3 8h10"/></svg>
         Leave a Review
-      </button>
+      </a>
     </div>
   </section>
 
