@@ -102,11 +102,13 @@
 
     .fig-card:nth-child(1){grid-column:span 7;grid-row:span 2}
     .fig-card:nth-child(2){grid-column:span 5;grid-row:span 2}
-    .fig-card:nth-child(3){grid-column:span 4;grid-row:span 2}
-    .fig-card:nth-child(4){grid-column:span 4;grid-row:span 2}
-    .fig-card:nth-child(5){grid-column:span 4;grid-row:span 2}
-    .fig-card:nth-child(6){grid-column:span 6;grid-row:span 2}
-    .fig-card:nth-child(7){grid-column:span 6;grid-row:span 2}
+    .fig-card:nth-child(3){grid-column:span 5;grid-row:span 2}
+    .fig-card:nth-child(4){grid-column:span 7;grid-row:span 2}
+    .fig-card:nth-child(5){grid-column:span 4;grid-row:span 1}
+    .fig-card:nth-child(6){grid-column:span 4;grid-row:span 1}
+    .fig-card:nth-child(7){grid-column:span 4;grid-row:span 1}
+    .fig-card:nth-child(8){grid-column:span 6;grid-row:span 2}
+    .fig-card:nth-child(9){grid-column:span 6;grid-row:span 2}
     @media(max-width:768px){.fig-card:nth-child(n){grid-column:span 1;grid-row:span 1}}
 
     .findings-section{padding:2rem 0 4rem}
@@ -281,6 +283,8 @@
       { img: 'research/papers/phosphorus/fig_04_p5.png', caption: 'Satellite Embedding visualization and per-pixel spectral signatures at KBS MCSE. RGB composite from embedding bands with 64-band series for two selected pixels.', num: 'Fig 2' },
       { img: 'research/papers/phosphorus/fig_05_p7.png', caption: 'Complete study pipeline: from Google Satellite Embeddings through four dimensionality workflows (FBSR, PBSL, CIRBS, VOPSS) to tiled 10m prediction maps.', num: 'Fig 3' },
       { img: 'research/papers/phosphorus/fig_06_p9.png', caption: 'Observed vs. predicted scatter grids for CCC (CIRBS), CNC (CIRBS), and CPC (VOPSS) using all 11 MLRAs at their best configurations.', num: 'Fig 4' },
+      { img: 'research/papers/phosphorus/sweep_cirbs.jpg', caption: 'CIRBS top-k band sweeps showing NRMSE and R\u00B2 vs. number of ranked bands for CCC, CNC, CPC. Filled dots mark optimal k per model. Ridge peaks at k=17 for CCC.', num: 'Fig 5' },
+      { img: 'research/papers/phosphorus/sweep_vopss.jpg', caption: 'VOPSS top-k PC sweeps showing NRMSE and R\u00B2 vs. number of principal components. Lasso at k=14 PCs delivers the best CPC accuracy (R\u00B2=0.85).', num: 'Fig 6' },
       { img: 'research/papers/phosphorus/band_importance.jpg', caption: 'Consensus band importance heatmap and stacked bar chart for the top 20 embedding bands across CCC, CNC, and CPC targets. Band A57 dominates all three retrievals.', num: 'Fig 7' },
       { img: 'research/papers/phosphorus/fig_10_p12.png', caption: 'CCC prediction maps from all 11 models (CIRBS, best: Ridge) with AOI histograms showing mean, SD, and distribution characteristics.', num: 'Fig 8' },
       { img: 'research/papers/phosphorus/fig_11_p12.png', caption: 'CNC prediction maps from all 11 models (CIRBS, best: ElasticNet) with AOI histograms. Regularized linear models show the tightest distributions.', num: 'Fig 9' },
