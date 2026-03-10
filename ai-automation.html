@@ -133,24 +133,29 @@
       box-shadow: 0 16px 40px -10px rgba(0,0,0,0.4);
     }
 
-    @media (hover: none) {
-      .glass-card::before { opacity: 1; }
-      .glass-card {
-        border-color: rgba(30,130,137,0.55);
-        box-shadow: inset 0 0 40px rgba(30,130,137,0.30), 0 0 25px rgba(30,130,137,0.45), 0 0 70px rgba(30,130,137,0.18);
+    @media (pointer: coarse) {
+      .glass-card,
+      .stat-card,
+      .industry-card {
+        transition: none !important;
       }
-      .stat-card::before { opacity: 1; }
+      .glass-card::before,
+      .stat-card::before { opacity: 1 !important; }
+      .glass-card {
+        border-color: rgba(30,130,137,0.55) !important;
+        box-shadow: inset 0 0 40px rgba(30,130,137,0.30), 0 0 25px rgba(30,130,137,0.45), 0 0 70px rgba(30,130,137,0.18) !important;
+      }
       .stat-card:nth-child(odd) {
-        border-color: rgba(30,130,137,0.6);
-        box-shadow: inset 0 0 40px rgba(30,130,137,0.35), 0 0 25px rgba(30,130,137,0.55), 0 0 70px rgba(30,130,137,0.25);
+        border-color: rgba(30,130,137,0.6) !important;
+        box-shadow: inset 0 0 40px rgba(30,130,137,0.35), 0 0 25px rgba(30,130,137,0.55), 0 0 70px rgba(30,130,137,0.25) !important;
       }
       .stat-card:nth-child(even) {
-        border-color: rgba(218,165,32,0.55);
-        box-shadow: inset 0 0 40px rgba(218,165,32,0.30), 0 0 25px rgba(218,165,32,0.50), 0 0 70px rgba(218,165,32,0.20);
+        border-color: rgba(218,165,32,0.55) !important;
+        box-shadow: inset 0 0 40px rgba(218,165,32,0.30), 0 0 25px rgba(218,165,32,0.50), 0 0 70px rgba(218,165,32,0.20) !important;
       }
       .industry-card {
-        border-color: rgba(30,130,137,0.55);
-        box-shadow: inset 0 0 35px rgba(30,130,137,0.30), 0 0 22px rgba(30,130,137,0.45);
+        border-color: rgba(30,130,137,0.55) !important;
+        box-shadow: inset 0 0 35px rgba(30,130,137,0.30), 0 0 22px rgba(30,130,137,0.45) !important;
       }
     }
 
