@@ -974,7 +974,7 @@
       </svg>
     </button>
     <a href="index.html">Home</a>
-    <a href="index.html#about">About</a>
+    <a href="#about" onclick="event.preventDefault();document.getElementById('mob-menu').classList.remove('open');document.body.style.overflow='';var el=document.getElementById('video-scroll-container');if(el){var top=el.getBoundingClientRect().top+window.scrollY-window.innerHeight*0.5;window.scrollTo({top:top,behavior:'smooth'})}">About</a>
     <a href="index.html#services">Services</a>
     <a href="blog.html">Blog</a>
     <a href="photography.html">Photography</a>
@@ -1864,6 +1864,26 @@
     btn.addEventListener('click',function(){menu.classList.add('open');document.body.style.overflow='hidden'});
     close.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''});
     menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''})});
+  })();
+  </script>
+  <script>
+  (function() {
+    if (window.location.hash === '#about') {
+      document.documentElement.style.background = '#000';
+      document.body.style.visibility = 'hidden';
+      history.replaceState(null, '', window.location.pathname);
+      window.scrollTo(0, 0);
+      window.addEventListener('load', function() {
+        var el = document.getElementById('video-scroll-container');
+        if (el) {
+          var top = el.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.5;
+          window.scrollTo(0, top);
+        }
+        requestAnimationFrame(function() {
+          document.body.style.visibility = 'visible';
+        });
+      });
+    }
   })();
   </script>
 </body>
