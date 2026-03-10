@@ -57,28 +57,28 @@
     .card-wrap:hover .expand-icon{opacity:1;transform:scale(1)}
     .expand-icon svg{width:16px;height:16px;stroke:#fff;stroke-width:1.5;fill:none}
 
-    .card-wrap:nth-child(1){grid-column:span 8;grid-row:span 2}
-    .card-wrap:nth-child(2){grid-column:span 4;grid-row:span 2}
-    .card-wrap:nth-child(3){grid-column:span 4;grid-row:span 2}
-    .card-wrap:nth-child(4){grid-column:span 8;grid-row:span 2}
-    @media(max-width:768px){.card-wrap:nth-child(n){grid-column:span 1;grid-row:span 1}}
+    .card-wrap{grid-column:span 6;grid-row:span 2}
+    @media(max-width:768px){.card-wrap{grid-column:span 1;grid-row:span 1}}
 
-    .modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.92);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);opacity:0;pointer-events:none;transition:opacity .4s ease;display:flex;align-items:center;justify-content:center;padding:60px 5vw}
-    .modal-overlay.open{opacity:1;pointer-events:auto}
-    .modal-content{max-width:1100px;width:100%;max-height:calc(100vh - 120px);display:flex;gap:40px;align-items:flex-start;opacity:0;transform:translateY(30px) scale(.97);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
-    .modal-overlay.open .modal-content{opacity:1;transform:translateY(0) scale(1);transition-delay:.1s}
-    @media(max-width:900px){.modal-content{flex-direction:column;overflow-y:auto}}
-    .modal-media{flex:1.4;min-width:0;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
-    .modal-media img{width:100%;display:block}
-    .modal-info{flex:1;padding:8px 0}
-    .modal-info h2{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.6rem;color:#fff;letter-spacing:-.02em;line-height:1.3;margin-bottom:16px}
-    .modal-info p{color:rgba(255,255,255,.4);font-size:.9rem;line-height:1.8;margin-bottom:20px}
-    .modal-info .modal-tags{display:flex;flex-wrap:wrap;gap:6px}
-    .modal-info .modal-tags span{padding:5px 14px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-teal);background:rgba(30,130,137,.08);border:1px solid rgba(30,130,137,.12)}
-    .modal-close{position:fixed;top:24px;right:28px;z-index:210;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.6);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
-    .modal-overlay.open~.modal-close,.modal-close.show{opacity:1;pointer-events:auto}
-    .modal-close:hover{background:rgba(255,255,255,.08);transform:scale(1.1)}
-    .modal-close svg{width:20px;height:20px;stroke:#fff;stroke-width:1.5}
+    /* Lightbox */
+    .lightbox{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.96);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);display:none;align-items:center;justify-content:center;flex-direction:column;padding:60px 5vw}
+    .lightbox.open{display:flex}
+    .lightbox .lb-media{max-width:1000px;width:100%;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.06);opacity:0;transform:scale(.95);transition:opacity .4s ease,transform .4s cubic-bezier(.16,1,.3,1)}
+    .lightbox .lb-media.loaded{opacity:1;transform:scale(1)}
+    .lightbox .lb-media img{width:100%;display:block;max-height:calc(100vh - 220px);object-fit:contain}
+    .lb-info{margin-top:20px;text-align:center;max-width:700px}
+    .lb-info h2{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.1rem;color:#fff;letter-spacing:-.01em;margin-bottom:8px}
+    .lb-info p{color:rgba(255,255,255,.35);font-size:.85rem;line-height:1.7}
+    .lb-close{position:absolute;top:1.5rem;right:2rem;z-index:210;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.6);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s,transform .3s}
+    .lb-close:hover{background:rgba(255,255,255,.08);transform:scale(1.1)}
+    .lb-close svg{width:20px;height:20px;stroke:#fff;stroke-width:1.5}
+    .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.5);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s,border-color .3s,transform .25s;z-index:210}
+    .lb-nav:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)}
+    .lb-nav:active{transform:translateY(-50%) scale(.92)}
+    .lb-prev{left:1.5rem}.lb-next{right:1.5rem}
+    .lb-nav svg{width:20px;height:20px;stroke:rgba(255,255,255,.6);stroke-width:2;fill:none}
+    .lb-counter{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);font-size:.8rem;color:rgba(255,255,255,.3);z-index:210}
+    @media(max-width:768px){.lb-prev{left:.5rem}.lb-next{right:.5rem}.lb-nav{width:40px;height:40px}}
 
     footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.03);padding:3rem 5vw}
     .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem}
@@ -123,19 +123,23 @@
     <div class="bento-grid" id="bento-grid"></div>
   </div>
 
-  <div class="modal-overlay" id="modal">
-    <div class="modal-content">
-      <div class="modal-media" id="modal-media"></div>
-      <div class="modal-info">
-        <h2 id="modal-title"></h2>
-        <p id="modal-desc"></p>
-        <div class="modal-tags" id="modal-tags"></div>
-      </div>
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" id="lb-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button class="lb-nav lb-prev" id="lb-prev" aria-label="Previous">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="lb-media" id="lb-media"></div>
+    <button class="lb-nav lb-next" id="lb-next" aria-label="Next">
+      <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </button>
+    <div class="lb-info">
+      <h2 id="lb-title"></h2>
+      <p id="lb-desc"></p>
     </div>
+    <div class="lb-counter" id="lb-counter"></div>
   </div>
-  <button class="modal-close" id="modal-close" aria-label="Close">
-    <svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-  </button>
 
   <footer>
     <div class="footer-inner">
@@ -185,12 +189,39 @@
     ];
 
     var grid = document.getElementById('bento-grid');
-    var modal = document.getElementById('modal');
-    var modalMedia = document.getElementById('modal-media');
-    var modalTitle = document.getElementById('modal-title');
-    var modalDesc = document.getElementById('modal-desc');
-    var modalTags = document.getElementById('modal-tags');
-    var modalClose = document.getElementById('modal-close');
+    var lightbox = document.getElementById('lightbox');
+    var lbMedia = document.getElementById('lb-media');
+    var lbTitle = document.getElementById('lb-title');
+    var lbDesc = document.getElementById('lb-desc');
+    var lbClose = document.getElementById('lb-close');
+    var lbPrev = document.getElementById('lb-prev');
+    var lbNext = document.getElementById('lb-next');
+    var lbCounter = document.getElementById('lb-counter');
+    var currentIdx = 0;
+
+    function showProject(idx) {
+      currentIdx = ((idx % projects.length) + projects.length) % projects.length;
+      var p = projects[currentIdx];
+      lbMedia.classList.remove('loaded');
+      lbMedia.innerHTML = '<img src="' + p.media + '" alt="' + p.title + '">';
+      lbMedia.querySelector('img').onload = function() { lbMedia.classList.add('loaded'); };
+      setTimeout(function() { lbMedia.classList.add('loaded'); }, 100);
+      lbTitle.textContent = p.title;
+      lbDesc.textContent = p.desc;
+      lbCounter.textContent = (currentIdx + 1) + ' / ' + projects.length;
+    }
+
+    function openLightbox(idx) {
+      showProject(idx);
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(function() { lbMedia.innerHTML = ''; }, 400);
+    }
 
     projects.forEach(function(p, i) {
       var wrap = document.createElement('div');
@@ -205,29 +236,20 @@
             '<div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div>' +
           '</div>' +
         '</div>';
-      wrap.addEventListener('click', function() { openModal(i); });
+      wrap.addEventListener('click', function() { openLightbox(i); });
       grid.appendChild(wrap);
     });
 
-    function openModal(i) {
-      var p = projects[i];
-      modalTitle.textContent = p.title;
-      modalDesc.textContent = p.desc;
-      modalTags.innerHTML = p.tags.map(function(t) { return '<span>' + t + '</span>'; }).join('');
-      modalMedia.innerHTML = '<img src="' + p.media + '" alt="' + p.title + '">';
-      modal.classList.add('open');
-      modalClose.classList.add('show');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeModal() {
-      modal.classList.remove('open');
-      modalClose.classList.remove('show');
-      document.body.style.overflow = '';
-      setTimeout(function() { modalMedia.innerHTML = ''; }, 400);
-    }
-    modalClose.addEventListener('click', closeModal);
-    modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+    lbClose.addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', function(e) { e.stopPropagation(); showProject(currentIdx - 1); });
+    lbNext.addEventListener('click', function(e) { e.stopPropagation(); showProject(currentIdx + 1); });
+    lightbox.addEventListener('click', function(e) { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', function(e) {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showProject(currentIdx - 1);
+      if (e.key === 'ArrowRight') showProject(currentIdx + 1);
+    });
 
     var obs = new IntersectionObserver(function(entries) {
       entries.forEach(function(e, i) {
