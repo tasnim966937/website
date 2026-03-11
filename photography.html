@@ -948,10 +948,10 @@
     var mapView = document.getElementById('map-view');
 
     var locations = [
-      { idx: 0, title: 'Yosemite National Park', sub: 'California, Feb 2025', cover: 'photography/yosemite/DSC_2725.webp', lat: 37.7490, lng: -119.5885 },
-      { idx: 1, title: 'Death Valley National Park', sub: 'California, Feb 2025', cover: 'photography/death-valley/DSC_2614.webp', lat: 36.5054, lng: -116.9325 },
-      { idx: 2, title: 'Miami', sub: 'Florida, Mar 2024', cover: 'photography/miami/DSC_2308-1.webp', lat: 25.7617, lng: -80.1918 },
-      { idx: 3, title: 'Kitch-Iti Kipi', sub: 'Michigan, Oct 2023', cover: 'photography/kitch-iti-kipi/DSC_1694.webp', lat: 46.0017, lng: -86.3803 }
+      { idx: 0, title: 'Yosemite National Park', sub: 'California, Feb 2025', cover: 'photography/yosemite/DSC_2725.webp', lat: 37.7490, lng: -119.5885, anchorLat: 43.5, anchorLng: -123.5, textAnchor: 'right' },
+      { idx: 1, title: 'Death Valley National Park', sub: 'California, Feb 2025', cover: 'photography/death-valley/DSC_2614.webp', lat: 36.5054, lng: -116.9325, anchorLat: 29.5, anchorLng: -122.0, textAnchor: 'right' },
+      { idx: 2, title: 'Miami', sub: 'Florida, Mar 2024', cover: 'photography/miami/DSC_2308-1.webp', lat: 25.7617, lng: -80.1918, anchorLat: 21.5, anchorLng: -73.5, textAnchor: 'left' },
+      { idx: 3, title: 'Kitch-Iti Kipi', sub: 'Michigan, Oct 2023', cover: 'photography/kitch-iti-kipi/DSC_1694.webp', lat: 46.0017, lng: -86.3803, anchorLat: 49.5, anchorLng: -77.0, textAnchor: 'left' }
     ];
 
     function initMap() {
@@ -973,8 +973,112 @@
 
       mapInstance.on('load', function() {
         var bounds = new maplibregl.LngLatBounds();
-        locations.forEach(function(loc) { bounds.extend([loc.lng, loc.lat]); });
-        mapInstance.fitBounds(bounds, { padding: { top: 60, bottom: 60, left: 40, right: 40 }, maxZoom: 5 });
+        locations.forEach(function(loc) {
+          bounds.extend([loc.lng, loc.lat]);
+          bounds.extend([loc.anchorLng, loc.anchorLat]);
+        });
+        mapInstance.fitBounds(bounds, { padding: { top: 40, bottom: 40, left: 40, right: 40 }, maxZoom: 4.5 });
+
+        var lineFeatures = [];
+        var labelFeatures = [];
+        locations.forEach(function(loc) {
+          lineFeatures.push({
+            type: 'Feature',
+            geometry: {
+              type: 'LineString',
+              coordinates: [[loc.lng, loc.lat], [loc.anchorLng, loc.anchorLat]]
+            }
+          });
+          labelFeatures.push({
+            type: 'Feature',
+            geometry: { type: 'Point', coordinates: [loc.anchorLng, loc.anchorLat] },
+            properties: { title: loc.title.toUpperCase(), sub: loc.sub, anchor: loc.textAnchor }
+          });
+        });
+
+        mapInstance.addSource('leader-lines', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: lineFeatures }
+        });
+        mapInstance.addLayer({
+          id: 'leader-lines-layer',
+          type: 'line',
+          source: 'leader-lines',
+          paint: {
+            'line-color': 'rgba(255,255,255,0.25)',
+            'line-width': 1
+          }
+        });
+
+        mapInstance.addSource('leader-dots', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: labelFeatures }
+        });
+        mapInstance.addLayer({
+          id: 'leader-dots-layer',
+          type: 'circle',
+          source: 'leader-dots',
+          paint: {
+            'circle-radius': 3,
+            'circle-color': 'rgba(30,130,137,0.7)',
+            'circle-stroke-width': 1,
+            'circle-stroke-color': 'rgba(255,255,255,0.3)'
+          }
+        });
+
+        mapInstance.addSource('leader-labels', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: labelFeatures }
+        });
+        mapInstance.addLayer({
+          id: 'leader-labels-title',
+          type: 'symbol',
+          source: 'leader-labels',
+          layout: {
+            'text-field': ['get', 'title'],
+            'text-font': ['Open Sans Bold'],
+            'text-size': 11,
+            'text-anchor': ['get', 'anchor'],
+            'text-offset': [
+              'case',
+              ['==', ['get', 'anchor'], 'left'], ['literal', [0.8, 0]],
+              ['literal', [-0.8, 0]]
+            ],
+            'text-letter-spacing': 0.12,
+            'text-max-width': 14,
+            'text-allow-overlap': true
+          },
+          paint: {
+            'text-color': '#C49B1A',
+            'text-halo-color': 'transparent',
+            'text-halo-width': 0
+          }
+        });
+        mapInstance.addLayer({
+          id: 'leader-labels-sub',
+          type: 'symbol',
+          source: 'leader-labels',
+          layout: {
+            'text-field': ['get', 'sub'],
+            'text-font': ['Open Sans Regular'],
+            'text-size': 9,
+            'text-anchor': ['get', 'anchor'],
+            'text-offset': [
+              'case',
+              ['==', ['get', 'anchor'], 'left'], ['literal', [0.8, 2.2]],
+              ['literal', [-0.8, 2.2]]
+            ],
+            'text-letter-spacing': 0.05,
+            'text-max-width': 14,
+            'text-allow-overlap': true
+          },
+          paint: {
+            'text-color': 'rgba(255,255,255,0.7)',
+            'text-halo-color': 'transparent',
+            'text-halo-width': 0
+          }
+        });
+
         locations.forEach(function(loc) {
           var el = document.createElement('div');
           el.className = 'map-marker';
