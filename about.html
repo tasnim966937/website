@@ -168,21 +168,30 @@
     .award-tag-gold { background: rgba(218,165,32,0.1); color: var(--accent-gold); border: 1px solid rgba(218,165,32,0.15); }
     .award-tag-teal { background: rgba(30,130,137,0.1); color: var(--accent-teal); border: 1px solid rgba(30,130,137,0.15); }
 
-    /* Metric rings */
-    .metric-ring {
-      position: relative; width: 130px; height: 130px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    /* Hero accent line */
+    .hero-line {
+      width: 80px; height: 2px; border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent-teal), var(--accent-gold));
+      opacity: 0; transform: scaleX(0); transform-origin: left;
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1);
     }
-    .metric-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
-    .metric-ring .ring-bg { fill: none; stroke: rgba(255,255,255,0.04); stroke-width: 3; }
-    .metric-ring .ring-fill { fill: none; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 377; stroke-dashoffset: 377; transition: stroke-dashoffset 1.8s cubic-bezier(0.16,1,0.3,1); }
-    .metric-ring.visible .ring-fill { stroke-dashoffset: var(--offset); }
-    .metric-ring .ring-teal { stroke: var(--accent-teal); filter: drop-shadow(0 0 6px rgba(30,130,137,0.4)); }
-    .metric-ring .ring-gold { stroke: var(--accent-gold); filter: drop-shadow(0 0 6px rgba(218,165,32,0.3)); }
-    .metric-val { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 28px; color: #fff; line-height: 1; position: relative; z-index: 1; }
-    .metric-val .suf { font-size: 0.55em; color: var(--accent-teal); }
-    .metric-val .suf-gold { font-size: 0.55em; color: var(--accent-gold); }
-    .metric-lbl { font-size: 10px; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-top: 4px; position: relative; z-index: 1; }
+    .hero-line.visible { opacity: 1; transform: scaleX(1); }
+
+    /* Hero keywords */
+    .hero-keyword {
+      display: inline-block; padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      font-family: 'Montserrat', sans-serif; letter-spacing: 0.02em;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.7); transition: border-color 0.4s, color 0.4s, box-shadow 0.4s, transform 0.4s;
+    }
+    .hero-keyword:hover {
+      border-color: rgba(30,130,137,0.3); color: #fff; transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(30,130,137,0.1);
+    }
+    .hero-keyword.gold:hover {
+      border-color: rgba(218,165,32,0.3);
+      box-shadow: 0 4px 20px rgba(218,165,32,0.08);
+    }
 
     /* Location badge */
     .loc-badge {
@@ -208,10 +217,7 @@
     }
 
     @media (max-width: 768px) {
-      .metric-ring { width: 100px; height: 100px; }
-      .metric-ring svg { transform: rotate(-90deg); }
-      .metric-ring .ring-bg, .metric-ring .ring-fill { stroke-width: 3.5; }
-      .metric-val { font-size: 22px; }
+      .hero-keyword { font-size: 12px; padding: 5px 12px; }
     }
 
     /* Cert row */
@@ -289,72 +295,70 @@
   </div>
 
   <!-- Hero -->
-  <section class="relative pt-40 pb-10 px-[7vw]" style="z-index: 1;">
+  <section class="relative pt-40 pb-16 px-[7vw]" style="z-index: 1;">
+    <!-- Background glows -->
     <div class="absolute inset-0 pointer-events-none" style="z-index: 0;">
-      <div class="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] rounded-full opacity-[0.05]" style="background: radial-gradient(ellipse, rgba(30,130,137,0.8), transparent 70%); filter: blur(80px);"></div>
-      <div class="absolute top-2/3 right-0 w-[400px] h-[400px] rounded-full opacity-[0.03]" style="background: radial-gradient(ellipse, rgba(218,165,32,0.8), transparent 70%); filter: blur(60px);"></div>
+      <div class="absolute top-[15%] left-1/2 -translate-x-1/2 w-[1100px] h-[600px] rounded-full opacity-[0.04]" style="background: radial-gradient(ellipse, rgba(30,130,137,0.9), transparent 65%); filter: blur(100px);"></div>
+      <div class="absolute top-[60%] right-[10%] w-[500px] h-[500px] rounded-full opacity-[0.025]" style="background: radial-gradient(ellipse, rgba(218,165,32,0.9), transparent 65%); filter: blur(80px);"></div>
     </div>
-    <div class="relative z-10 max-w-[1000px] mx-auto grid lg:grid-cols-[1fr_auto] gap-16 items-center">
-      <!-- Left: intro -->
-      <div>
-        <div class="scroll-reveal flex flex-wrap items-center gap-3 mb-8">
-          <span class="loc-badge"><span class="loc-pulse"></span> Ohio, USA</span>
-          <span class="role-tag">Research Scientist</span>
-        </div>
-        <h1 class="scroll-reveal sr-d1" style="font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: clamp(2.2rem, 5vw, 3.6rem); letter-spacing: -0.03em; color: #fff; line-height: 1.08; margin-bottom: 20px;">
-          Geospatial Data Scientist &<br><span class="gradient-text">AI Specialist</span>
-        </h1>
-        <div class="scroll-reveal sr-d2" style="color: rgba(255,255,255,0.75); font-size: 16px; line-height: 1.9; max-width: 560px;">
-          <p style="margin-bottom: 14px;">
-            It all started with mountains, rivers, and oceans, and a dire thirst to know more about them. Picking geology was never a coincidence. I fell in love with learning how past life shaped the planet, then dove into the physics of earthquakes and tectonic plates. Along the way I picked up scripting and algorithms, and realized I could combine all of it.
-          </p>
-          <p style="margin-bottom: 14px;">
-            I joined the Bangladesh government briefly, working with the environment and climate change team where I dealt heavily with geospatial datasets. That is when I knew exactly where I belonged. I started pursuing geospatial science full-time, earned a fully funded scholarship to study in the USA, and shifted into hyperspectral remote sensing and advanced machine learning.
-          </p>
-          <p style="margin-bottom: 14px;">
-            Then came <a href="https://www.satelytics.com/" target="_blank" rel="noopener" style="color: var(--accent-teal); font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(30,130,137,0.3); transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(30,130,137,0.8)'" onmouseout="this.style.borderColor='rgba(30,130,137,0.3)'">Satelytics</a>, a geospatial startup in Perrysburg, Ohio. I work with deep learning and computer vision here, and one of the biggest lessons has been: having hundreds of spectral bands is powerful, but knowing how to squeeze insights out of just three RGB bands through object-based detection can be equally impressive. I have developed algorithms built on YOLO and SAM foundational models, and I am still learning every day.
-          </p>
-          <p style="margin-bottom: 14px;">
-            Somewhere in between, I picked up an MBA in Finance, purely out of curiosity about why the world revolves around it. Learning about money turned out to be genuinely fun. At the very least, I do my own taxes now!
-          </p>
-          <p style="margin-bottom: 0;">
-            Building AI tools and workflow automation is my hobby. I am also a part-time researcher, doing research on evenings and weekends. Yes, you can call me a workaholic.
-          </p>
-        </div>
+
+    <div class="relative z-10 max-w-[780px] mx-auto">
+      <!-- Tags row -->
+      <div class="scroll-reveal flex flex-wrap items-center justify-center gap-3 mb-10">
+        <span class="loc-badge"><span class="loc-pulse"></span> Ohio, USA</span>
+        <span class="role-tag">Research Scientist</span>
       </div>
 
-      <!-- Right: metric rings -->
-      <div class="scroll-reveal sr-d3 grid grid-cols-2 gap-6 justify-items-center" id="metric-grid">
-        <!-- Publications -->
-        <div class="metric-ring" data-percent="88" data-color="teal" style="--offset: 45;">
-          <svg viewBox="0 0 128 128"><circle class="ring-bg" cx="64" cy="64" r="60"/><circle class="ring-fill ring-teal" cx="64" cy="64" r="60"/></svg>
-          <span class="metric-val">15<span class="suf">+</span></span>
-          <span class="metric-lbl">Papers</span>
-        </div>
-        <!-- Citations -->
-        <div class="metric-ring" data-percent="75" data-color="gold" style="--offset: 94;">
-          <svg viewBox="0 0 128 128"><circle class="ring-bg" cx="64" cy="64" r="60"/><circle class="ring-fill ring-gold" cx="64" cy="64" r="60"/></svg>
-          <span class="metric-val">148<span class="suf-gold">+</span></span>
-          <span class="metric-lbl">Citations</span>
-        </div>
-        <!-- Experience -->
-        <div class="metric-ring" data-percent="60" data-color="teal" style="--offset: 151;">
-          <svg viewBox="0 0 128 128"><circle class="ring-bg" cx="64" cy="64" r="60"/><circle class="ring-fill ring-teal" cx="64" cy="64" r="60"/></svg>
-          <span class="metric-val">5<span class="suf">+</span></span>
-          <span class="metric-lbl">Years</span>
-        </div>
-        <!-- Degrees -->
-        <div class="metric-ring" data-percent="100" data-color="gold" style="--offset: 0;">
-          <svg viewBox="0 0 128 128"><circle class="ring-bg" cx="64" cy="64" r="60"/><circle class="ring-fill ring-gold" cx="64" cy="64" r="60"/></svg>
-          <span class="metric-val">4</span>
-          <span class="metric-lbl">Degrees</span>
-        </div>
+      <!-- Title -->
+      <h1 class="scroll-reveal sr-d1 text-center" style="font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: clamp(2.6rem, 6vw, 4.2rem); letter-spacing: -0.04em; color: #fff; line-height: 1.06; margin-bottom: 24px;">
+        Geospatial Data Scientist &<br><span class="gradient-text">AI Specialist</span>
+      </h1>
+
+      <!-- Accent line -->
+      <div class="scroll-reveal sr-d2 flex justify-center mb-12">
+        <div class="hero-line" id="hero-line"></div>
+      </div>
+
+      <!-- Motto -->
+      <p class="scroll-reveal sr-d2 text-center" style="font-style: italic; font-size: 18px; color: rgba(255,255,255,0.45); letter-spacing: 0.01em; margin-bottom: 32px; line-height: 1.6;">
+        "What is this world without the joy of learning?"
+      </p>
+
+      <!-- Bio -->
+      <div class="scroll-reveal sr-d2" style="color: rgba(255,255,255,0.75); font-size: 16px; line-height: 1.9; columns: 1;">
+        <p style="margin-bottom: 16px;">
+          It all started with mountains, rivers, and oceans, and a dire thirst to know more about them. Picking geology was never a coincidence. I fell in love with learning how past life shaped the planet, then dove into the physics of earthquakes and tectonic plates. Along the way I picked up scripting and algorithms, and realized I could combine all of it.
+        </p>
+        <p style="margin-bottom: 16px;">
+          I joined the Bangladesh government briefly, working with the environment and climate change team where I dealt heavily with geospatial datasets. That is when I knew exactly where I belonged. I started pursuing geospatial science full-time, earned a fully funded scholarship to study in the USA, and shifted into hyperspectral remote sensing and advanced machine learning.
+        </p>
+        <p style="margin-bottom: 16px;">
+          Then came <a href="https://www.satelytics.com/" target="_blank" rel="noopener" style="color: var(--accent-teal); font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(30,130,137,0.3); transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(30,130,137,0.8)'" onmouseout="this.style.borderColor='rgba(30,130,137,0.3)'">Satelytics</a>, a geospatial startup in Perrysburg, Ohio. I work with deep learning and computer vision here, and one of the biggest lessons has been: having hundreds of spectral bands is powerful, but knowing how to squeeze insights out of just three RGB bands through object-based detection can be equally impressive. I have developed algorithms built on YOLO and SAM foundational models, and I am still learning every day.
+        </p>
+        <p style="margin-bottom: 16px;">
+          Somewhere in between, I picked up an MBA in Finance, purely out of curiosity about why the world revolves around it. Learning about money turned out to be genuinely fun. At the very least, I do my own taxes now!
+        </p>
+        <p style="margin-bottom: 0;">
+          Building AI tools and workflow automation is my hobby. I am also a part-time researcher, doing research on evenings and weekends. Yes, you can call me a workaholic.
+        </p>
+      </div>
+
+      <!-- Keyword chips -->
+      <div class="scroll-reveal sr-d3 flex flex-wrap justify-center gap-3 mt-12">
+        <span class="hero-keyword">Deep Learning</span>
+        <span class="hero-keyword">Computer Vision</span>
+        <span class="hero-keyword">Remote Sensing</span>
+        <span class="hero-keyword gold">Hyperspectral</span>
+        <span class="hero-keyword">YOLO</span>
+        <span class="hero-keyword">SAM</span>
+        <span class="hero-keyword gold">Geospatial AI</span>
+        <span class="hero-keyword">AWS</span>
       </div>
     </div>
   </section>
 
   <!-- Thin divider -->
-  <div class="mx-[7vw] my-12" style="height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);"></div>
+  <div class="mx-[7vw] my-12" style="height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);"></div>
 
   <!-- Experience -->
   <section class="relative px-[7vw] py-24" style="z-index: 1;">
@@ -672,16 +676,24 @@
   <script>
     // Starfield
     (function() {
-      var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [];
+      var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [], STAR_COUNT = 200;
       function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-      window.addEventListener('resize', resize); resize();
-      for (var i = 0; i < 200; i++) stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.2 + 0.3, a: Math.random(), s: Math.random() * 0.005 + 0.002 });
-      function draw() {
+      resize(); window.addEventListener('resize', resize);
+      for (var i = 0; i < STAR_COUNT; i++) {
+        stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.2 + 0.3, a: Math.random(), speed: 0.002 + Math.random() * 0.008 });
+      }
+      function draw(t) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(function(s) { s.a += s.s; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,255,255,' + (0.15 + 0.35 * Math.abs(Math.sin(s.a))) + ')'; ctx.fill(); });
+        for (var i = 0; i < stars.length; i++) {
+          var s = stars[i];
+          var flicker = 0.5 + 0.5 * Math.sin(t * s.speed + s.a * 6.28);
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.28);
+          ctx.fillStyle = 'rgba(255,255,255,' + (flicker * 0.6).toFixed(2) + ')';
+          ctx.fill();
+        }
         requestAnimationFrame(draw);
       }
-      draw();
+      requestAnimationFrame(draw);
     })();
 
     // Scroll reveal
@@ -690,19 +702,14 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.scroll-reveal').forEach(function(el) { obs.observe(el); });
 
-    // Metric rings animation
-    var ringObs = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) {
-          e.target.querySelectorAll('.metric-ring').forEach(function(ring, i) {
-            setTimeout(function() { ring.classList.add('visible'); }, i * 200);
-          });
-          ringObs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.3 });
-    var mg = document.getElementById('metric-grid');
-    if (mg) ringObs.observe(mg);
+    // Hero accent line animation
+    var hl = document.getElementById('hero-line');
+    if (hl) {
+      var hlObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); hlObs.unobserve(e.target); } });
+      }, { threshold: 0.5 });
+      hlObs.observe(hl);
+    }
 
     // Social orb colors + reveal
     (function() {
