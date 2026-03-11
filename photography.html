@@ -16,6 +16,8 @@
   <meta name="twitter:description" content="Photography gallery featuring landscapes and nature from around the world.">
   <meta name="twitter:image" content="https://tasnimalam.com/photography/yosemite/DSC_2725.webp">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <style>
     :root {
       --cosmic-black: #000000;
@@ -103,6 +105,131 @@
       opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s 0.5s forwards;
     }
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* ─── View Toggle ─── */
+    .view-toggle-wrap {
+      position: relative; z-index: 1;
+      display: flex; justify-content: center;
+      padding: 0 5vw 2rem;
+      opacity: 0; transform: translateY(15px);
+      animation: fadeUp 0.8s 0.65s forwards;
+    }
+    .view-toggle {
+      display: inline-flex; align-items: center;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 9999px; padding: 4px;
+      gap: 2px;
+    }
+    .view-toggle button {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 20px; border-radius: 9999px;
+      border: none; background: transparent;
+      color: rgba(255,255,255,0.4);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.35s ease;
+    }
+    .view-toggle button.active {
+      background: rgba(30,130,137,0.15);
+      color: var(--accent-teal);
+      box-shadow: 0 0 20px rgba(30,130,137,0.1), inset 0 0 12px rgba(30,130,137,0.05);
+    }
+    .view-toggle button:hover:not(.active) { color: rgba(255,255,255,0.6); }
+    .view-toggle button svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    /* ─── Map View ─── */
+    .map-view {
+      position: relative; z-index: 1;
+      display: none;
+      padding: 0 5vw 4rem;
+      max-width: 1400px; margin: 0 auto;
+      opacity: 0; transition: opacity 0.4s ease;
+    }
+    .map-view.active { display: block; opacity: 1; }
+    .map-container {
+      position: relative;
+      width: 100%; height: 70vh;
+      border-radius: 20px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 0 60px rgba(30,130,137,0.06), 0 4px 40px rgba(0,0,0,0.5);
+    }
+    .map-container .maplibregl-map { border-radius: 20px; }
+    @media (max-width: 768px) { .map-container { height: 55vh; border-radius: 14px; } }
+
+    .map-marker {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--accent-teal);
+      border: 2px solid rgba(255,255,255,0.8);
+      box-shadow: 0 0 12px rgba(30,130,137,0.6), 0 0 30px rgba(30,130,137,0.3);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .map-marker:hover {
+      transform: scale(1.3);
+      box-shadow: 0 0 20px rgba(30,130,137,0.8), 0 0 50px rgba(30,130,137,0.4);
+    }
+    .map-marker::after {
+      content: '';
+      position: absolute; inset: -6px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(30,130,137,0.35);
+      animation: markerPing 2s ease-out infinite;
+    }
+    @keyframes markerPing {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    .maplibregl-popup-content {
+      background: rgba(12,12,12,0.92) !important;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      border-radius: 14px !important;
+      padding: 0 !important;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 30px rgba(30,130,137,0.08) !important;
+      min-width: 240px;
+    }
+    .maplibregl-popup-tip { border-top-color: rgba(12,12,12,0.92) !important; }
+    .maplibregl-popup-close-button {
+      color: rgba(255,255,255,0.4) !important;
+      font-size: 18px !important; right: 8px !important; top: 8px !important;
+      z-index: 2;
+    }
+    .maplibregl-popup-close-button:hover { color: #fff !important; }
+    .popup-inner { padding: 4px; }
+    .popup-img {
+      width: 100%; height: 130px;
+      object-fit: cover; border-radius: 11px 11px 0 0;
+      display: block;
+    }
+    .popup-body { padding: 14px 16px 16px; }
+    .popup-title {
+      color: #fff; font-family: 'Montserrat', sans-serif;
+      font-weight: 700; font-size: 14px; margin-bottom: 2px;
+    }
+    .popup-sub {
+      color: rgba(255,255,255,0.4);
+      font-size: 11px; margin-bottom: 10px;
+    }
+    .popup-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 14px; border-radius: 9999px;
+      border: 1px solid rgba(30,130,137,0.3);
+      background: rgba(30,130,137,0.1);
+      color: var(--accent-teal);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px; font-weight: 600;
+      cursor: pointer; transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .popup-btn:hover {
+      background: rgba(30,130,137,0.2);
+      border-color: rgba(30,130,137,0.5);
+    }
+    .popup-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
 
     /* ─── Album Grid ─── */
     .albums-view { position: relative; z-index: 1; padding: 1rem 5vw 6rem; max-width: 1400px; margin: 0 auto; }
@@ -412,6 +539,27 @@
     <p>Capturing the raw beauty of landscapes across the World through my Nikon Z6.</p>
   </section>
 
+  <!-- View Toggle -->
+  <div class="view-toggle-wrap">
+    <div class="view-toggle">
+      <button id="btn-grid" class="active" aria-label="Grid view">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Albums
+      </button>
+      <button id="btn-map" aria-label="Map view">
+        <svg viewBox="0 0 24 24"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+        Map
+      </button>
+    </div>
+  </div>
+
+  <!-- Map View -->
+  <div class="map-view" id="map-view">
+    <div class="map-container">
+      <div id="map" style="width:100%;height:100%;"></div>
+    </div>
+  </div>
+
   <!-- Albums View -->
   <div class="albums-view" id="albums-view">
     <div class="albums-grid" id="albums-grid"></div>
@@ -488,6 +636,7 @@
         title: 'Yosemite National Park',
         subtitle: 'California',
         date: 'February 2025',
+        lat: 37.7490, lng: -119.5885,
         cover: 'photography/yosemite/DSC_2725.webp',
         images: [
           'DSC_2725','DSC_2748','DSC_2767','DSC_2768','DSC_2771','DSC_2778','DSC_2781','DSC_2789',
@@ -503,6 +652,7 @@
         title: 'Death Valley National Park',
         subtitle: 'California',
         date: 'February 2025',
+        lat: 36.5054, lng: -116.9325,
         cover: 'photography/death-valley/DSC_2614.webp',
         images: [
           'DSC_2609','DSC_2610','DSC_2612','DSC_2613','DSC_2614','DSC_2615','DSC_2616','DSC_2618',
@@ -515,6 +665,7 @@
         title: 'Miami',
         subtitle: 'Florida',
         date: 'March 2024',
+        lat: 25.7617, lng: -80.1918,
         cover: 'photography/miami/DSC_2308-1.webp',
         images: [
           'DSC_2191-1','DSC_2236-1','DSC_2248-1','DSC_2250-1','DSC_2252-1','DSC_2255-1','DSC_2257-1',
@@ -527,6 +678,7 @@
         title: 'Kitch-Iti Kipi',
         subtitle: 'Michigan',
         date: 'October 2023',
+        lat: 46.0017, lng: -86.3803,
         cover: 'photography/kitch-iti-kipi/DSC_1694.webp',
         description: 'Water is so transparent you almost can see the bed of the lake. The limestone bed has many minerals that get dissolved with water with time and create this beautiful color of water. Many thermal hot springs can also be noticed here and that water also brings many minerals from the northern part of Michigan\u2019s subsurface.',
         images: [
@@ -785,6 +937,109 @@
     menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''})});
   })();
   </script>
+
+  <script>
+  (function() {
+    var mapInstance = null;
+    var mapInitialized = false;
+    var btnGrid = document.getElementById('btn-grid');
+    var btnMap = document.getElementById('btn-map');
+    var albumsView = document.getElementById('albums-view');
+    var mapView = document.getElementById('map-view');
+
+    var locations = [
+      { idx: 0, title: 'Yosemite National Park', sub: 'California, Feb 2025', cover: 'photography/yosemite/DSC_2725.webp', lat: 37.7490, lng: -119.5885 },
+      { idx: 1, title: 'Death Valley National Park', sub: 'California, Feb 2025', cover: 'photography/death-valley/DSC_2614.webp', lat: 36.5054, lng: -116.9325 },
+      { idx: 2, title: 'Miami', sub: 'Florida, Mar 2024', cover: 'photography/miami/DSC_2308-1.webp', lat: 25.7617, lng: -80.1918 },
+      { idx: 3, title: 'Kitch-Iti Kipi', sub: 'Michigan, Oct 2023', cover: 'photography/kitch-iti-kipi/DSC_1694.webp', lat: 46.0017, lng: -86.3803 }
+    ];
+
+    function initMap() {
+      if (mapInitialized) return;
+      mapInitialized = true;
+
+      mapInstance = new maplibregl.Map({
+        container: 'map',
+        style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+        center: [-95, 37],
+        zoom: 3.5,
+        attributionControl: false,
+        pitchWithRotate: false,
+        dragRotate: false
+      });
+
+      mapInstance.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+      mapInstance.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-left');
+
+      mapInstance.on('load', function() {
+        var bounds = new maplibregl.LngLatBounds();
+        locations.forEach(function(loc) { bounds.extend([loc.lng, loc.lat]); });
+        mapInstance.fitBounds(bounds, { padding: { top: 60, bottom: 60, left: 40, right: 40 }, maxZoom: 5 });
+        locations.forEach(function(loc) {
+          var el = document.createElement('div');
+          el.className = 'map-marker';
+
+          var popup = new maplibregl.Popup({ offset: 25, closeButton: true, maxWidth: '260px' })
+            .setHTML(
+              '<div class="popup-inner">' +
+                '<img class="popup-img" src="' + loc.cover + '" alt="' + loc.title + '" loading="lazy">' +
+                '<div class="popup-body">' +
+                  '<div class="popup-title">' + loc.title + '</div>' +
+                  '<div class="popup-sub">' + loc.sub + '</div>' +
+                  '<button class="popup-btn" data-album="' + loc.idx + '">' +
+                    'View Album <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>' +
+                  '</button>' +
+                '</div>' +
+              '</div>'
+            );
+
+          new maplibregl.Marker({ element: el })
+            .setLngLat([loc.lng, loc.lat])
+            .setPopup(popup)
+            .addTo(mapInstance);
+        });
+
+        document.getElementById('map').addEventListener('click', function(e) {
+          var btn = e.target.closest('.popup-btn');
+          if (!btn) return;
+          var albumIdx = parseInt(btn.dataset.album);
+          switchToGrid();
+          setTimeout(function() {
+            var cards = document.querySelectorAll('.album-card-wrap');
+            if (cards[albumIdx]) cards[albumIdx].click();
+          }, 350);
+        });
+      });
+    }
+
+    function switchToMap() {
+      btnGrid.classList.remove('active');
+      btnMap.classList.add('active');
+      albumsView.style.display = 'none';
+      mapView.style.display = 'block';
+      requestAnimationFrame(function() {
+        mapView.classList.add('active');
+      });
+      if (!mapInitialized) {
+        initMap();
+      } else if (mapInstance) {
+        mapInstance.resize();
+      }
+    }
+
+    function switchToGrid() {
+      btnMap.classList.remove('active');
+      btnGrid.classList.add('active');
+      mapView.classList.remove('active');
+      mapView.style.display = 'none';
+      albumsView.style.display = '';
+    }
+
+    btnMap.addEventListener('click', switchToMap);
+    btnGrid.addEventListener('click', switchToGrid);
+  })();
+  </script>
+
 <div class="scroll-arrows">
   <button id="scroll-up" aria-label="Scroll to top"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></button>
   <button id="scroll-down" aria-label="Scroll to bottom"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
