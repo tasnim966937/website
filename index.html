@@ -69,32 +69,39 @@
       overflow: hidden;
     }
 
-    /* Curved horizon arc - elliptical for visible curvature */
+    /* Curved horizon arc - elliptical for visible Earth curvature */
     .horizon-arc {
       position: absolute;
-      bottom: -18vw;
+      bottom: -38vw;
       left: 50%;
       transform: translateX(-50%);
-      width: 110vw;
-      height: 40vw;
+      width: 160vw;
+      height: 60vw;
       border-radius: 50%;
       background: radial-gradient(ellipse at 50% 0%, rgba(12,18,30,0.9) 0%, rgba(8,10,14,0.97) 18%, var(--cosmic-black) 40%);
       z-index: 1;
     }
 
-    /* Atmospheric glow rim */
+    /* Atmospheric glow rim — curved like Earth's horizon */
     .horizon-glow {
       position: absolute;
-      bottom: calc(22vw - 2px);
+      bottom: calc(-38vw - 2px);
       left: 50%;
       transform: translateX(-50%);
-      width: 110vw;
-      height: 12px;
+      width: 160vw;
+      height: 60vw;
       z-index: 2;
       border-radius: 50%;
+      overflow: hidden;
+      animation: horizonPulse 5s ease-in-out infinite;
+    }
+    .horizon-glow-inner {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
       background: linear-gradient(90deg,
-        transparent 5%,
-        rgba(60,150,220,0.15) 15%,
+        transparent 8%,
+        rgba(60,150,220,0.15) 16%,
         rgba(100,185,255,0.5) 28%,
         rgba(200,235,255,0.9) 40%,
         rgba(255,250,235,1) 47%,
@@ -102,62 +109,53 @@
         rgba(255,250,235,1) 53%,
         rgba(200,235,255,0.9) 60%,
         rgba(100,185,255,0.5) 72%,
-        rgba(60,150,220,0.15) 85%,
-        transparent 95%
-      );
-      filter: blur(0.8px);
-      animation: horizonPulse 5s ease-in-out infinite;
-    }
-    .horizon-glow::before {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 3%;
-      right: 3%;
-      height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(90deg,
-        transparent 8%,
-        rgba(80,170,240,0.08) 18%,
-        rgba(160,215,255,0.25) 32%,
-        rgba(255,240,200,0.5) 46%,
-        rgba(255,248,225,0.6) 50%,
-        rgba(255,240,200,0.5) 54%,
-        rgba(160,215,255,0.25) 68%,
-        rgba(80,170,240,0.08) 82%,
+        rgba(60,150,220,0.15) 84%,
         transparent 92%
       );
-      filter: blur(12px);
+      filter: blur(0.6px);
     }
-    .horizon-glow::after {
-      content: '';
+    .horizon-glow-soft {
       position: absolute;
-      bottom: -20px;
-      left: 8%;
-      right: 8%;
-      height: 120px;
-      border-radius: 50%;
+      top: 0; left: 2%; right: 2%;
+      height: 50px;
       background: linear-gradient(90deg,
-        transparent 12%,
-        rgba(50,120,200,0.05) 22%,
-        rgba(120,190,255,0.12) 36%,
-        rgba(255,225,170,0.2) 46%,
-        rgba(255,235,190,0.24) 50%,
-        rgba(255,225,170,0.2) 54%,
-        rgba(120,190,255,0.12) 64%,
-        rgba(50,120,200,0.05) 78%,
-        transparent 88%
+        transparent 10%,
+        rgba(80,170,240,0.06) 20%,
+        rgba(160,215,255,0.2) 34%,
+        rgba(255,240,200,0.45) 46%,
+        rgba(255,248,225,0.55) 50%,
+        rgba(255,240,200,0.45) 54%,
+        rgba(160,215,255,0.2) 66%,
+        rgba(80,170,240,0.06) 80%,
+        transparent 90%
       );
-      filter: blur(35px);
+      filter: blur(10px);
+    }
+    .horizon-glow-deep {
+      position: absolute;
+      top: -10px; left: 6%; right: 6%;
+      height: 100px;
+      background: linear-gradient(90deg,
+        transparent 14%,
+        rgba(50,120,200,0.04) 24%,
+        rgba(120,190,255,0.1) 38%,
+        rgba(255,225,170,0.18) 47%,
+        rgba(255,235,190,0.22) 50%,
+        rgba(255,225,170,0.18) 53%,
+        rgba(120,190,255,0.1) 62%,
+        rgba(50,120,200,0.04) 76%,
+        transparent 86%
+      );
+      filter: blur(30px);
     }
 
-    /* Sun rays upward from horizon */
+    /* Sun rays upward from curved horizon */
     .horizon-rays {
       position: absolute;
       bottom: calc(22vw);
       left: 50%;
       transform: translateX(-50%);
-      width: 100vw;
+      width: 120vw;
       height: 45vh;
       z-index: 1;
       pointer-events: none;
@@ -911,9 +909,9 @@
     .mob-menu-close{position:absolute;top:1.5rem;right:2rem;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
     @media (max-width: 639px) {
       .hero-section { padding-bottom: 3rem !important; justify-content: flex-start !important; padding-top: 18vh !important; }
-      .horizon-arc { bottom: 38vw !important; height: 18vw !important; }
-      .horizon-glow { bottom: calc(56vw) !important; }
-      .horizon-rays { bottom: calc(56vw) !important; height: 18vh !important; }
+      .horizon-arc { bottom: 14vw !important; height: 50vw !important; width: 180vw !important; }
+      .horizon-glow { bottom: calc(14vw) !important; width: 180vw !important; height: 50vw !important; }
+      .horizon-rays { bottom: calc(64vw) !important; height: 18vh !important; }
       section.relative.py-28 { padding-top: 3.5rem !important; padding-bottom: 3.5rem !important; }
       section.relative .text-center.mb-20 { margin-bottom: 2.5rem !important; }
     }
@@ -1109,7 +1107,11 @@
     </div>
     <!-- Horizon arc with glow -->
     <div class="horizon-rays" id="horizon-rays"></div>
-    <div class="horizon-glow" id="horizon-glow"></div>
+    <div class="horizon-glow" id="horizon-glow">
+      <div class="horizon-glow-inner"></div>
+      <div class="horizon-glow-soft"></div>
+      <div class="horizon-glow-deep"></div>
+    </div>
     <div class="horizon-arc" id="horizon-arc"></div>
   </section>
 
