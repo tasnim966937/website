@@ -128,11 +128,27 @@
     .edu-card {
       position: relative; padding: 28px 30px; border-radius: 16px;
       background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.04);
-      transition: border-color 0.4s, box-shadow 0.4s;
+      transition: border-color 0.4s, box-shadow 0.4s; overflow: hidden;
     }
     .edu-card:hover {
       border-color: rgba(30,130,137,0.2);
       box-shadow: 0 0 30px rgba(30,130,137,0.06), inset 0 0 20px rgba(30,130,137,0.03);
+    }
+    .edu-card .card-glow {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      opacity: 0; transition: opacity 0.35s ease; border-radius: 16px;
+    }
+    .edu-card:hover .card-glow { opacity: 1; }
+
+    @media (pointer: coarse) {
+      .edu-card:nth-child(odd) {
+        border-color: rgba(30,130,137,0.5) !important;
+        box-shadow: inset 0 0 30px rgba(30,130,137,0.25), 0 0 20px rgba(30,130,137,0.4), 0 0 50px rgba(30,130,137,0.15) !important;
+      }
+      .edu-card:nth-child(even) {
+        border-color: rgba(218,165,32,0.45) !important;
+        box-shadow: inset 0 0 30px rgba(218,165,32,0.22), 0 0 20px rgba(218,165,32,0.38), 0 0 50px rgba(218,165,32,0.12) !important;
+      }
     }
     .edu-degree { color: #fff; font-weight: 700; font-size: 16px; margin-bottom: 4px; }
     .edu-school { color: var(--accent-teal); font-size: 13px; font-weight: 600; }
@@ -743,6 +759,37 @@
           requestAnimationFrame(update);
         }
         update();
+      });
+    })();
+
+    // Edu card glow
+    (function() {
+      var teal = { r: 30, g: 130, b: 137 };
+      var gold = { r: 218, g: 165, b: 32 };
+      document.querySelectorAll('.edu-card').forEach(function(card, i) {
+        var glow = document.createElement('div');
+        glow.className = 'card-glow';
+        card.insertBefore(glow, card.firstChild);
+        var c = i % 2 === 0 ? teal : gold;
+        card.addEventListener('mousemove', function(e) {
+          var rect = card.getBoundingClientRect();
+          var x = e.clientX - rect.left, y = e.clientY - rect.top;
+          var offX = x - rect.width / 2, offY = y - rect.height / 2;
+          card.style.boxShadow =
+            'inset 0 0 40px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.08),' +
+            offX * 0.15 + 'px ' + offY * 0.15 + 'px 30px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.15),' +
+            '0 0 60px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.08)';
+          card.style.borderColor = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.3)';
+          glow.style.background = 'radial-gradient(circle 180px at ' + x + 'px ' + y + 'px,' +
+            'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.2) 0%,' +
+            'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.06) 40%,' +
+            'transparent 65%)';
+        });
+        card.addEventListener('mouseleave', function() {
+          card.style.boxShadow = '';
+          card.style.borderColor = '';
+          glow.style.background = '';
+        });
       });
     })();
   </script>
