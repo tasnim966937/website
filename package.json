@@ -1,0 +1,17 @@
+{
+  "name": "tasnimalam-website",
+  "version": "1.0.0",
+  "description": "Personal portfolio website for Tasnim Alam",
+  "scripts": {
+    "serve": "node serve.mjs",
+    "screenshot": "node screenshot.mjs"
+  },
+  "keywords": [],
+  "author": "Tasnim Alam",
+  "license": "ISC",
+  "dependencies": {
+    "mammoth": "^1.11.0",
+    "puppeteer": "^24.38.0",
+    "sharp": "^0.34.5"
+  }
+}

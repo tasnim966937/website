@@ -1,0 +1,101 @@
+---
+description: Mir portfolio website - architecture, design system, and conventions
+alwaysApply: true
+---
+
+# Portfolio Project — tasnimalam.com
+
+## Owner
+Mir Md Tasnim Alam — Geospatial Data Scientist & AI Specialist
+
+## Site Architecture
+
+### Pages
+| File | Purpose |
+|------|---------|
+| `index.html` | **Production home page** - edit directly |
+| `ai-automation.html` | AI & Web Solutions service page |
+| `research.html` | Publications & Research - 15 cards, filter pills, animated stats |
+| `remote-sensing.html` | Remote Sensing & AI project showcase + published research cards |
+| `gis-mapping.html` | GIS & Mapping project showcase |
+| `photography.html` | Photography gallery - masonry grid, 4 locations, lightbox |
+| `blog.html` | Blog listing page |
+| `blog/*.html` | 5 individual blog posts |
+| `paper-chl.html` | Paper showcase: Canopy Chlorophyll (ML vs RTM) |
+| `paper-nitrogen.html` | Paper showcase: Chlorophyll & Nitrogen from EnMAP |
+| `paper-phosphorus.html` | Paper showcase: CCC/CNC/CPC from Google Satellite Embeddings |
+
+### Assets
+| Folder | Purpose |
+|--------|---------|
+| `frames/` | 145 WebP frames for scroll-driven planet canvas animation |
+| `research/` | Optimized images/videos for remote-sensing & gis-mapping pages |
+| `research/papers/` | Extracted figures for the 3 paper showcase pages (chl, nitrogen, phosphorus) |
+| `photography/` | Optimized WebP images + thumbnails for the photography gallery |
+| `ref/` | Reviewer profile images (zach.jfif, jeff.webp, ifran.jfif) |
+| `brand_assets/` | Logo (Mir.png), brand guideline, reference designs |
+
+### Dev Tools (keep for future use)
+| File | Purpose |
+|------|---------|
+| `serve.mjs` | Local dev server at `http://localhost:3000` |
+| `screenshot.mjs` | Puppeteer screenshot utility |
+| `CLAUDE.md` | Frontend design rules for AI sessions |
+| `SKILL.md` | Cursor agent skill definition |
+| `package.json` | Node dependencies (puppeteer, sharp) |
+
+## Critical Workflow
+1. **Edit `index.html` directly** for home page changes (no more balerion-demo workflow)
+2. The title in `index.html` should be "Mir Md Tasnim Alam - Geospatial Data Scientist & AI Specialist"
+
+## Design System
+
+### CSS Variables (defined in `:root`)
+- `--cosmic-black: #000000` — global background, MUST be pitch black
+- `--cosmic-dark: #080808`
+- `--cosmic-surface: #161616`
+- `--accent-teal: #1E8289` — primary accent
+- `--accent-gold: #DAA520` — secondary accent
+- `--cosmic-blue: #1a3a5c`
+- `--cosmic-purple: #2a1a4a`
+
+### Typography
+- Headings: `'Montserrat', sans-serif` — weight 700–900, letter-spacing `-0.02em` to `-0.04em`
+- Body: `'Instrument Sans', sans-serif` — color `rgba(255,255,255,0.3)` to `0.5`
+- Fonts loaded via Google Fonts CDN
+
+### Shared Components (must be identical across all pages)
+- **Logo**: Uses dotless `ı` (U+0131) with `.mir-i` and `.mir-dot` CSS classes
+- **Navigation**: Fixed, transparent, with Home / About / Services / Blog links
+- **"Get in Touch" button**: `.moving-border-btn` with animated `.glow-orb` SVG border
+- **Footer**: Logo + `© 2026 Mir Md Tasnim Alam. All rights reserved.` + social links
+- **Starfield**: `<canvas id="starfield">` with twinkling JS animation on all dark pages
+
+### Card Styles
+- **Service cards** (home): `.svc-card` — 4-column grid (`.svc-grid`), glassmorphic, radial gradient glow on hover
+- **Blog cards** (home): `.blog-card-ft` — matching futuristic glassmorphic style
+- **Glass cards** (ai-automation, research): `.glass-card` — `rgba(255,255,255,0.015)` bg, subtle border, hover lift
+
+### Animation Libraries
+- **GSAP + ScrollTrigger**: Planet scroll animation, text overlays, counter animations
+- **Lenis**: Smooth scrolling
+- **Intersection Observer**: `.scroll-reveal` / `.sr-d1` / `.sr-d2` staggered entrance animations
+
+## Nav Links (all pages)
+- Home → `index.html`
+- About → `index.html#about` (scrolls to planet entry)
+- Services → `index.html#services`
+- Blog → `blog.html`
+- Photography → `photography.html`
+- Get in Touch → `mailto:tasnim966937@gmail.com,tasnimalam@ou.edu`
+
+## GitHub
+- Repo: `https://github.com/tasnim966937/website.git`
+- Branch: `main`
+- Shell: PowerShell (no `&&` chaining, no heredocs — use `$msg` variable for commit messages)
+
+## Copy Rules
+- **Never use em dashes (—)** in any user-facing text, headings, descriptions, or copy. Use commas, periods, or rewrite the sentence instead.
+
+## .gitignore Exclusions
+`node_modules/`, `temporary screenshots/`, `video2web/`, `globe_options/`, `globe-picker.html`, `logo-picker.html`, `index-old.html`, `balerion-demo.html`, `CV/`, `Photography/`, `media_library_export-*/`, `optimize-photos.mjs`, `extract_figs.py`, `ref/paper/*.pdf`, `ref/paper/fig*.jpg`, `research/papers/*/page_*.png`

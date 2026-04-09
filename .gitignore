@@ -1,0 +1,28 @@
+node_modules/
+temporary screenshots/
+
+# Dev tools (one-off, not needed in repo)
+extract_figs.py
+optimize-photos.mjs
+globe-picker.html
+logo-picker.html
+globe_options/
+video2web/
+
+# Obsolete / archive
+index-old.html
+balerion-demo.html
+
+# Large / private assets
+CV/
+media_library_export-*/
+ref/paper/*.pdf
+ref/paper/fig*.jpg
+research/papers/*/page_*.png
+
+# Photography: raw source folders & raw JPGs (only keep optimized WebPs)
+photography/Death Valley/
+photography/Kitch_it-kipi/
+photography/Miami_Fl/
+photography/yosemite/*.jpg
+photography/manifest.json

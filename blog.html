@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - Mir Md Tasnim Alam</title>
+  <meta name="description" content="Articles and insights on geospatial science, remote sensing, development, and technology.">
+  <meta property="og:title" content="Blog - Mir Md Tasnim Alam">
+  <meta property="og:description" content="Articles and insights on geospatial science, remote sensing, development, and technology.">
+  <meta property="og:image" content="https://tasnimalam.com/og-image.png">
+  <meta property="og:url" content="https://tasnimalam.com/blog.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Mir Md Tasnim Alam">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Blog - Mir Md Tasnim Alam">
+  <meta name="twitter:description" content="Articles and insights on geospatial science, remote sensing, development, and technology.">
+  <meta name="twitter:image" content="https://tasnimalam.com/og-image.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'mir-dark': '#151515',
+            'mir-teal': '#1E8289',
+            'mir-gold': '#DAA520',
+          },
+          fontFamily: {
+            display: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['Lora', 'serif'],
+            mono: ['"Montserrat"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --cosmic-black: #000000;
+      --cosmic-dark: #151515;
+      --cosmic-surface: #1a1a1a;
+      --text-primary: #f0f0f0;
+      --text-secondary: rgba(255,255,255,0.72);
+      --text-tertiary: rgba(255,255,255,0.35);
+      --accent-teal: #1E8289;
+      --accent-gold: #DAA520;
+    }
+
+    body {
+      background: var(--cosmic-black);
+      color: var(--text-secondary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    .mir-i {
+      position: relative;
+      display: inline-block;
+    }
+    .mir-dot {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 36% 33%, #5ce0e4, #22b0b4 55%, #17696e);
+      pointer-events: none;
+      z-index: 2;
+      left: 58%;
+      transform: translateX(-50%);
+      width: 0.40em;
+      height: 0.40em;
+      top: -0.08em;
+      box-shadow: 0 0 0.12em rgba(30,130,137,0.9), 0 0 0.35em rgba(30,130,137,0.4);
+    }
+
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .cosmic-bg {
+      background: var(--cosmic-dark);
+      position: relative;
+    }
+    .cosmic-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 600px 400px at 20% 10%, rgba(30,130,137,0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 500px at 80% 80%, rgba(218,165,32,0.03) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .nav-link-dark {
+      color: rgba(255,255,255,0.5);
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .nav-link-dark:hover { color: rgba(255,255,255,0.85); }
+    .nav-link-dark::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; width: 0; height: 1.5px;
+      background: var(--accent-gold);
+      transition: width 0.3s ease;
+    }
+    .nav-link-dark:hover::after { width: 100%; }
+
+    .blog-card {
+      position: relative;
+      display: block;
+      text-decoration: none;
+      background: rgba(255,255,255,0.015);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: border-color 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s ease;
+    }
+    .blog-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+    .blog-card:hover::before { opacity: 1; }
+    .blog-card:nth-child(odd)::before { background: radial-gradient(ellipse at 50% 20%, rgba(30,130,137,0.1) 0%, transparent 70%); }
+    .blog-card:nth-child(even)::before { background: radial-gradient(ellipse at 50% 20%, rgba(218,165,32,0.07) 0%, transparent 70%); }
+    .blog-card .card-glow {
+      position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      opacity: 0; transition: opacity 0.35s ease;
+    }
+    .blog-card:hover .card-glow { opacity: 1; }
+
+    @media (pointer: coarse) {
+      .blog-card {
+        transition: none !important;
+      }
+      .blog-card::before { opacity: 1 !important; }
+      .blog-card:nth-child(odd) {
+        border-color: rgba(30,130,137,0.6) !important;
+        box-shadow: inset 0 0 40px rgba(30,130,137,0.35), 0 0 25px rgba(30,130,137,0.55), 0 0 70px rgba(30,130,137,0.25) !important;
+      }
+      .blog-card:nth-child(even) {
+        border-color: rgba(218,165,32,0.55) !important;
+        box-shadow: inset 0 0 40px rgba(218,165,32,0.30), 0 0 25px rgba(218,165,32,0.50), 0 0 70px rgba(218,165,32,0.20) !important;
+      }
+    }
+
+    .blog-card:hover {
+      border-color: rgba(255,255,255,0.08);
+      transform: translateY(-6px);
+    }
+    .blog-card .blog-img-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .blog-card .blog-img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.15) 40%, transparent 100%);
+      pointer-events: none;
+    }
+    .blog-card .blog-card-img {
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .blog-card:hover .blog-card-img {
+      transform: scale(1.08);
+    }
+    .blog-card .blog-num {
+      position: absolute;
+      top: 16px; right: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 42px;
+      line-height: 1;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.10);
+      color: transparent;
+      z-index: 2;
+      pointer-events: none;
+      transition: -webkit-text-stroke-color 0.4s ease;
+    }
+    .blog-card:hover .blog-num {
+      -webkit-text-stroke-color: rgba(255,255,255,0.18);
+    }
+    .blog-card .blog-body {
+      position: relative;
+      z-index: 2;
+      padding: 28px 28px 32px;
+    }
+    .blog-card .blog-date {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      transition: color 0.3s ease;
+    }
+    .blog-card:nth-child(odd) .blog-date { color: rgba(30,130,137,0.6); }
+    .blog-card:nth-child(even) .blog-date { color: rgba(218,165,32,0.5); }
+    .blog-card:hover:nth-child(odd) .blog-date { color: rgba(30,130,137,0.9); }
+    .blog-card:hover:nth-child(even) .blog-date { color: rgba(218,165,32,0.8); }
+    .blog-card .blog-card-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.4;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+      transition: color 0.3s ease;
+    }
+    .blog-card .blog-excerpt {
+      font-size: 13px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.50);
+      transition: color 0.4s ease;
+    }
+    .blog-card:hover .blog-excerpt { color: rgba(255,255,255,0.65); }
+    .blog-card .blog-tag {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease 0.05s, transform 0.4s ease 0.05s;
+    }
+    .blog-card:hover .blog-tag { opacity: 1; transform: translateY(0); }
+    .blog-tag-teal { color: var(--accent-teal); background: rgba(30,130,137,0.1); border: 1px solid rgba(30,130,137,0.15); }
+    .blog-tag-gold { color: var(--accent-gold); background: rgba(218,165,32,0.08); border: 1px solid rgba(218,165,32,0.12); }
+    .blog-card .blog-arrow {
+      position: absolute;
+      bottom: 28px; right: 28px;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s ease;
+    }
+    .blog-card:hover .blog-arrow { opacity: 1; transform: translateX(0); }
+    .blog-card:nth-child(odd):hover .blog-arrow { background: rgba(30,130,137,0.12); border-color: rgba(30,130,137,0.2); }
+    .blog-card:nth-child(even):hover .blog-arrow { background: rgba(218,165,32,0.1); border-color: rgba(218,165,32,0.18); }
+    .blog-card .blog-line {
+      position: absolute;
+      bottom: 0; left: 28px; right: 28px;
+      height: 1px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .blog-card:hover .blog-line { opacity: 1; }
+    .blog-card:nth-child(odd) .blog-line { background: linear-gradient(90deg, transparent, rgba(30,130,137,0.2), transparent); }
+    .blog-card:nth-child(even) .blog-line { background: linear-gradient(90deg, transparent, rgba(218,165,32,0.15), transparent); }
+
+    .category-pill {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.55);
+      transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+      cursor: pointer;
+    }
+    .category-pill:hover,
+    .category-pill.active {
+      border-color: rgba(30,130,137,0.4);
+      color: rgba(255,255,255,0.8);
+      background: rgba(30,130,137,0.08);
+    }
+
+    .divider-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent);
+    }
+
+    .scroll-reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    }
+    .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(45deg, var(--accent-teal), var(--accent-gold)); border-radius: 4px; }
+    ::-webkit-scrollbar-track { background: var(--cosmic-dark); }
+
+    .moving-border-btn {
+      position: relative;
+      display: inline-flex;
+      padding: 2px;
+      overflow: hidden;
+      border-radius: 9999px;
+      background: rgba(30,130,137,0.15);
+      text-decoration: none;
+    }
+    .moving-border-btn .border-track {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      overflow: hidden;
+    }
+    .moving-border-btn .border-track svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    .moving-border-btn .glow-orb-btn {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      opacity: 1;
+      background: radial-gradient(#fff 0%, var(--accent-teal) 30%, rgba(30,130,137,0.5) 55%, transparent 70%);
+      transform: translate(-50%, -50%);
+      will-change: transform;
+      pointer-events: none;
+      filter: blur(2px);
+    }
+    .moving-border-btn .btn-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      border-radius: 9999px;
+      background: rgba(10,10,10,0.95);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.6rem 1.4rem;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.3s;
+    }
+    .moving-border-btn:hover .btn-inner {
+      background: rgba(30,30,30,0.95);
+    }
+    .moving-border-btn:focus-visible {
+      outline: 2px solid var(--accent-teal);
+      outline-offset: 3px;
+    }
+
+    .mob-menu-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer}
+    @media(max-width:640px){.mob-menu-btn{display:flex}}
+    .mob-menu{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.98);backdrop-filter:blur(30px);display:none;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+    .mob-menu.open{display:flex}
+    .mob-menu a{color:rgba(255,255,255,.6);font-family:'Montserrat',sans-serif;font-size:1.25rem;font-weight:600;letter-spacing:-.01em;text-decoration:none;transition:color .3s}
+    .mob-menu a:hover{color:#fff}
+    .mob-menu .mob-cta{margin-top:1rem;padding:.7rem 2rem;border-radius:9999px;border:1px solid rgba(30,130,137,.4);background:rgba(30,130,137,.1);color:var(--accent-teal,#1E8289);font-size:.9rem}
+    .mob-menu-close{position:absolute;top:1.5rem;right:2rem;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .scroll-arrows{position:fixed;right:20px;bottom:24px;z-index:100;display:flex;flex-direction:column;gap:8px}
+    .scroll-arrows button{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.08);background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.3s,border-color 0.3s,opacity 0.3s;opacity:0.5}
+    .scroll-arrows button:hover{background:rgba(30,130,137,0.15);border-color:rgba(30,130,137,0.3);opacity:1}
+    .scroll-arrows button svg{width:16px;height:16px;stroke:rgba(255,255,255,0.6);stroke-width:2;fill:none}
+    @media(max-width:640px){.scroll-arrows{right:12px;bottom:16px}.scroll-arrows button{width:36px;height:36px}}
+    .social-orb{position:relative;width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);text-decoration:none;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),color 0.3s,background 0.3s,border-color 0.3s,box-shadow 0.3s;cursor:pointer;overflow:visible}
+    .social-orb svg{position:relative;z-index:2;transition:filter 0.3s}
+    .social-orb-ring{position:absolute;inset:-4px;border-radius:50%;border:1.5px solid transparent;transition:border-color 0.4s,opacity 0.4s;opacity:0;animation:socialRingSpin 8s linear infinite}
+    .social-orb:hover{transform:translateY(-4px) scale(1.1);color:#fff;background:rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.12);border-color:rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.35);box-shadow:0 0 20px rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.25),0 0 60px rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.08),inset 0 0 15px rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.1)}
+    .social-orb:hover svg{filter:drop-shadow(0 0 6px rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.6))}
+    .social-orb:hover .social-orb-ring{opacity:1;border-color:rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.5);border-top-color:transparent}
+    .social-orb:active{transform:translateY(-2px) scale(1.05)}
+    @keyframes socialRingSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes footerGradLine{0%{background-position:0% 0}100%{background-position:200% 0}}
+    #social-links .social-orb{opacity:0;transform:translateY(16px)}
+    #social-links.visible .social-orb{opacity:1;transform:translateY(0);transition:opacity 0.5s cubic-bezier(0.23,1,0.32,1),transform 0.5s cubic-bezier(0.23,1,0.32,1),color 0.3s,background 0.3s,border-color 0.3s,box-shadow 0.3s}
+    #social-links.visible .social-orb:nth-child(1){transition-delay:0.05s}
+    #social-links.visible .social-orb:nth-child(2){transition-delay:0.1s}
+    #social-links.visible .social-orb:nth-child(3){transition-delay:0.15s}
+    #social-links.visible .social-orb:nth-child(4){transition-delay:0.2s}
+    #social-links.visible .social-orb:nth-child(5){transition-delay:0.25s}
+    #social-links.visible .social-orb:nth-child(6){transition-delay:0.3s}
+    #social-links.visible .social-orb:nth-child(7){transition-delay:0.35s}
+    #social-links.visible .social-orb:nth-child(8){transition-delay:0.4s}
+    @media(pointer:coarse){.social-orb{color:rgba(255,255,255,0.55)!important;background:rgba(255,255,255,0.04)!important;border-color:rgba(255,255,255,0.08)!important}}
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <canvas id="starfield"></canvas>
+
+  <!-- Nav -->
+  <nav class="fixed top-0 left-0 right-0 z-50 px-[5vw] py-5" style="background: rgba(0,0,0,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.04);">
+    <div class="max-w-[1400px] mx-auto flex items-center justify-between">
+      <a href="index.html" class="group flex items-center gap-3" style="text-decoration: none;">
+        <span class="text-white font-extrabold text-xl sm:text-3xl" style="font-family: 'Montserrat', sans-serif; letter-spacing: -0.03em; text-shadow: 0 0 20px rgba(30,130,137,0.3);">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</span>
+      </a>
+      <div class="hidden sm:flex items-center gap-8 text-sm font-medium">
+        <a href="index.html" class="nav-link-dark">Home</a>
+        <a href="about.html" class="nav-link-dark">About</a>
+        <a href="index.html#services" class="nav-link-dark">Services</a>
+        <a href="blog.html" class="nav-link-dark" style="color: rgba(255,255,255,0.85);">Blog</a>
+        <a href="photography.html" class="nav-link-dark">Photography</a>
+      </div>
+      <a href="mailto:info@tasnimalam.com,tasnimpksf@gmail.com" class="hidden sm:inline-flex moving-border-btn">
+        <div class="border-track">
+          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="100%">
+            <rect fill="none" width="100%" height="100%" rx="50%" ry="50%" class="border-path"/>
+          </svg>
+          <div class="glow-orb-btn"></div>
+        </div>
+        <span class="btn-inner">Get in Touch</span>
+      </a>
+      <button class="mob-menu-btn sm:hidden" id="mob-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mob-menu" id="mob-menu">
+    <button class="mob-menu-close" id="mob-menu-close" aria-label="Close">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="index.html#services">Services</a>
+    <a href="blog.html">Blog</a>
+    <a href="photography.html">Photography</a>
+    <a href="mailto:tasnim966937@gmail.com,tasnimalam@ou.edu" class="mob-cta">Get in Touch</a>
+  </div>
+
+  <!-- Hero -->
+  <header class="relative pt-24 sm:pt-40 pb-10 sm:pb-20 px-[7vw]" style="z-index: 1;">
+    <div class="max-w-[900px] mx-auto text-center relative z-10">
+      <p class="scroll-reveal text-mir-teal text-xs font-semibold tracking-[0.2em] uppercase mb-5">Thoughts & Insights</p>
+      <h1 class="scroll-reveal text-white font-extrabold leading-[1.05] mb-6" style="font-family: 'Montserrat', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -0.03em;">The Blog</h1>
+      <p class="scroll-reveal text-white/55 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">Exploring geology, economics, technology, and the world through data-driven analysis and curiosity.</p>
+    </div>
+  </header>
+
+  <div class="divider-line mx-[7vw]" style="position: relative; z-index: 1;"></div>
+
+  <!-- Filter -->
+  <section class="px-[7vw] py-10" style="position: relative; z-index: 1;">
+    <div class="max-w-[1200px] mx-auto">
+      <div class="scroll-reveal flex flex-wrap items-center gap-3" id="blog-filters">
+        <button class="category-pill active" data-filter="all">All</button>
+        <button class="category-pill" data-filter="geology">Geology</button>
+        <button class="category-pill" data-filter="economics">Economics</button>
+        <button class="category-pill" data-filter="analysis">Analysis</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Grid -->
+  <section class="px-[7vw] pb-28" style="position: relative; z-index: 1;">
+    <div class="max-w-[1200px] mx-auto">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-grid">
+
+        <!-- Card 1: Trade Deal -->
+        <a href="blog/trade-deal-bangladesh-us.html" class="blog-card scroll-reveal" data-category="economics analysis">
+          <div class="blog-img-wrap aspect-[16/10]">
+            <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=375&fit=crop&crop=center" alt="Global trade" class="blog-card-img w-full h-full object-cover">
+            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12); z-index:2;">Analysis</span>
+            <span class="blog-num">01</span>
+          </div>
+          <div class="blog-body">
+            <p class="blog-date">11 February 2026</p>
+            <h3 class="blog-card-title">How the 2026 Trade Deal Ties Bangladesh Closer to the U.S.</h3>
+            <p class="blog-excerpt">The new 2026 trade agreement signals something different. It moves the relationship away from aid and toward a direct, business-driven partnership.</p>
+            <span class="blog-tag blog-tag-teal">Economics &middot; Analysis</span>
+          </div>
+          <div class="blog-arrow">
+            <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 13L13 1M13 1H3M13 1v10"/></svg>
+          </div>
+          <div class="blog-line"></div>
+        </a>
+
+        <!-- Card 2: Debunking Bengal Myths -->
+        <a href="blog/debunking-myths-bengal.html" class="blog-card scroll-reveal" data-category="economics">
+          <div class="blog-img-wrap aspect-[16/10]">
+            <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&h=375&fit=crop&crop=center" alt="Historical Bengal" class="blog-card-img w-full h-full object-cover">
+            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12); z-index:2;">Economics</span>
+            <span class="blog-num">02</span>
+          </div>
+          <div class="blog-body">
+            <p class="blog-date">17 January 2025</p>
+            <h3 class="blog-card-title">Debunking Some Myths of Old Golden Days in Bengal</h3>
+            <p class="blog-excerpt">People often boast of the Bengal past. But history data indicates something different, something delicate.</p>
+            <span class="blog-tag blog-tag-gold">Economics</span>
+          </div>
+          <div class="blog-arrow">
+            <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 13L13 1M13 1H3M13 1v10"/></svg>
+          </div>
+          <div class="blog-line"></div>
+        </a>
+
+        <!-- Card 3: Crypto Bangladesh -->
+        <a href="blog/crypto-bangladesh.html" class="blog-card scroll-reveal" data-category="economics">
+          <div class="blog-img-wrap aspect-[16/10]">
+            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&h=375&fit=crop&crop=center" alt="Cryptocurrency" class="blog-card-img w-full h-full object-cover">
+            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12); z-index:2;">Economics</span>
+            <span class="blog-num">03</span>
+          </div>
+          <div class="blog-body">
+            <p class="blog-date">17 January 2025</p>
+            <h3 class="blog-card-title">Cryptocurrencies in Bangladesh: A Growing Shadow Economy</h3>
+            <p class="blog-excerpt">Despite official restrictions, there is a thriving underground market where individuals regularly engage in cryptocurrency trading.</p>
+            <span class="blog-tag blog-tag-teal">Fintech &middot; Crypto</span>
+          </div>
+          <div class="blog-arrow">
+            <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 13L13 1M13 1H3M13 1v10"/></svg>
+          </div>
+          <div class="blog-line"></div>
+        </a>
+
+        <!-- Card 4: Sticks can't tell -->
+        <a href="blog/sticks-cant-tell.html" class="blog-card scroll-reveal" data-category="geology">
+          <div class="blog-img-wrap aspect-[16/10]">
+            <img src="https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=600&h=375&fit=crop&crop=center" alt="Geological formations" class="blog-card-img w-full h-full object-cover">
+            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12); z-index:2;">Geology</span>
+            <span class="blog-num">04</span>
+          </div>
+          <div class="blog-body">
+            <p class="blog-date">22 October 2023</p>
+            <h3 class="blog-card-title">Sticks Can't Tell!</h3>
+            <p class="blog-excerpt">Tectonic plates are elastic. They put themselves back into their previous position and continue their 'breaking bad' game repeatedly year after year.</p>
+            <span class="blog-tag blog-tag-gold">Geology &middot; Tectonics</span>
+          </div>
+          <div class="blog-arrow">
+            <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 13L13 1M13 1H3M13 1v10"/></svg>
+          </div>
+          <div class="blog-line"></div>
+        </a>
+
+        <!-- Card 5: NGOs -->
+        <a href="blog/ngos-save-or-exploit.html" class="blog-card scroll-reveal" data-category="economics">
+          <div class="blog-img-wrap aspect-[16/10]">
+            <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&h=375&fit=crop&crop=center" alt="NGO community work" class="blog-card-img w-full h-full object-cover">
+            <span class="absolute top-4 left-4 category-pill" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); border-color: rgba(255,255,255,0.12); z-index:2;">Economics</span>
+            <span class="blog-num">05</span>
+          </div>
+          <div class="blog-body">
+            <p class="blog-date">22 October 2023</p>
+            <h3 class="blog-card-title">NGOs to Save or Exploit People?</h3>
+            <p class="blog-excerpt">We have a common perception towards NGOs that they suppress and exploit our poor people. What is the story behind this?</p>
+            <span class="blog-tag blog-tag-teal">Economics</span>
+          </div>
+          <div class="blog-arrow">
+            <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 13L13 1M13 1H3M13 1v10"/></svg>
+          </div>
+          <div class="blog-line"></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="relative px-[7vw] pt-20 pb-12" style="z-index: 1; position: relative;">
+    <div style="position: absolute; top: 0; left: 7vw; right: 7vw; height: 1px; background: linear-gradient(90deg, transparent, rgba(30,130,137,0.4), rgba(218,165,32,0.3), rgba(30,130,137,0.4), transparent); background-size: 200% 100%; animation: footerGradLine 4s linear infinite;"></div>
+    <div class="max-w-[1200px] mx-auto">
+      <div class="flex flex-col items-center mb-14">
+        <p style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 24px;">Connect</p>
+        <div class="flex items-center gap-4 sm:gap-5 flex-wrap justify-center" id="social-links">
+          <a href="https://www.linkedin.com/in/tasnimgeo/" target="_blank" rel="noopener" class="social-orb" data-color="0,119,181" aria-label="LinkedIn"><span class="social-orb-ring"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          <a href="https://scholar.google.com/citations?user=XVkHcF8AAAAJ&hl=en" target="_blank" rel="noopener" class="social-orb" data-color="66,133,244" aria-label="Google Scholar"><span class="social-orb-ring"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 100 14 7 7 0 000-14z"/></svg></a>
+          <a href="https://www.researchgate.net/profile/Mir-Md-Tasnim-Alam-3" target="_blank" rel="noopener" class="social-orb" data-color="0,204,153" aria-label="ResearchGate"><span class="social-orb-ring"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.586 0c-1.108 0-2.467.608-4.082 1.823C13.889 3.038 12.7 4.384 12 5.14c-.7-.756-1.889-2.102-3.504-3.317C6.881.608 5.522 0 4.414 0 1.645 0 0 2.97 0 6.385c0 4.662 4.034 8.193 8.137 11.557.802.66 1.611 1.32 2.402 2.014.271.238.568.474.861.474h1.2c.293 0 .59-.236.861-.474.791-.694 1.6-1.354 2.402-2.014C19.966 14.578 24 11.047 24 6.385 24 2.97 22.355 0 19.586 0z"/></svg></a>
+          <a href="https://www.youtube.com/@mir.insights" target="_blank" rel="noopener" class="social-orb" data-color="255,0,0" aria-label="YouTube"><span class="social-orb-ring"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.546 12 3.546 12 3.546s-7.505 0-9.377.504A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.504 9.376.504 9.376.504s7.505 0 9.377-.504a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="https://www.facebook.com/mir.t.alam.7/" target="_blank" rel="noopener" class="social-orb" data-color="24,119,242" aria-label="Facebook"><span class="social-orb-ring"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="https://www.instagram.com/mir_tasnim_alam/" target="_blank" rel="noopener" class="social-orb" data-color="225,48,108" aria-label="Instagram"><span class="social-orb-ring"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405a1.441 1.441 0 11-2.882 0 1.441 1.441 0 012.882 0z"/></svg></a>
+          <a href="https://wa.me/14193786179" target="_blank" rel="noopener" class="social-orb" data-color="37,211,102" aria-label="WhatsApp"><span class="social-orb-ring"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+          <a href="https://github.com/tasnim966937" target="_blank" rel="noopener" class="social-orb" data-color="110,84,148" aria-label="GitHub"><span class="social-orb-ring"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-6" style="border-top: 1px solid rgba(255,255,255,0.04); padding-top: 24px;">
+        <div class="flex items-center gap-3 flex-nowrap">
+          <span class="text-white font-bold text-lg shrink-0" style="font-family: 'Montserrat', sans-serif;">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</span>
+          <span class="shrink-0 hidden sm:inline" style="color: rgba(255,255,255,0.15); font-size: 12px;">|</span>
+          <span style="color: rgba(255,255,255,0.25); font-size: 10px; font-family: 'Montserrat', sans-serif; font-weight: 500; letter-spacing: 0.03em; white-space: nowrap;">&copy; 2026 Mir Md Tasnim Alam. All rights reserved.</span>
+        </div>
+        <div class="flex items-center gap-6" style="font-size: 12px; color: rgba(255,255,255,0.3); font-family: 'Montserrat', sans-serif;">
+          <a href="index.html" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.6)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">Home</a>
+          <a href="about.html" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.6)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">About</a>
+          <a href="index.html#services" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.6)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">Services</a>
+          <a href="blog.html" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.6)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">Blog</a>
+          <a href="photography.html" style="transition: color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.6)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">Photography</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.scroll-reveal').forEach(function(el) { obs.observe(el); });
+
+    var pills = document.querySelectorAll('.category-pill[data-filter]');
+    var cards = document.querySelectorAll('#blog-grid .blog-card');
+    function applyFilter(filter) {
+      pills.forEach(function(p) {
+        p.classList.toggle('active', p.dataset.filter === filter);
+      });
+      cards.forEach(function(card) {
+        if (filter === 'all' || card.dataset.category.indexOf(filter) !== -1) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+    pills.forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        applyFilter(pill.dataset.filter);
+      });
+    });
+    var urlCat = new URLSearchParams(window.location.search).get('category');
+    if (urlCat) applyFilter(urlCat.toLowerCase());
+
+    (function(){document.querySelectorAll('.social-orb').forEach(function(orb){var c=orb.dataset.color;if(c){var rgb=c.split(',');orb.style.setProperty('--orb-r',rgb[0]);orb.style.setProperty('--orb-g',rgb[1]);orb.style.setProperty('--orb-b',rgb[2])}});var sl=document.getElementById('social-links');if(sl){var sObs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');sObs.unobserve(e.target)}})},{threshold:0.2});sObs.observe(sl)}})();
+  </script>
+
+  <script>
+    document.querySelectorAll('.moving-border-btn').forEach(function(btn) {
+      var pathEl = btn.querySelector('.border-path');
+      var orb = btn.querySelector('.glow-orb-btn');
+      if (!pathEl || !orb) return;
+      var DURATION = 3600;
+      function tick(time) {
+        requestAnimationFrame(tick);
+        var length = pathEl.getTotalLength();
+        if (!length) return;
+        var dist = (time * (length / DURATION)) % length;
+        var pt = pathEl.getPointAtLength(dist);
+        orb.style.transform = 'translateX(' + pt.x + 'px) translateY(' + pt.y + 'px) translateX(-50%) translateY(-50%)';
+      }
+      requestAnimationFrame(tick);
+    });
+  </script>
+
+  <script>
+  (function() {
+    var teal = { r: 30, g: 130, b: 137 };
+    var gold = { r: 218, g: 165, b: 32 };
+    document.querySelectorAll('.blog-card').forEach(function(card, i) {
+      var glow = document.createElement('div');
+      glow.className = 'card-glow';
+      card.insertBefore(glow, card.firstChild);
+      var c = i % 2 === 0 ? teal : gold;
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left, y = e.clientY - rect.top;
+        var offX = x - rect.width / 2, offY = y - rect.height / 2;
+        card.style.boxShadow =
+          (offX * 0.12) + 'px ' + (offY * 0.12) + 'px 28px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.45),' +
+          (offX * 0.06) + 'px ' + (offY * 0.06) + 'px 55px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.2),' +
+          '0 0 3px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.7),' +
+          '0 0 90px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.1)';
+        glow.style.background =
+          'radial-gradient(350px circle at ' + x + 'px ' + y + 'px,' +
+          'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.2) 0%,' +
+          'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.06) 40%,' +
+          'transparent 65%)';
+      });
+      card.addEventListener('mouseleave', function() {
+        card.style.boxShadow = '';
+        glow.style.background = '';
+      });
+    });
+  })();
+  </script>
+  <script>
+  (function(){
+    var btn=document.getElementById('mob-menu-btn'),menu=document.getElementById('mob-menu'),close=document.getElementById('mob-menu-close');
+    if(!btn||!menu)return;
+    btn.addEventListener('click',function(){menu.classList.add('open');document.body.style.overflow='hidden'});
+    close.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''});
+    menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''})});
+  })();
+  </script>
+  <script>
+  (function() {
+    var canvas = document.getElementById('starfield');
+    var ctx = canvas.getContext('2d');
+    var stars = [];
+    var STAR_COUNT = 180;
+    function resize() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+    for (var i = 0; i < STAR_COUNT; i++) {
+      stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.2 + 0.3, a: Math.random(), speed: 0.002 + Math.random() * 0.008 });
+    }
+    function drawStars(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        var flicker = 0.5 + 0.5 * Math.sin(t * s.speed + s.a * 6.28);
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.28);
+        ctx.fillStyle = 'rgba(255,255,255,' + (flicker * 0.6).toFixed(2) + ')';
+        ctx.fill();
+      }
+      requestAnimationFrame(drawStars);
+    }
+    requestAnimationFrame(drawStars);
+  })();
+  </script>
+<div class="scroll-arrows">
+  <button id="scroll-up" aria-label="Scroll to top"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></button>
+  <button id="scroll-down" aria-label="Scroll to bottom"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+</div>
+<script>
+(function(){
+  document.getElementById('scroll-up').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+  document.getElementById('scroll-down').addEventListener('click',function(){window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})});
+})();
+</script>
+</body>
+</html>

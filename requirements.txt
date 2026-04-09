@@ -1,0 +1,5 @@
+# Python dependencies for tasnimalam.com
+# Install: pip install -r requirements.txt
+
+# Image processing
+Pillow>=10.0.0

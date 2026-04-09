@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chlorophyll & Nitrogen from EnMAP - Mir Md Tasnim Alam</title>
+  <meta name="description" content="Research on mapping chlorophyll and nitrogen from EnMAP satellite imagery for agricultural monitoring.">
+  <meta property="og:title" content="Chlorophyll & Nitrogen from EnMAP - Mir Md Tasnim Alam">
+  <meta property="og:description" content="Research on mapping chlorophyll and nitrogen from EnMAP satellite imagery for agricultural monitoring.">
+  <meta property="og:image" content="https://tasnimalam.com/og-image.png">
+  <meta property="og:url" content="https://tasnimalam.com/paper-nitrogen.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Mir Md Tasnim Alam">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Chlorophyll & Nitrogen from EnMAP - Mir Md Tasnim Alam">
+  <meta name="twitter:description" content="Research on mapping chlorophyll and nitrogen from EnMAP satellite imagery for agricultural monitoring.">
+  <meta name="twitter:image" content="https://tasnimalam.com/og-image.png">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--cosmic-black:#000;--cosmic-dark:#080808;--cosmic-surface:#161616;--accent-teal:#1E8289;--accent-gold:#DAA520}
+    *{margin:0;padding:0;box-sizing:border-box}html{overflow-x:clip}
+    body{background:var(--cosmic-black);color:rgba(255,255,255,.65);font-family:'Plus Jakarta Sans',sans-serif;font-weight:300;font-size:16px;line-height:1.7;overflow-x:clip;-webkit-font-smoothing:antialiased}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:linear-gradient(45deg,var(--accent-teal),var(--accent-gold));border-radius:4px}::-webkit-scrollbar-track{background:var(--cosmic-black)}
+    #starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+    .mir-i{position:relative;display:inline-block}.mir-dot{position:absolute;border-radius:50%;background:radial-gradient(circle at 36% 33%,#5ce0e4,#22b0b4 55%,#17696e);pointer-events:none;z-index:2;left:58%;transform:translateX(-50%);width:.4em;height:.4em;top:-.08em;box-shadow:0 0 .12em rgba(30,130,137,.9),0 0 .35em rgba(30,130,137,.4)}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.25rem 5vw;background:rgba(10,10,10,.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.03)}
+    nav .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    nav .logo{color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.875rem;letter-spacing:-.03em;text-shadow:0 0 20px rgba(30,130,137,.3);text-decoration:none}
+    nav .nav-links{display:flex;align-items:center;gap:2rem}
+    nav .nav-links a{color:rgba(255,255,255,.4);font-size:.875rem;font-weight:400;text-decoration:none;position:relative;transition:color .3s}
+    nav .nav-links a:hover{color:rgba(255,255,255,.8)}
+    nav .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1.5px;background:var(--accent-gold);transition:width .3s}
+    nav .nav-links a:hover::after{width:100%}
+    .moving-border-btn{position:relative;display:inline-flex;padding:2px;overflow:hidden;border-radius:9999px;background:rgba(30,130,137,.15);text-decoration:none}
+    .moving-border-btn .border-track{position:absolute;inset:0;border-radius:inherit;overflow:hidden}
+    .moving-border-btn .border-track svg{position:absolute;width:100%;height:100%}
+    .moving-border-btn .glow-orb-btn{position:absolute;top:0;left:0;width:100px;height:100px;border-radius:50%;background:radial-gradient(#fff 0%,var(--accent-teal) 30%,rgba(30,130,137,.5) 55%,transparent 70%);transform:translate(-50%,-50%);pointer-events:none;filter:blur(2px)}
+    .moving-border-btn .btn-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;border-radius:9999px;background:rgba(10,10,10,.95);color:#fff;font-size:.75rem;font-weight:600;padding:.6rem 1.4rem;transition:background .3s}
+    .moving-border-btn:hover .btn-inner{background:rgba(30,130,137,.2)}
+
+    .mob-menu-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer}
+    @media(max-width:640px){.mob-menu-btn{display:flex}.nav-links{display:none!important}.moving-border-btn{display:none!important}.logo{font-size:1.25rem!important}}
+    .mob-menu{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.98);backdrop-filter:blur(30px);display:none;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+    .mob-menu.open{display:flex}
+    .mob-menu a{color:rgba(255,255,255,.6);font-family:'Montserrat',sans-serif;font-size:1.25rem;font-weight:600;letter-spacing:-.01em;text-decoration:none;transition:color .3s}
+    .mob-menu a:hover{color:#fff}
+    .mob-menu .mob-cta{margin-top:1rem;padding:.7rem 2rem;border-radius:9999px;border:1px solid rgba(30,130,137,.4);background:rgba(30,130,137,.1);color:var(--accent-teal,#1E8289);font-size:.9rem}
+    .mob-menu-close{position:absolute;top:1.5rem;right:2rem;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+    .page-hero{position:relative;z-index:1;padding:9rem 5vw 2rem;text-align:center;max-width:900px;margin:0 auto}
+    .page-hero .back-link{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--accent-teal);font-size:.8rem;font-weight:500;text-decoration:none;margin-bottom:3rem;opacity:0;transform:translateY(20px);animation:fadeUp .8s .1s forwards;transition:color .3s}
+    .page-hero .back-link:hover{color:#fff}
+    .page-hero .back-link svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.5;fill:none}
+    .page-hero .journal-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;border-radius:100px;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-gold);background:rgba(218,165,32,.08);border:1px solid rgba(218,165,32,.15);margin-bottom:1.5rem;opacity:0;transform:translateY(20px);animation:fadeUp .8s .2s forwards}
+    .page-hero .journal-badge .dot{width:4px;height:4px;border-radius:50%;background:var(--accent-gold)}
+    .page-hero h1{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,3.5rem);letter-spacing:-.04em;color:#fff;line-height:1.15;margin-bottom:1.5rem;opacity:0;transform:translateY(30px);animation:fadeUp .8s .35s forwards}
+    .page-hero h1 span{background:linear-gradient(135deg,var(--accent-gold),var(--accent-teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .page-hero .subtitle{max-width:600px;margin:0 auto 2rem;color:rgba(255,255,255,.55);font-size:1rem;line-height:1.7;opacity:0;transform:translateY(20px);animation:fadeUp .8s .5s forwards}
+    .page-hero .doi-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:100px;font-size:.8rem;font-weight:600;color:#fff;background:rgba(218,165,32,.12);border:1px solid rgba(218,165,32,.2);text-decoration:none;transition:all .3s;opacity:0;transform:translateY(20px);animation:fadeUp .8s .6s forwards}
+    .page-hero .doi-btn:hover{background:rgba(218,165,32,.25);border-color:rgba(218,165,32,.45);transform:translateY(-2px);box-shadow:0 8px 30px rgba(218,165,32,.15)}
+    .page-hero .doi-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
+    @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+    .stats-section{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 5vw 3rem}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    @media(max-width:768px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+    .stat-card{
+      position:relative;text-align:center;padding:32px 16px;
+      background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.04);
+      border-radius:16px;overflow:hidden;
+      transition:border-color .4s ease,transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s ease;
+      opacity:0;transform:translateY(20px);
+    }
+    .stat-card.visible{opacity:1;transform:translateY(0)}
+    .stat-card .card-glow{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .35s ease}
+    .stat-card:hover .card-glow{opacity:1}
+    .stat-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-3px)}
+    .stat-card .stat-value{font-family:'Montserrat',sans-serif;font-weight:900;font-size:1.8rem;letter-spacing:-.03em;color:#fff;position:relative;z-index:1}
+    .stat-card .stat-value span{background:linear-gradient(135deg,var(--accent-gold),var(--accent-teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .stat-card .stat-label{font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.55);margin-top:8px;position:relative;z-index:1}
+
+    .section-wrap{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 5vw}
+    .section-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.02em;color:#fff;margin-bottom:1.25rem}
+    .section-title span{background:linear-gradient(135deg,var(--accent-gold),var(--accent-teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+    .abstract-section{padding:3rem 0}
+    .abstract-text{color:rgba(255,255,255,.55);font-size:1.05rem;line-height:1.9;max-width:800px}
+    .abstract-text strong{color:rgba(255,255,255,.7);font-weight:600}
+
+    .gallery-section{padding:2rem 0 3rem}
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:340px;gap:14px}
+    @media(max-width:768px){.gallery-grid{grid-template-columns:1fr;grid-auto-rows:auto}}
+
+    .fig-card{
+      position:relative;border-radius:14px;
+      opacity:0;transform:translateY(25px);
+      transition:transform .6s cubic-bezier(.16,1,.3,1),opacity .7s ease,box-shadow .4s ease;cursor:pointer;
+    }
+    .fig-card.visible{opacity:1;transform:translateY(0)}
+    .fig-card .fig-glow{position:absolute;inset:-2px;border-radius:16px;pointer-events:none;z-index:0;opacity:0;transition:opacity .35s ease}
+    .fig-card:hover .fig-glow{opacity:1}
+    .fig-card .fig-inner{
+      position:relative;z-index:1;border-radius:12px;overflow:hidden;
+      background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);
+      height:100%;display:flex;flex-direction:column;transition:border-color .4s ease;
+    }
+    .fig-card:hover .fig-inner{border-color:rgba(218,165,32,.3)}
+    .fig-card .fig-img{flex:1;min-height:0;overflow:hidden;position:relative;background:#0a0a0a}
+    .fig-card .fig-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+    .fig-card:hover .fig-img img{transform:scale(1.04)}
+    .fig-card .fig-caption{padding:12px 16px;font-size:.72rem;font-weight:500;color:rgba(255,255,255,.55);letter-spacing:.02em;position:relative;z-index:1}
+    .fig-card .fig-num{color:var(--accent-gold);font-weight:700;margin-right:6px}
+    .fig-card .expand-icon{
+      position:absolute;top:10px;right:10px;width:28px;height:28px;z-index:2;
+      border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.08);
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;transform:scale(.8);transition:opacity .3s,transform .3s;pointer-events:none;
+    }
+    .fig-card:hover .expand-icon{opacity:1;transform:scale(1)}
+    .expand-icon svg{width:14px;height:14px;stroke:#fff;stroke-width:1.5;fill:none}
+
+    @media(max-width:768px){.gallery-grid{grid-template-columns:1fr;grid-auto-rows:auto}}
+
+    .findings-section{padding:2rem 0 4rem}
+    .findings-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:768px){.findings-grid{grid-template-columns:1fr}}
+    .finding-card{
+      position:relative;padding:24px 28px;
+      background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.04);
+      border-radius:14px;overflow:hidden;
+      transition:border-color .4s ease,transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s ease;
+    }
+    .finding-card .card-glow{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .35s ease}
+    .finding-card:hover .card-glow{opacity:1}
+    .finding-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px)}
+    .finding-card .finding-icon{width:36px;height:36px;border-radius:10px;background:rgba(218,165,32,.1);border:1px solid rgba(218,165,32,.15);display:flex;align-items:center;justify-content:center;margin-bottom:14px;position:relative;z-index:1}
+    .finding-card .finding-icon svg{width:18px;height:18px;stroke:var(--accent-gold);stroke-width:1.5;fill:none}
+    .finding-card h4{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.85rem;color:#fff;letter-spacing:-.01em;margin-bottom:8px;position:relative;z-index:1}
+    .finding-card p{font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.7;position:relative;z-index:1}
+
+    /* Lightbox */
+    .lightbox{
+      position:fixed;inset:0;z-index:200;
+      background:rgba(0,0,0,.96);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+      display:none;align-items:center;justify-content:center;flex-direction:column;padding:60px 5vw;
+    }
+    .lightbox.open{display:flex}
+    .lightbox img{
+      max-width:92vw;max-height:calc(100vh - 160px);object-fit:contain;
+      border-radius:12px;border:1px solid rgba(255,255,255,.06);
+      opacity:0;transform:scale(.95);transition:opacity .4s ease,transform .4s cubic-bezier(.16,1,.3,1);
+    }
+    .lightbox img.loaded{opacity:1;transform:scale(1)}
+    .lb-caption{margin-top:16px;font-size:.85rem;color:rgba(255,255,255,.55);max-width:700px;text-align:center}
+    .lb-close{
+      position:absolute;top:1.5rem;right:2rem;z-index:210;
+      width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.6);cursor:pointer;display:flex;align-items:center;justify-content:center;
+      transition:background .3s,transform .3s;
+    }
+    .lb-close:hover{background:rgba(255,255,255,.08);transform:scale(1.1)}
+    .lb-close svg{width:20px;height:20px;stroke:#fff;stroke-width:1.5}
+    .lb-nav{
+      position:absolute;top:50%;transform:translateY(-50%);
+      width:50px;height:50px;border-radius:50%;border:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.5);cursor:pointer;display:flex;align-items:center;justify-content:center;
+      transition:background .3s,border-color .3s,transform .25s;z-index:210;
+    }
+    .lb-nav:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)}
+    .lb-nav:active{transform:translateY(-50%) scale(.92)}
+    .lb-prev{left:1.5rem}
+    .lb-next{right:1.5rem}
+    .lb-nav svg{width:20px;height:20px;stroke:rgba(255,255,255,.6);stroke-width:2;fill:none}
+    .lb-counter{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);font-size:.8rem;color:rgba(255,255,255,.3);z-index:210}
+    .lb-fignum{position:absolute;top:1.8rem;left:2rem;font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.08em;color:rgba(255,255,255,.55);z-index:210}
+    @media(max-width:768px){
+      .lb-prev{left:.5rem}.lb-next{right:.5rem}
+      .lb-nav{width:40px;height:40px}
+      .lb-fignum{display:none}
+    }
+
+    footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.03);padding:3rem 5vw}
+    .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem}
+    .footer-logo{display:flex;align-items:center;gap:.75rem}
+    .footer-logo .logo-text{color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.125rem}
+    .footer-logo .divider{color:rgba(255,255,255,.25);font-size:.75rem;margin:0 .5rem}
+    .footer-logo .name{color:rgba(255,255,255,.4);font-size:.75rem;font-family:'Montserrat',sans-serif;font-weight:500;letter-spacing:.03em}
+    .footer-links{display:flex;gap:1.5rem}.footer-links a{color:rgba(255,255,255,.35);font-size:.75rem;text-decoration:none;transition:color .3s}.footer-links a:hover{color:rgba(255,255,255,.65)}
+    .copyright{color:rgba(255,255,255,.25);font-size:.7rem;width:100%;text-align:center;margin-top:1rem}
+    .footer-social{text-align:center;padding-bottom:24px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.04)}
+    .footer-social-label{font-family:'Montserrat',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:20px}
+    .footer-social-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+    .social-orb{position:relative;width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);text-decoration:none;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),color 0.3s,background 0.3s,border-color 0.3s,box-shadow 0.3s;cursor:pointer}
+    .social-orb:hover{transform:translateY(-4px) scale(1.1);color:#fff;background:rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.12);border-color:rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.35);box-shadow:0 0 20px rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.25),0 0 60px rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.08),inset 0 0 15px rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.1)}
+    .social-orb:hover svg{filter:drop-shadow(0 0 6px rgba(var(--orb-r,30),var(--orb-g,130),var(--orb-b,137),0.6))}
+    .social-orb svg{position:relative;z-index:2;transition:filter 0.3s}
+    @media(pointer:coarse){.social-orb{color:rgba(255,255,255,0.55)!important;background:rgba(255,255,255,0.04)!important;border-color:rgba(255,255,255,0.08)!important}}
+    .scroll-arrows{position:fixed;right:20px;bottom:24px;z-index:100;display:flex;flex-direction:column;gap:8px}
+    .scroll-arrows button{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.08);background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.3s,border-color 0.3s,opacity 0.3s;opacity:0.5}
+    .scroll-arrows button:hover{background:rgba(30,130,137,0.15);border-color:rgba(30,130,137,0.3);opacity:1}
+    .scroll-arrows button svg{width:16px;height:16px;stroke:rgba(255,255,255,0.6);stroke-width:2;fill:none}
+    @media(max-width:640px){.scroll-arrows{right:12px;bottom:16px}.scroll-arrows button{width:36px;height:36px}}
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="index.html#services">Services</a>
+        <a href="blog.html">Blog</a>
+        <a href="photography.html">Photography</a>
+      </div>
+      <a href="mailto:tasnim966937@gmail.com,tasnimalam@ou.edu" class="moving-border-btn" style="display:inline-flex;">
+        <div class="border-track">
+          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="100%"><rect fill="none" width="100%" height="100%" rx="50%" ry="50%" class="border-path"/></svg>
+          <div class="glow-orb-btn"></div>
+        </div>
+        <span class="btn-inner">Get in Touch</span>
+      </a>
+      <button class="mob-menu-btn" id="mob-menu-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mob-menu" id="mob-menu">
+    <button class="mob-menu-close" id="mob-menu-close" aria-label="Close">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="index.html#services">Services</a>
+    <a href="blog.html">Blog</a>
+    <a href="photography.html">Photography</a>
+    <a href="mailto:tasnim966937@gmail.com,tasnimalam@ou.edu" class="mob-cta">Get in Touch</a>
+  </div>
+
+  <section class="page-hero">
+    <a href="remote-sensing.html" class="back-link">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Remote Sensing
+    </a>
+    <div class="journal-badge">
+      <span class="dot"></span>
+      Environmental Challenges (Elsevier) <span class="dot"></span> 2025
+    </div>
+    <h1>Chlorophyll & Nitrogen from <span>EnMAP</span></h1>
+    <p class="subtitle">Optimizing empirical and hybrid modeling for advanced canopy chlorophyll and nitrogen retrieval using EnMAP hyperspectral data, plus a novel nitrogen conversion factor of 3.03.</p>
+    <a href="https://doi.org/10.1016/j.envc.2024.101114" target="_blank" rel="noopener" class="doi-btn">
+      <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      View Paper
+    </a>
+  </section>
+
+  <section class="stats-section">
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value"><span>R&sup2; = 0.93</span></div>
+        <div class="stat-label">CCC Accuracy (KRR)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><span>R&sup2; = 0.94</span></div>
+        <div class="stat-label">CNC Accuracy (KRR)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><span>219</span></div>
+        <div class="stat-label">EnMAP Spectral Bands</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value"><span>3.03</span></div>
+        <div class="stat-label">Novel N Conversion Factor</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-wrap">
+    <section class="abstract-section">
+      <h2 class="section-title">The <span>Research</span></h2>
+      <p class="abstract-text">
+        This study explores the potential of <strong>EnMAP hyperspectral satellite imagery</strong> for retrieving canopy chlorophyll content (CCC) and canopy nitrogen content (CNC) in corn fields. We compared empirical machine learning approaches with hybrid PROSAIL radiative transfer models, testing six MLRAs with band analysis tools to find the most informative spectral features.
+        <br><br>
+        A key contribution is the discovery that <strong>the traditional nitrogen conversion factor of 4.43 does not work well for corn</strong>. We established a new conversion factor of 3.03, which significantly improved the alignment between simulated and field-measured CNC values. Both KRR and GPR emerged as top performers, delivering R&sup2; values of 0.93 for CCC and 0.94 for CNC.
+      </p>
+    </section>
+
+    <section class="findings-section">
+      <h2 class="section-title">Key <span>Findings</span></h2>
+      <div class="findings-grid" id="findings-grid"></div>
+    </section>
+
+    <section class="gallery-section">
+      <h2 class="section-title">Key <span>Visualizations</span></h2>
+      <div class="gallery-grid" id="gallery-grid"></div>
+    </section>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <div class="lb-fignum" id="lb-fignum"></div>
+    <button class="lb-close" id="lb-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button class="lb-nav lb-prev" id="lb-prev" aria-label="Previous">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <img id="lb-img" src="" alt="">
+    <button class="lb-nav lb-next" id="lb-next" aria-label="Next">
+      <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </button>
+    <p class="lb-caption" id="lb-caption"></p>
+    <div class="lb-counter" id="lb-counter"></div>
+  </div>
+
+  <footer>
+    <div class="footer-social">
+      <p class="footer-social-label">Connect</p>
+      <div class="footer-social-row">
+        <a href="https://www.linkedin.com/in/tasnimgeo/" target="_blank" rel="noopener" class="social-orb" aria-label="LinkedIn" style="--orb-r:0;--orb-g:119;--orb-b:181;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+        <a href="https://scholar.google.com/citations?user=XVkHcF8AAAAJ&hl=en" target="_blank" rel="noopener" class="social-orb" aria-label="Google Scholar" style="--orb-r:66;--orb-g:133;--orb-b:244;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 100 14 7 7 0 000-14z"/></svg></a>
+        <a href="https://www.researchgate.net/profile/Mir-Md-Tasnim-Alam-3" target="_blank" rel="noopener" class="social-orb" aria-label="ResearchGate" style="--orb-r:0;--orb-g:204;--orb-b:153;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.586 0c-1.108 0-2.467.608-4.082 1.823C13.889 3.038 12.7 4.384 12 5.14c-.7-.756-1.889-2.102-3.504-3.317C6.881.608 5.522 0 4.414 0 1.645 0 0 2.97 0 6.385c0 4.662 4.034 8.193 8.137 11.557.802.66 1.611 1.32 2.402 2.014.271.238.568.474.861.474h1.2c.293 0 .59-.236.861-.474.791-.694 1.6-1.354 2.402-2.014C19.966 14.578 24 11.047 24 6.385 24 2.97 22.355 0 19.586 0z"/></svg></a>
+        <a href="https://www.youtube.com/@mir.insights" target="_blank" rel="noopener" class="social-orb" aria-label="YouTube" style="--orb-r:255;--orb-g:0;--orb-b:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.546 12 3.546 12 3.546s-7.505 0-9.377.504A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.504 9.376.504 9.376.504s7.505 0 9.377-.504a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+        <a href="https://www.facebook.com/mir.t.alam.7/" target="_blank" rel="noopener" class="social-orb" aria-label="Facebook" style="--orb-r:24;--orb-g:119;--orb-b:242;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        <a href="https://www.instagram.com/mir_tasnim_alam/" target="_blank" rel="noopener" class="social-orb" aria-label="Instagram" style="--orb-r:225;--orb-g:48;--orb-b:108;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405a1.441 1.441 0 11-2.882 0 1.441 1.441 0 012.882 0z"/></svg></a>
+        <a href="https://github.com/tasnim966937" target="_blank" rel="noopener" class="social-orb" aria-label="GitHub" style="--orb-r:110;--orb-g:84;--orb-b:148;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+        <a href="https://wa.me/14193786179" target="_blank" rel="noopener" class="social-orb" aria-label="WhatsApp" style="--orb-r:37;--orb-g:211;--orb-b:102;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span class="logo-text">M<span class="mir-i">ı<span class="mir-dot"></span></span>r</span>
+        <span class="divider">|</span>
+        <span class="name">&copy; 2026 Mir Md Tasnim Alam</span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="index.html#services">Services</a>
+        <a href="blog.html">Blog</a>
+        <a href="photography.html">Photography</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function() {
+    var figures = [
+      { img: 'research/papers/nitrogen/fig_04_p5.png', caption: 'EnMAP hyperspectral data: spectral profiles, true-color image of the study area, and image subset of field parcels at Kellogg Biological Station.', num: 'Fig 2' },
+      { img: 'research/papers/nitrogen/fig_05_p6.png', caption: 'Workflow comparing empirical model (6 MLRAs with band analysis) and hybrid model (PROSAIL RTM with active learning) for CCC and CNC retrieval.', num: 'Fig 3' },
+      { img: 'research/papers/nitrogen/fig_07_p9.png', caption: 'CCC maps derived using empirical KRR (left) and hybrid PROSAIL-EBD-GPR (right) for study area and full EnMAP tile.', num: 'Fig 5' },
+      { img: 'research/papers/nitrogen/fig_09_p11.png', caption: 'CNC maps showing nitrogen distribution using empirical KRR and hybrid PROSAIL-EBD-KRR approaches at parcel and regional scale.', num: 'Fig 7' },
+      { img: 'research/papers/nitrogen/fig_06_p8.png', caption: 'Band selection curves (NRMSE vs. number of bands) for KRR-BAT in empirical and hybrid techniques, identifying optimal band subsets.', num: 'Fig 6' }
+    ];
+
+    var findings = [
+      { icon: 'zap', title: 'EnMAP Delivers on Hyperspectral Promise', text: 'With 219 noise-free spectral bands, EnMAP enables precise chlorophyll and nitrogen mapping. Band analysis identified just 4 key bands needed for optimal CCC and CNC retrieval.' },
+      { icon: 'refresh', title: 'New Conversion Factor for Corn Nitrogen', text: 'The standard protein-to-nitrogen factor of 4.43 underestimated CNC in corn. Reducing it to 3.03 aligned simulated values with field measurements, improving hybrid model accuracy.' },
+      { icon: 'award', title: 'KRR and GPR Lead the Pack', text: 'Kernel Ridge Regression and Gaussian Process Regression consistently outperformed other MLRAs. KRR achieved R\u00B2 = 0.93 (CCC) and R\u00B2 = 0.94 (CNC) with the lowest error rates.' },
+      { icon: 'shield', title: 'Active Learning Reduces Compute Cost', text: 'Using only 5% of initial training samples via active learning matched or exceeded full-dataset accuracy while dramatically reducing computational requirements for hybrid models.' }
+    ];
+
+    var icons = {
+      'zap': '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+      'refresh': '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>',
+      'award': '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>',
+      'shield': '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'
+    };
+
+    var grid = document.getElementById('gallery-grid');
+    var lightbox = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lb-img');
+    var lbCaption = document.getElementById('lb-caption');
+    var lbClose = document.getElementById('lb-close');
+    var lbPrev = document.getElementById('lb-prev');
+    var lbNext = document.getElementById('lb-next');
+    var lbCounter = document.getElementById('lb-counter');
+    var lbFignum = document.getElementById('lb-fignum');
+    var currentIdx = 0;
+
+    function showFigure(idx) {
+      currentIdx = ((idx % figures.length) + figures.length) % figures.length;
+      var f = figures[currentIdx];
+      lbImg.classList.remove('loaded');
+      lbImg.src = f.img;
+      lbImg.onload = function() { lbImg.classList.add('loaded'); };
+      lbCaption.textContent = f.caption;
+      lbFignum.textContent = f.num;
+      lbCounter.textContent = (currentIdx + 1) + ' / ' + figures.length;
+    }
+
+    function openLightbox(idx) {
+      showFigure(idx);
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    figures.forEach(function(f, i) {
+      var card = document.createElement('div');
+      card.className = 'fig-card';
+      card.innerHTML =
+        '<div class="fig-glow"></div>' +
+        '<div class="fig-inner">' +
+          '<div class="fig-img"><img src="' + f.img + '" alt="' + f.num + '" loading="lazy"></div>' +
+          '<div class="fig-caption"><span class="fig-num">' + f.num + '</span>' + f.caption.split('.')[0] + '.</div>' +
+          '<div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div>' +
+        '</div>';
+      card.addEventListener('click', function() { openLightbox(i); });
+      grid.appendChild(card);
+    });
+
+    var findingsGrid = document.getElementById('findings-grid');
+    findings.forEach(function(f) {
+      var card = document.createElement('div');
+      card.className = 'finding-card';
+      card.innerHTML =
+        '<div class="card-glow"></div>' +
+        '<div class="finding-icon"><svg viewBox="0 0 24 24">' + icons[f.icon] + '</svg></div>' +
+        '<h4>' + f.title + '</h4>' +
+        '<p>' + f.text + '</p>';
+      findingsGrid.appendChild(card);
+    });
+
+    lbClose.addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', function(e) { e.stopPropagation(); showFigure(currentIdx - 1); });
+    lbNext.addEventListener('click', function(e) { e.stopPropagation(); showFigure(currentIdx + 1); });
+    lightbox.addEventListener('click', function(e) { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', function(e) {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showFigure(currentIdx - 1);
+      if (e.key === 'ArrowRight') showFigure(currentIdx + 1);
+    });
+
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e, idx) {
+        if (e.isIntersecting) {
+          setTimeout(function() { e.target.classList.add('visible'); }, idx * 100);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fig-card, .stat-card').forEach(function(c) { obs.observe(c); });
+
+    var teal = { r: 30, g: 130, b: 137 };
+    var gold = { r: 218, g: 165, b: 32 };
+    function addGlow(cards, colorFn) {
+      cards.forEach(function(card, i) {
+        var glow = card.querySelector('.fig-glow, .card-glow');
+        if (!glow) return;
+        var c = colorFn(i);
+        card.addEventListener('mousemove', function(e) {
+          var rect = card.getBoundingClientRect();
+          var x = e.clientX - rect.left, y = e.clientY - rect.top;
+          var offX = x - rect.width / 2, offY = y - rect.height / 2;
+          card.style.boxShadow =
+            offX * 0.12 + 'px ' + offY * 0.12 + 'px 28px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.45),' +
+            offX * 0.06 + 'px ' + offY * 0.06 + 'px 55px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.2),' +
+            '0 0 3px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.7),' +
+            '0 0 80px rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.1)';
+          glow.style.background =
+            'radial-gradient(350px circle at ' + x + 'px ' + y + 'px,' +
+            'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.22) 0%,' +
+            'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.06) 40%,' +
+            'transparent 65%)';
+        });
+        card.addEventListener('mouseleave', function() {
+          card.style.boxShadow = '';
+          glow.style.background = '';
+        });
+      });
+    }
+    addGlow(Array.from(document.querySelectorAll('.fig-card')), function(i) { return i % 2 === 0 ? gold : teal; });
+    addGlow(Array.from(document.querySelectorAll('.stat-card')), function(i) { return i % 2 === 0 ? gold : teal; });
+    addGlow(Array.from(document.querySelectorAll('.finding-card')), function(i) { return i % 2 === 0 ? teal : gold; });
+
+    var canvas = document.getElementById('starfield');
+    var ctx = canvas.getContext('2d');
+    var stars = [];
+    var SC = 180;
+    function resize() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
+    resize(); window.addEventListener('resize', resize);
+    for (var i = 0; i < SC; i++) stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.2 + .3, a: Math.random(), speed: .002 + Math.random() * .008 });
+    function drawStars(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i], f = .5 + .5 * Math.sin(t * s.speed + s.a * 6.28);
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.28);
+        ctx.fillStyle = 'rgba(255,255,255,' + (f * .6).toFixed(2) + ')'; ctx.fill();
+      }
+      requestAnimationFrame(drawStars);
+    }
+    requestAnimationFrame(drawStars);
+
+    document.querySelectorAll('.moving-border-btn').forEach(function(btn) {
+      var pathEl = btn.querySelector('.border-path'), orb = btn.querySelector('.glow-orb-btn');
+      if (!pathEl || !orb) return;
+      function tick(time) {
+        requestAnimationFrame(tick);
+        var len = pathEl.getTotalLength(); if (!len) return;
+        var pt = pathEl.getPointAtLength((time * (len / 3600)) % len);
+        orb.style.transform = 'translateX(' + pt.x + 'px) translateY(' + pt.y + 'px) translateX(-50%) translateY(-50%)';
+      }
+      requestAnimationFrame(tick);
+    });
+  })();
+  </script>
+  <script>
+  (function(){
+    var btn=document.getElementById('mob-menu-btn'),menu=document.getElementById('mob-menu'),close=document.getElementById('mob-menu-close');
+    if(!btn||!menu)return;
+    btn.addEventListener('click',function(){menu.classList.add('open');document.body.style.overflow='hidden'});
+    close.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''});
+    menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow=''})});
+  })();
+  </script>
+<div class="scroll-arrows">
+  <button id="scroll-up" aria-label="Scroll to top"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></button>
+  <button id="scroll-down" aria-label="Scroll to bottom"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+</div>
+<script>
+(function(){
+  document.getElementById('scroll-up').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+  document.getElementById('scroll-down').addEventListener('click',function(){window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})});
+})();
+</script>
+</body>
+</html>
